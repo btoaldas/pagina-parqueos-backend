@@ -1,0 +1,25 @@
+@host=http://localhost/uniandes-web
+
+### GET SOMETINH
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "grobera@email.com",
+  "password": "123456789"
+}
+
+### Create Account
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "grober",
+  "lastname": "gonzales",
+  "email": "grobera@email.com",
+  "password": "123456789"
+}
+
+### Validate
+GET {{host}}/test
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJjbGllbnRlIiwiZXhwIjoxNzQwNjA3NTUwfQ.QDL1iCWKP_SaXlRj-1Vw-sfuz3SR4MRhR5H3mTIUsLk

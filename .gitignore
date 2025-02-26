@@ -1,0 +1,4 @@
+mysql_data/
+docker-compose.yaml
+.env
+/vendor/
