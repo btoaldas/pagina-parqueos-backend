@@ -13,6 +13,7 @@ require_once 'utils/ErrorHandler.php';
 require_once 'utils/JWT.php';
 
 require_once 'controllers/AuthController.php';
+require_once 'controllers/RoleController.php';
 require_once 'controllers/UserController.php';
 
 require_once 'middlewares/AuthMiddleware.php';
@@ -24,16 +25,15 @@ $router = new Router();
 
 $router->addRoute('POST', '/auth/login', [AuthController::class, 'login']);
 $router->addRoute('POST', '/auth/register', [AuthController::class, 'register']);
-$router->addRoute(
-  'GET',
-  '/test',
-  [AuthController::class, 'test'],
-  [
-    [AuthMiddlware::class, 'checkAuth'],
-    [AuthMiddlware::class, 'validateExpiration'],
-    [AuthMiddlware::class, 'onylRoles', 'cliente', 'admin', 'funcionario'],
-  ]
-);
+
+$rolemiddlewares = [
+  [AuthMiddlware::class, 'checkJwt', 'admin'],
+];
+$router->addRoute('GET', '/role', [RoleController::class, 'getAll'], $rolemiddlewares);
+$router->addRoute('GET', '/role/[id]', [RoleController::class, 'getOne'], $rolemiddlewares);
+$router->addRoute('POST', '/role', [RoleController::class, 'create'], $rolemiddlewares);
+$router->addRoute('PUT', '/role/[id]', [RoleController::class, 'update'], $rolemiddlewares);
+$router->addRoute('DELETE', '/role/[id]', [RoleController::class, 'delete'], $rolemiddlewares);
 
 try {
   $router->handlerRequest();

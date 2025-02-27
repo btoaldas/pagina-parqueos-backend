@@ -1,28 +1,36 @@
 <?php
 
 require_once __DIR__ . '/../models/UserModel.php';
+require_once __DIR__ . '/../models/RoleModel.php';
 require_once __DIR__ . '/../utils/JWT.php';
 require_once __DIR__ . '/../utils/HttpError.php';
 
 class AuthService
 {
   private $userModel;
+  private $roleModel;
 
   public function __construct()
   {
     $this->userModel = new UserModel();
+    $this->roleModel = new RoleModel();
   }
 
   public function login($email, $password)
   {
     $user = $this->userModel->getUserbyEmail($email);
-    if (!$user || !password_verify($password, $user['contraseña']))
+    if (!$user || !password_verify($password, $user['password']))
       throw HttpError::BadRequest("User or password incorrect");
 
-    $token = JWT::generateToken($user['id_usuario'], $user['id_rol']);
+    $role = $this->roleModel->get($user['id_role']);
 
-    unset($user['contraseña']);
-    unset($user['id_usuario']);
+    $token = JWT::generateToken($user['id'], $role['name']);
+
+    unset($user['password']);
+    unset($user['id']);
+    unset($user['id_role']);
+
+    $user['role'] = $role['name'];
 
     return ['token' => $token, 'user' => $user];
   }
@@ -34,8 +42,12 @@ class AuthService
     if (!!$exits)
       throw HttpError::BadRequest("This email already exists!");
 
+    $role = $this->roleModel->getByName("cliente");
+    if (!$role)
+      throw HttpError::InternalServer("There is not client role");
+
     $userData['password'] = password_hash($userData['password'], PASSWORD_BCRYPT);
-    $userData['id_role'] = 1;
+    $userData['id_role'] = $role['id'];
     $userData['state'] = true;
     return $this->userModel->create($userData);
   }

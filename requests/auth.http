@@ -5,7 +5,7 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "grobera@email.com",
+  "email": "erickson@email.com",
   "password": "123456789"
 }
 
@@ -14,12 +14,8 @@ POST {{host}}/auth/register
 Content-Type: application/json
 
 {
-  "name": "grober",
+  "name": "ericskon",
   "lastname": "gonzales",
-  "email": "grobera@email.com",
+  "email": "erickson@email.com",
   "password": "123456789"
 }
-
-### Validate
-GET {{host}}/test
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJjbGllbnRlIiwiZXhwIjoxNzQwNjA3NTUwfQ.QDL1iCWKP_SaXlRj-1Vw-sfuz3SR4MRhR5H3mTIUsLk

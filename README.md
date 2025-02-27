@@ -1,5 +1,3 @@
-# ! AÚN FALTA CONFIGURAR ROLES | IN DEV
-
 # CONFIGURACIÓN DE BACKEND
 
 Este proyecto es una aplicación para gestionar un sistema de estacionamiento rotativo. A continuación, se detallan los pasos para configurar el entorno de desarrollo en Arch Linux y Windows.
@@ -145,7 +143,7 @@ CREATE TABLE usuarios (
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
     correo VARCHAR(100) NOT NULL UNIQUE,
-    contraseÃ±a VARCHAR(255) NOT NULL,
+    contraseña VARCHAR(255) NOT NULL,
     id_rol INT NOT NULL,
     estado BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
@@ -202,10 +200,10 @@ Asegúrate de que el usuario de MySQL tenga permisos para acceder a la base de d
 
 ## 4. Configuración del Archivo `.env`
 
-### 1. Crea un archivo .env en la raÃ­z del proyecto con el siguiente contenido:
+### 1. Crea un archivo .env en la raí­z del proyecto con el siguiente contenido:
 
 ```ini
-# Ruta base del proyecto (si est+a en un subdirectorio)
+# Ruta base del proyecto (si está en un subdirectorio)
 
 PATH_BASE=/ruta/al/proyecto
 
@@ -231,7 +229,7 @@ JWT_SECRET=tu_clave_secreta_jwt
 
 - DB_USER: Usuario de la base de datos.
 
-- DB_PASS: ContraseÃ±a del usuario de la base de datos.
+- DB_PASS: Contraseña del usuario de la base de datos.
 
 - JWT_SECRET: Clave secreta para firmar los tokens JWT.
 

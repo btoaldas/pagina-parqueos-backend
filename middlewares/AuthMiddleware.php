@@ -5,7 +5,12 @@ require_once __DIR__ . '/../utils/ErrorHandler.php';
 
 class AuthMiddlware
 {
-  public static $NAMES = ['CHECKAUTH' => "checkAuth"];
+  public function checkJwt(...$roles)
+  {
+    $this->checkAuth();
+    $this->validateExpiration();
+    $this->onylRoles(...$roles);
+  }
 
   public function checkAuth()
   {

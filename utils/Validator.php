@@ -23,4 +23,11 @@ class Validator
         throw HttpError::BadRequest("Required Fields: " . implode(', ', $requiredFields));
     }
   }
+
+  public static function isInt($data, $name)
+  {
+    $value = $data[$name];
+    if (!(is_numeric($value) && (int)$value == $value))
+      throw HttpError::BadRequest("$name is not an int number");
+  }
 }
