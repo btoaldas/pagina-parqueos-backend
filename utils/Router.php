@@ -10,6 +10,15 @@ class Router
   private $routes = [];
   private $middlewares = [];
 
+  public function addCrudRoute($path, $cClass, $middlewares = [])
+  {
+    $this->addRoute('GET', $path, [$cClass, 'getAll'], $middlewares);
+    $this->addRoute('GET', $path . '/[id]', [$cClass, 'getOne'], $middlewares);
+    $this->addRoute('POST', $path, [$cClass, 'create'], $middlewares);
+    $this->addRoute('PUT', $path . '/[id]', [$cClass, 'update'], $middlewares);
+    $this->addRoute('DELETE', $path . '/[id]', [$cClass, 'delete'], $middlewares);
+  }
+
   public function addRoute(string $method, $path, $handler, $middlewares = [])
   {
     $this->routes[] = [

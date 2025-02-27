@@ -1,0 +1,42 @@
+@host=http://localhost/uniandes-web
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjIxMTU4fQ.Gue-zgnFSfYu9loU3WrMxOlFSoJz9wYX6TQqOd1KABI
+
+### Get all users
+GET {{host}}/user
+Authorization: Bearer {{token}}
+
+### Get One User
+GET {{host}}/user/1
+Authorization: Bearer {{token}}
+
+### Create USer
+POST {{host}}/user
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Created",
+  "lastname": "ByAdmin",
+  "email": "created@gmail.com",
+  "password": "123456789",
+  "state": 1,
+  "role": "admin"
+}
+
+### Update USer
+PUT {{host}}/user/5
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Created2",
+  "lastname": "ByAdmin",
+  "email": "created@gmail.com",
+  "password": "123456789",
+  "state": 1,
+  "role": "admin"
+}
+
+### Delete User
+DELETE {{host}}/user/5
+Authorization: Bearer {{token}}

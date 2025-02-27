@@ -20,20 +20,18 @@ require_once 'middlewares/AuthMiddleware.php';
 
 require_once 'utils/Router.php';
 
+$adminMiddleware = [
+  [AuthMiddlware::class, 'checkJwt', 'admin'],
+];
 
 $router = new Router();
 
 $router->addRoute('POST', '/auth/login', [AuthController::class, 'login']);
 $router->addRoute('POST', '/auth/register', [AuthController::class, 'register']);
 
-$rolemiddlewares = [
-  [AuthMiddlware::class, 'checkJwt', 'admin'],
-];
-$router->addRoute('GET', '/role', [RoleController::class, 'getAll'], $rolemiddlewares);
-$router->addRoute('GET', '/role/[id]', [RoleController::class, 'getOne'], $rolemiddlewares);
-$router->addRoute('POST', '/role', [RoleController::class, 'create'], $rolemiddlewares);
-$router->addRoute('PUT', '/role/[id]', [RoleController::class, 'update'], $rolemiddlewares);
-$router->addRoute('DELETE', '/role/[id]', [RoleController::class, 'delete'], $rolemiddlewares);
+$router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
+
+$router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 
 try {
   $router->handlerRequest();

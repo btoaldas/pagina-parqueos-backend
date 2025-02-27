@@ -22,15 +22,10 @@ class AuthService
     if (!$user || !password_verify($password, $user['password']))
       throw HttpError::BadRequest("User or password incorrect");
 
-    $role = $this->roleModel->get($user['id_role']);
-
-    $token = JWT::generateToken($user['id'], $role['name']);
+    $token = JWT::generateToken($user['id'], $user['role']);
 
     unset($user['password']);
     unset($user['id']);
-    unset($user['id_role']);
-
-    $user['role'] = $role['name'];
 
     return ['token' => $token, 'user' => $user];
   }

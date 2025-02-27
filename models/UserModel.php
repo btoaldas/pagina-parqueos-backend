@@ -19,9 +19,22 @@ class UserModel
     return $stmt->execute($userData);
   }
 
+  public function all($limit = 10, $offset = 0)
+  {
+    $sql = "SELECT u.id_usuario AS id, u.nombre AS name, u.apellido AS lastname, u.correo as email, r.nombre_rol AS role, u.estado AS state FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol LIMIT :limit OFFSET :offset";
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function getOne($userId)
   {
-    $sql = "SELECT nombre AS name, apellido AS lastname, correo as email, contraseña as password, id_rol AS id_role, estado AS state FROM usuarios WHERE id_usuario = :id";
+    $sql = "SELECT u.nombre AS name, u.apellido AS lastname, u.correo as email, r.nombre_rol AS role, u.estado AS state FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.id_usuario = :id";
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['id' => $userId]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,7 +42,7 @@ class UserModel
 
   public function getUserbyEmail($email)
   {
-    $sql = "SELECT id_usuario AS id, nombre AS name, apellido AS lastname, correo as email, contraseña as password, id_rol AS id_role, estado AS state FROM usuarios WHERE correo = :email";
+    $sql = "SELECT u.id_usuario AS id, u.nombre AS name, u.apellido AS lastname, u.correo as email, u.contraseña as password, r.nombre_rol AS role, u.estado AS state FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo = :email";
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['email' => $email]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -37,7 +50,7 @@ class UserModel
 
   public function update($userId, $userData)
   {
-    $sql = "UPDATE usuarios SET nombre = :name, apellido = :lastname, estado = :state, correo = :email, id_rol = :role WHERE id_usuario = :id";
+    $sql = "UPDATE usuarios SET nombre = :name, apellido = :lastname, estado = :state, correo = :email, contraseña = :password, id_rol = :id_role WHERE id_usuario = :id";
     $stmt = $this->conn->prepare($sql);
     $userData['id'] = $userId;
     return $stmt->execute($userData);

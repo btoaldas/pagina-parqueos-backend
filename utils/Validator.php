@@ -19,7 +19,7 @@ class Validator
   public static function validateRequiredFields($data, $requiredFields)
   {
     foreach ($requiredFields as $field) {
-      if (empty($data[$field]))
+      if (!array_key_exists($field, $data))
         throw HttpError::BadRequest("Required Fields: " . implode(', ', $requiredFields));
     }
   }

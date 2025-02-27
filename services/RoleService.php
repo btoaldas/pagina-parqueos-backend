@@ -22,7 +22,7 @@ class RoleService
     $data = $this->roleModel->get($id);
 
     if ($throws && !$data)
-      throw HttpError::NotFound("Role $id does not exiest!");
+      throw HttpError::NotFound("Role $id does not exist!");
 
     return $data;
   }
