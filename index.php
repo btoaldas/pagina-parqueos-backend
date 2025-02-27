@@ -24,7 +24,7 @@ $adminMiddleware = [
   [AuthMiddlware::class, 'checkJwt', 'admin'],
 ];
 
-$router = new Router();
+$router = new Router('/api/v1');
 
 $router->addRoute('POST', '/auth/login', [AuthController::class, 'login']);
 $router->addRoute('POST', '/auth/register', [AuthController::class, 'register']);

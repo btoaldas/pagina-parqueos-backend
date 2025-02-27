@@ -1,4 +1,4 @@
-@host=http://localhost/uniandes-web
+@host=http://localhost/uniandes-web/api/v1
 @token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjIyMzczfQ.P1mlGNz_xkAmeFYkOAW831clXgLudGNOCbUzo27O5NI
 
 ### Get All

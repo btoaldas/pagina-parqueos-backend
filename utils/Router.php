@@ -9,6 +9,12 @@ class Router
 {
   private $routes = [];
   private $middlewares = [];
+  private $base = "";
+
+  public function __construct($base = "")
+  {
+    $this->base = $base;
+  }
 
   public function addCrudRoute($path, $cClass, $middlewares = [])
   {
@@ -23,7 +29,7 @@ class Router
   {
     $this->routes[] = [
       'method' => $method,
-      'path' => $_ENV['PATH_BASE'] . $path,
+      'path' => $_ENV['PATH_BASE'] . $this->base . $path,
       'handler' => $handler,
       'middlewares' => $middlewares,
     ];

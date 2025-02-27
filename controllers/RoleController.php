@@ -61,7 +61,7 @@ class RoleController
 
       $data = $this->roleService->create($body);
 
-      Response::json($data, "Success", 201);
+      Response::json($data, "Created", 201);
     } catch (HttpError $e) {
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
