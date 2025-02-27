@@ -1,0 +1,34 @@
+@host=http://localhost/uniandes-web/api/v1
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjI0MjQ4fQ.lsf79FBkHUmXyQL81beHQVc35nGmufNNV-ENnhdL1MY
+
+### Get All
+GET {{host}}/zone
+Authorization: Bearer {{token}}
+
+### Get One
+GET {{host}}/zone/1
+Authorization: Bearer {{token}}
+
+### CREATE ONE
+POST {{host}}/zone
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Zona Roja",
+  "fee": 4.3
+}
+
+### Update One
+PUT {{host}}/zone/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "xdxdxd",
+  "fee" : "2.3"
+}
+
+### DELETE One
+DELETE {{host}}/zone/1
+Authorization: Bearer {{token}}

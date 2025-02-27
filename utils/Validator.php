@@ -24,6 +24,13 @@ class Validator
     }
   }
 
+  public static function isNumber($data, $name)
+  {
+    $value = $data[$name];
+    if (!(is_numeric($value)))
+      throw HttpError::BadRequest("$name is not an number");
+  }
+
   public static function isInt($data, $name)
   {
     $value = $data[$name];
