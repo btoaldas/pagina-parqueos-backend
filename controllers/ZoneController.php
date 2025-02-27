@@ -1,11 +1,12 @@
 <?php
 
-include_once __DIR__ . '/../services/ZonaService.php';
+namespace App\Controllers;
 
-include_once __DIR__ . '/../utils/Validator.php';
-include_once __DIR__ . '/../utils/Response.php';
-include_once __DIR__ . '/../utils/ErrorHandler.php';
-include_once __DIR__ . '/../utils/HttpError.php';
+use App\Services\ZoneService;
+use App\Utils\ErrorHandler;
+use App\Utils\HttpError;
+use App\Utils\Response;
+use App\Utils\Validator;
 
 class ZoneController
 {

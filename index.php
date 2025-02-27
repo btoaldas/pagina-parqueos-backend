@@ -1,35 +1,30 @@
 <?php
 
 // ini_set('display_errors', 0);
-declare(strict_types=1);
 
-require_once 'utils/EnvLoader.php';
+// cdeclare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use App\Controllers\AuthController;
+use App\Controllers\RoleController;
+use App\Controllers\SpaceController;
+use App\Controllers\TicketController;
+use App\Controllers\UserController;
+use App\Controllers\ZoneController;
+use App\Middlewares\AuthMiddleware;
+use App\Utils\EnvLoader;
+use App\Utils\ErrorHandler;
+use App\Utils\Router;
 
 EnvLoader::load();
 
-require_once 'utils/Response.php';
-require_once 'utils/Validator.php';
-require_once 'utils/ErrorHandler.php';
-require_once 'utils/JWT.php';
-
-require_once 'controllers/AuthController.php';
-require_once 'controllers/RoleController.php';
-require_once 'controllers/UserController.php';
-require_once 'controllers/ZoneController.php';
-require_once 'controllers/SpaceController.php';
-
-require_once 'controllers/TicketController.php';
-
-require_once 'middlewares/AuthMiddleware.php';
-
-require_once 'utils/Router.php';
-
 $adminMiddleware = [
-  [AuthMiddlware::class, 'checkJwt', 'admin'],
+  [AuthMiddleware::class, 'checkJwt', 'admin'],
 ];
 
 $registeredMiddleware = [
-  [AuthMiddlware::class, 'checkJwt'],
+  [AuthMiddleware::class, 'checkJwt'],
 ];
 
 $router = new Router('/api/v1');

@@ -1,7 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../models/ZoneModel.php';
-require_once __DIR__ . '/../utils/HttpError.php';
+namespace App\Services;
+
+use App\Models\ZoneModel;
+use App\Utils\HttpError;
 
 class ZoneService
 {

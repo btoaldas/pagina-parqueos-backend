@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/Response.php';
+namespace App\Utils;
 
 class ErrorHandler
 {

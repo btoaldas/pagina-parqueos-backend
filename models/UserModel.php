@@ -1,6 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../config/db.php';
+namespace App\Models;
+
+use PDO;
+use App\Config\Database;
 
 class UserModel
 {
@@ -8,8 +11,7 @@ class UserModel
 
   public function __construct()
   {
-    global $conn;
-    $this->conn = $conn;
+    $this->conn = Database::getConnection();
   }
 
   public function create($userData)

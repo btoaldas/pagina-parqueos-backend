@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . '/../utils/HttpError.php';
+namespace App\Utils;
 
 class Validator
 {

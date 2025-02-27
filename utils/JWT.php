@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Utils;
+
 class JWT
 {
   public static function generateToken($userId, $role)

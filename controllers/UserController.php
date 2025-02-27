@@ -1,11 +1,12 @@
 <?php
 
-include_once __DIR__ . '/../services/UserService.php';
+namespace App\Controllers;
 
-include_once __DIR__ . '/../utils/Validator.php';
-include_once __DIR__ . '/../utils/Response.php';
-include_once __DIR__ . '/../utils/ErrorHandler.php';
-include_once __DIR__ . '/../utils/HttpError.php';
+use App\Services\UserService;
+use App\Utils\ErrorHandler;
+use App\Utils\HttpError;
+use App\Utils\Response;
+use App\Utils\Validator;
 
 class UserController
 {
@@ -21,13 +22,7 @@ class UserController
     try {
       global $queryparams;
 
-      if (empty($queryparams['limit']))
-        $queryparams['limit'] = '10';
-      if (empty($queryparams['offset']))
-        $queryparams['offset'] = '0';
-
-      Validator::isInt($queryparams, 'limit');
-      Validator::isInt($queryparams, 'offset');
+      Validator::with($queryparams)->limitOffset();
 
       $data = $this->userService->getAll($queryparams['limit'], $queryparams['offset']);
 
@@ -42,8 +37,7 @@ class UserController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->userService->getOne($pathparams['id']);
 

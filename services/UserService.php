@@ -1,8 +1,10 @@
 <?php
 
-require_once __DIR__ . '/../models/UserModel.php';
-require_once __DIR__ . '/../models/RoleModel.php';
-require_once __DIR__ . '/../utils/HttpError.php';
+namespace App\Services;
+
+use App\Models\RoleModel;
+use App\Models\UserModel;
+use App\Utils\HttpError;
 
 class UserService
 {

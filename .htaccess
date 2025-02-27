@@ -4,14 +4,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond $1 !^(public)
 
-RewriteRule ^(.*)$ index.php/$1 [QSA,L]
+RewriteRule ^(.*)$ index.php [QSA,L]
 
 <Files .env>
-Require all denied
+  Require all denied
 </Files>
-
-<IfModule security2_module>
-  SecRuleEngine on
-  ServerTokens Full
-  SecServerSignature " "
-</IfModule>

@@ -1,13 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../services/AuthService.php';
+namespace App\Controllers;
 
-require_once __DIR__ . '/../utils/Validator.php';
-
-require_once __DIR__ . '/../utils/Response.php';
-require_once __DIR__ . '/../utils/ErrorHandler.php';
-
-require_once __DIR__ . '/../utils/HttpError.php';
+use App\Services\AuthService;
+use App\Utils\ErrorHandler;
+use App\Utils\HttpError;
+use App\Utils\Response;
+use App\Utils\Validator;
 
 class AuthController
 {

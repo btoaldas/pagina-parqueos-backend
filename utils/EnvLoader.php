@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Utils;
+
+use Exception;
+
 class EnvLoader
 {
   private static $loaded = false;

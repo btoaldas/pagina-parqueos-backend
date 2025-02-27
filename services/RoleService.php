@@ -1,7 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../models/RoleModel.php';
-require_once __DIR__ . '/../utils/HttpError.php';
+namespace App\Services;
+
+use App\Models\RoleModel;
+use App\Utils\HttpError;
 
 class RoleService
 {

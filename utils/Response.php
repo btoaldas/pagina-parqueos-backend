@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Utils;
+
 class Response
 {
   public static function json($data, $message = "Success", $statusCode = 200)

@@ -1,9 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../utils/JWT.php';
-require_once __DIR__ . '/../utils/ErrorHandler.php';
+namespace App\Middlewares;
 
-class AuthMiddlware
+use App\Utils\ErrorHandler;
+use App\Utils\JWT;
+
+class AuthMiddleware
 {
   public function checkJwt(...$roles)
   {

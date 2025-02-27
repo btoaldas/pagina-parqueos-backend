@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/ErrorHandler.php';
+namespace App\Utils;
 
 $pathparams = [];
 $queryparams = [];

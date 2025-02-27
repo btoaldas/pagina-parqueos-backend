@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Utils;
+
+use Exception;
+use RuntimeException;
+
 class HttpError extends RuntimeException
 {
   private $statusCode;

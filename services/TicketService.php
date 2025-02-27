@@ -1,9 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../models/TicketModel.php';
-require_once __DIR__ . '/../models/SpaceModel.php';
-require_once __DIR__ . '/../models/UserModel.php';
-require_once __DIR__ . '/../utils/HttpError.php';
+namespace App\Services;
+
+use App\Models\SpaceModel;
+use App\Models\TicketModel;
+use App\Models\UserModel;
+use App\Utils\HttpError;
 
 class TicketService
 {
