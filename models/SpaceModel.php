@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../config/db.php';
 
-class ZoneModel
+class SpaceModel
 {
   private PDO $conn;
 
@@ -14,12 +14,7 @@ class ZoneModel
 
   public function create($data)
   {
-    $sql = "INSERT INTO zonas
-      (nombre, tarifa)
-    VALUES
-      (:name, :fee)
-    ";
-
+    $sql = "INSERT INTO espacios (id_zona, estado, tipo) VALUES (:id_zone, :state, :type)";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute($data);
   }
@@ -27,10 +22,17 @@ class ZoneModel
   public function all($limit = 10, $offset = 0)
   {
     $sql = "SELECT
-      id_zona AS id,
-      nombre AS name,
-      tarifa as fee
-    FROM zonas
+      e.id_espacio AS id,
+      e.estado AS state,
+      e.tipo AS type,
+      JSON_OBJECT(
+        'id', z.id_zona,
+        'name',z.nombre,
+        'fee', z.tarifa
+      ) as zone
+    FROM espacios e
+    JOIN zonas z
+      ON e.id_zona = z.id_zona
     LIMIT :limit
     OFFSET :offset
     ";
@@ -48,39 +50,34 @@ class ZoneModel
   public function get($id)
   {
     $sql = "SELECT
-      nombre AS name,
-      tarifa AS fee
-    FROM zonas
-    WHERE id_zona = :id
+      e.estado AS state,
+      e.tipo AS type,
+      JSON_OBJECT(
+        'id', z.id_zona,
+        'name',z.nombre,
+        'fee', z.tarifa
+      ) as zone
+    FROM espacios e
+    JOIN zonas z
+      ON e.id_zona = z.id_zona
+    WHERE e.id_espacio = :id
     ";
 
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['id' => $id]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-  }
-
-  public function getZoneByName($name)
-  {
-    $sql = "SELECT
-      id_zona AS id,
-      nombre AS name,
-      tarifa AS fee
-    FROM zonas
-    WHERE nombre = :name
-    ";
-
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute(['name' => $name]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $value = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $value;
   }
 
   public function update($id, $data)
   {
-    $sql = "UPDATE zonas
+    $sql = "UPDATE espacios
     SET
-      nombre = :name,
-      tarifa = :fee
-    WHERE id_zona = :id
+      estado = :state,
+      tipo = :type,
+      id_zona = :id_zone
+    WHERE
+      id_espacio = :id
     ";
 
     $stmt = $this->conn->prepare($sql);
@@ -90,7 +87,7 @@ class ZoneModel
 
   public function delete($id)
   {
-    $sql = "DELETE FROM zonas WHERE id_zona = :id";
+    $sql = "DELETE FROM espacios WHERE id_espacio = :id";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute(['id' => $id]);
   }

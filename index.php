@@ -16,6 +16,7 @@ require_once 'controllers/AuthController.php';
 require_once 'controllers/RoleController.php';
 require_once 'controllers/UserController.php';
 require_once 'controllers/ZoneController.php';
+require_once 'controllers/SpaceController.php';
 
 require_once 'middlewares/AuthMiddleware.php';
 
@@ -33,6 +34,7 @@ $router->addRoute('POST', '/auth/register', [AuthController::class, 'register'])
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
+$router->addCrudRoute('/space', SpaceController::class, $adminMiddleware);
 
 try {
   $router->handlerRequest();

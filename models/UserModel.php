@@ -14,14 +14,31 @@ class UserModel
 
   public function create($userData)
   {
-    $sql = "INSERT INTO usuarios (nombre, apellido, correo, contraseña, id_rol, estado) VALUES (:name, :lastname, :email, :password, :id_role, :state)";
+    $sql = "INSERT INTO usuarios
+      (nombre, apellido, correo, contraseña, id_rol, estado)
+    VALUES
+      (:name, :lastname, :email, :password, :id_role, :state)
+    ";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute($userData);
   }
 
   public function all($limit = 10, $offset = 0)
   {
-    $sql = "SELECT u.id_usuario AS id, u.nombre AS name, u.apellido AS lastname, u.correo as email, r.nombre_rol AS role, u.estado AS state FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol LIMIT :limit OFFSET :offset";
+    $sql = "SELECT
+      u.id_usuario AS id,
+      u.nombre AS name,
+      u.apellido AS lastname,
+      u.correo as email,
+      r.nombre_rol AS role,
+      u.estado AS state
+    FROM usuarios u
+    JOIN roles r
+      ON u.id_rol = r.id_rol
+    LIMIT :limit
+    OFFSET :offset
+    ";
+
     $stmt = $this->conn->prepare($sql);
 
     $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
@@ -34,7 +51,18 @@ class UserModel
 
   public function getOne($userId)
   {
-    $sql = "SELECT u.nombre AS name, u.apellido AS lastname, u.correo as email, r.nombre_rol AS role, u.estado AS state FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.id_usuario = :id";
+    $sql = "SELECT
+      u.nombre AS name,
+      u.apellido AS lastname,
+      u.correo as email,
+      r.nombre_rol AS role,
+      u.estado AS state
+    FROM usuarios u
+    JOIN roles r
+      ON u.id_rol = r.id_rol
+    WHERE u.id_usuario = :id
+    ";
+
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['id' => $userId]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -42,7 +70,20 @@ class UserModel
 
   public function getUserbyEmail($email)
   {
-    $sql = "SELECT u.id_usuario AS id, u.nombre AS name, u.apellido AS lastname, u.correo as email, u.contraseña as password, r.nombre_rol AS role, u.estado AS state FROM usuarios u JOIN roles r ON u.id_rol = r.id_rol WHERE u.correo = :email";
+    $sql = "SELECT
+      u.id_usuario AS id,
+      u.nombre AS name,
+      u.apellido AS lastname,
+      u.correo as email,
+      u.contraseña as password,
+      r.nombre_rol AS role,
+      u.estado AS state
+    FROM usuarios u
+    JOIN roles r
+      ON u.id_rol = r.id_rol
+    WHERE u.correo = :email
+    ";
+
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['email' => $email]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +91,16 @@ class UserModel
 
   public function update($userId, $userData)
   {
-    $sql = "UPDATE usuarios SET nombre = :name, apellido = :lastname, estado = :state, correo = :email, contraseña = :password, id_rol = :id_role WHERE id_usuario = :id";
+    $sql = "UPDATE usuarios
+    SET
+      nombre = :name,
+      apellido = :lastname,
+      estado = :state,
+      correo = :email,
+      contraseña = :password,
+      id_rol = :id_role
+    WHERE id_usuario = :id
+    ";
     $stmt = $this->conn->prepare($sql);
     $userData['id'] = $userId;
     return $stmt->execute($userData);
