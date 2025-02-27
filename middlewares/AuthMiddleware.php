@@ -41,6 +41,9 @@ class AuthMiddlware
     if (!is_array($roles))
       $roles = [$roles];
 
+    if (count($roles) === 0)
+      return;
+
     foreach ($roles as $role) {
       if ($role === $payload['role'])
         return;

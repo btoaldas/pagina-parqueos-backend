@@ -18,12 +18,18 @@ require_once 'controllers/UserController.php';
 require_once 'controllers/ZoneController.php';
 require_once 'controllers/SpaceController.php';
 
+require_once 'controllers/TicketController.php';
+
 require_once 'middlewares/AuthMiddleware.php';
 
 require_once 'utils/Router.php';
 
 $adminMiddleware = [
   [AuthMiddlware::class, 'checkJwt', 'admin'],
+];
+
+$registeredMiddleware = [
+  [AuthMiddlware::class, 'checkJwt'],
 ];
 
 $router = new Router('/api/v1');
@@ -35,6 +41,9 @@ $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
 $router->addCrudRoute('/space', SpaceController::class, $adminMiddleware);
+
+$router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $registeredMiddleware);
+$router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $registeredMiddleware);
 
 try {
   $router->handlerRequest();

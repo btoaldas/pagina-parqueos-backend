@@ -1,0 +1,10 @@
+@host=http://localhost/uniandes-web/api/v1
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjMxMDUzfQ.RHPHhZ2Q8K5cxjonE7JpvZ8yy3lHavv0cVdUlPJc6V4
+
+### Get All
+GET {{host}}/ticket
+Authorization: Bearer {{token}}
+
+### Get One
+GET {{host}}/ticket/1
+Authorization: Bearer {{token}}
