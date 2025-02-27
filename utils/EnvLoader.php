@@ -33,6 +33,25 @@ class EnvLoader
       }
     }
 
+    Validator::with(
+      $_ENV,
+      [
+        'PATH_BASE',
+        'DB_HOST',
+        'DB_PORT',
+        'DB_NAME',
+        'DB_USER',
+        'DB_PASS',
+        'JWT_SECRET',
+        'JWT_EXPIRE',
+      ]
+    )->required();
+
+    Validator::with($_ENV, [
+      'JWT_EXPIRE',
+      'DB_PORT',
+    ])->toInteger();
+
     self::$loaded = true;
   }
 }

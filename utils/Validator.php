@@ -129,4 +129,11 @@ class Validator
     $this->isInteger();
     return $this;
   }
+
+  public function toInteger()
+  {
+    foreach ($this->ks as $key)
+      $this->data[$key] = (int)$this->data[$key];
+    return $this;
+  }
 }
