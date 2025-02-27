@@ -19,3 +19,6 @@ Content-Type: application/json
   "email": "grober@gmail.com",
   "password": "123456789"
 }
+
+### Test
+POST {{host}}/test

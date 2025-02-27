@@ -129,8 +129,10 @@ DROP TABLE IF EXISTS multas;
 DROP TABLE IF EXISTS tickets;
 DROP TABLE IF EXISTS espacios;
 DROP TABLE IF EXISTS zonas;
+DROP TABLE IF EXISTS vehiculos;
 DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS roles;
+
 
 CREATE TABLE roles (
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
@@ -148,6 +150,17 @@ CREATE TABLE usuarios (
     estado BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
 );
+
+CREATE TABLE vehiculos {
+    id_vehiculo INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    placa VARCHAR(20) NOT NULL UNIQUE,
+    marca VARCHAR(50) NOT NULL,
+    modelo VARCHAR(50) NOT NULL,
+    año INT NOU NULL,
+    base_imponible DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+};
 
 CREATE TABLE zonas (
     id_zona INT AUTO_INCREMENT PRIMARY KEY,

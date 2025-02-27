@@ -56,4 +56,6 @@ class AuthController
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
   }
+
+  public function test() {}
 }

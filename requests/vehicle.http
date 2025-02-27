@@ -1,0 +1,51 @@
+@host=http://localhost/uniandes-web/api/v1
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNzAxODAzfQ.PctRlHp0hyDqjQl6tzhZQzP7uctTJnWoiN2rYmRU1QY
+
+### GET SOMETINH
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "grober@gmail.com",
+  "password": "123456789"
+}
+
+### Vechile
+GET {{host}}/vehicle
+Authorization: Bearer {{token}}
+
+### Get One
+GET {{host}}/vehicle/1
+Authorization: Bearer {{token}}
+
+### Create One
+POST {{host}}/vehicle
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_user": 1,
+  "plate": "ASD2",
+  "brand": "xd",
+  "model": "XDXD",
+  "year": 23,
+  "taxable_base": 123
+}
+
+### Update One
+PUT {{host}}/vehicle/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_user": 1,
+  "plate": "ASD3",
+  "brand": "xdxd",
+  "model": "XDXD2",
+  "year": 1023,
+  "taxable_base": 1
+}
+
+### Delete One
+DELETE {{host}}/vehicle/1
+Authorization: Bearer {{token}}

@@ -2,11 +2,11 @@
 
 namespace App\Utils;
 
-$pathparams = [];
-$queryparams = [];
-
 class Router
 {
+  public static array $pathparams = [];
+  public static array $queryparams = [];
+
   private $routes = [];
   private $middlewares = [];
   private $base = "";
@@ -42,9 +42,6 @@ class Router
 
   public function handlerRequest()
   {
-    global $pathparams;
-    global $queryparams;
-
     $requestMethod = $_SERVER['REQUEST_METHOD'];
     $requestUri = $_SERVER['REQUEST_URI'];
 
@@ -54,7 +51,7 @@ class Router
 
     if (isset($urlParts['query'])) {
       parse_str($urlParts['query'], $queryParams_);
-      $queryparams = $queryParams_;
+      self::$queryparams = $queryParams_;
     }
 
     foreach ($this->routes as $route) {
@@ -65,7 +62,7 @@ class Router
       if (!preg_match($pattern, $path, $matches))
         continue;
 
-      $pathparams = $matches;
+      self::$pathparams = $matches;
 
       // Global middlewares
       foreach ($this->middlewares as $middleware) {

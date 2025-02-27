@@ -6,6 +6,7 @@ use App\Services\TicketService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\Response;
+use App\Utils\Router;
 use App\Utils\Validator;
 
 class TicketController
@@ -20,7 +21,7 @@ class TicketController
   public function getAll()
   {
     try {
-      global $queryparams;
+      $queryparams = Router::$queryparams;
 
       Validator::with($queryparams)->limitOffset();
 
@@ -35,7 +36,7 @@ class TicketController
   public function getOne()
   {
     try {
-      global $pathparams;
+      $pathparams = Router::$pathparams;
 
       Validator::with($pathparams, 'id')->required()->isInteger();
 

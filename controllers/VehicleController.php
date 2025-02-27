@@ -2,22 +2,23 @@
 
 namespace App\Controllers;
 
-use App\Services\UserService;
+use App\Services\VehicleService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\Response;
 use App\Utils\Router;
 use App\Utils\Validator;
 
-class UserController
+class VehicleController
 {
-  private $userService;
+  private $vehicleService;
 
   public function __construct()
   {
-    $this->userService = new UserService();
+    $this->vehicleService = new VehicleService();
   }
 
+  // Obtener todos los vehículos con paginación
   public function getAll()
   {
     try {
@@ -25,7 +26,7 @@ class UserController
 
       Validator::with($queryparams)->limitOffset();
 
-      $data = $this->userService->getAll($queryparams['limit'], $queryparams['offset']);
+      $data = $this->vehicleService->getAll($queryparams['limit'], $queryparams['offset']);
 
       Response::json($data);
     } catch (HttpError $e) {
@@ -33,6 +34,7 @@ class UserController
     }
   }
 
+  // Obtener un vehículo por su ID
   public function getOne()
   {
     try {
@@ -40,7 +42,7 @@ class UserController
 
       Validator::with($pathparams, 'id')->required()->isInteger();
 
-      $data = $this->userService->getOne($pathparams['id']);
+      $data = $this->vehicleService->getOne($pathparams['id']);
 
       Response::json($data);
     } catch (HttpError $e) {
@@ -48,18 +50,18 @@ class UserController
     }
   }
 
+  // Crear un nuevo vehículo
   public function create()
   {
     try {
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])
-        ->required()
-        ->isString();
-      Validator::with($body, 'email')->isEmail();
-      Validator::with($body, 'password')->minLength(8);
+      Validator::with($body, ['id_user', 'plate', 'brand', 'model', 'year', 'taxable_base'])->required();
+      Validator::with($body, ['year', 'id_user'])->isInteger();
+      Validator::with($body, 'taxable_base')->isNumb();
+      Validator::with($body, 'plate')->isString();
 
-      $data = $this->userService->create($body);
+      $data = $this->vehicleService->create($body);
 
       Response::json($data, "Created", 201);
     } catch (HttpError $e) {
@@ -67,21 +69,20 @@ class UserController
     }
   }
 
+  // Actualizar un vehículo
   public function update()
   {
     try {
       $pathparams = Router::$pathparams;
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])
-        ->required()
-        ->isString();
-      Validator::with($body, 'email')->isEmail();
-      Validator::with($body, 'password')->minLength(8);
-
       Validator::with($pathparams, 'id')->required()->isInteger();
+      Validator::with($body, ['id_user', 'plate', 'brand', 'model', 'year', 'taxable_base'])->required();
+      Validator::with($body, ['year', 'id_user'])->isInteger();
+      Validator::with($body, 'taxable_base')->isNumb();
+      Validator::with($body, 'plate')->isString();
 
-      $data = $this->userService->update($pathparams['id'], $body);
+      $data = $this->vehicleService->update($pathparams['id'], $body);
 
       Response::json($data);
     } catch (HttpError $e) {
@@ -89,6 +90,7 @@ class UserController
     }
   }
 
+  // Eliminar un vehículo por su ID
   public function delete()
   {
     try {
@@ -96,7 +98,7 @@ class UserController
 
       Validator::with($pathparams, 'id')->required()->isInteger();
 
-      $data = $this->userService->delete($pathparams['id']);
+      $data = $this->vehicleService->delete($pathparams['id']);
 
       Response::json($data);
     } catch (HttpError $e) {

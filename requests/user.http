@@ -1,5 +1,5 @@
 @host=http://localhost/uniandes-web/api/v1
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjIxMTU4fQ.Gue-zgnFSfYu9loU3WrMxOlFSoJz9wYX6TQqOd1KABI
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNzAxODAzfQ.PctRlHp0hyDqjQl6tzhZQzP7uctTJnWoiN2rYmRU1QY
 
 ### Get all users
 GET {{host}}/user

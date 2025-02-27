@@ -6,6 +6,7 @@ use App\Services\RoleService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\Response;
+use App\Utils\Router;
 use App\Utils\Validator;
 
 class RoleController
@@ -20,7 +21,7 @@ class RoleController
   public function getAll()
   {
     try {
-      global $queryparams;
+      $queryparams = Router::$queryparams;
 
       Validator::with($queryparams)->limitOffset();
 
@@ -35,7 +36,7 @@ class RoleController
   public function getOne()
   {
     try {
-      global $pathparams;
+      $pathparams = Router::$pathparams;
 
       Validator::with($pathparams, 'id')->required()->isInteger();
 
@@ -65,7 +66,7 @@ class RoleController
   public function update()
   {
     try {
-      global $pathparams;
+      $pathparams = Router::$pathparams;
       $body = json_decode(file_get_contents('php://input'), true);
 
       Validator::with($body, ['name', 'description'])->required()->isString();
@@ -82,7 +83,7 @@ class RoleController
   public function delete()
   {
     try {
-      global $pathparams;
+      $pathparams = Router::$pathparams;
 
       Validator::with($pathparams, 'id')->required()->isInteger();
 

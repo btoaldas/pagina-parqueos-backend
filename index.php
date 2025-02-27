@@ -11,6 +11,7 @@ use App\Controllers\RoleController;
 use App\Controllers\SpaceController;
 use App\Controllers\TicketController;
 use App\Controllers\UserController;
+use App\Controllers\VehicleController;
 use App\Controllers\ZoneController;
 use App\Middlewares\AuthMiddleware;
 use App\Utils\EnvLoader;
@@ -31,11 +32,13 @@ $router = new Router('/api/v1');
 
 $router->addRoute('POST', '/auth/login', [AuthController::class, 'login']);
 $router->addRoute('POST', '/auth/register', [AuthController::class, 'register']);
+$router->addRoute('POST', '/test', [AuthController::class, 'test']);
 
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
 $router->addCrudRoute('/space', SpaceController::class, $adminMiddleware);
+$router->addCrudRoute('/vehicle', VehicleController::class, $adminMiddleware);
 
 $router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $registeredMiddleware);
 $router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $registeredMiddleware);
