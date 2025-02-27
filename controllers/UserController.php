@@ -57,9 +57,12 @@ class UserController
   {
     try {
       $body = json_decode(file_get_contents('php://input'), true);
-      Validator::validateRequiredFields($body, ['name', 'lastname', 'email', 'password', 'state', 'role']);
-      Validator::validateEmail($body['email']);
-      Validator::validatePassword($body['password']);
+
+      Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])
+        ->required()
+        ->isString();
+      Validator::with($body, 'email')->isEmail();
+      Validator::with($body, 'password')->minLength(8);
 
       $data = $this->userService->create($body);
 
@@ -75,11 +78,13 @@ class UserController
       global $pathparams;
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::validateRequiredFields($body, ['name', 'lastname', 'email', 'password', 'state', 'role']);
-      Validator::validateEmail($body['email']);
-      Validator::validatePassword($body['password']);
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])
+        ->required()
+        ->isString();
+      Validator::with($body, 'email')->isEmail();
+      Validator::with($body, 'password')->minLength(8);
+
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->userService->update($pathparams['id'], $body);
 
@@ -94,8 +99,7 @@ class UserController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->userService->delete($pathparams['id']);
 

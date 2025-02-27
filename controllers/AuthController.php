@@ -21,16 +21,16 @@ class AuthController
   public function login()
   {
     try {
-      $data = json_decode(file_get_contents('php://input'), true);
+      $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::validateRequiredFields($data, ['email', 'password']);
-      Validator::validateEmail($data['email']);
-      Validator::validatePassword($data['password']);
+      Validator::with($body, ['email', 'password'])
+        ->required()
+        ->isString();
 
-      $email = $data['email'];
-      $password = $data['password'];
+      Validator::with($body, 'email')->isEmail();
+      Validator::with($body, 'password')->minLength(8);
 
-      $data = $this->authService->login($email, $password);
+      $data = $this->authService->login($body['email'], $body['password']);
 
       Response::json($data);
     } catch (HttpError $e) {
@@ -41,22 +41,20 @@ class AuthController
   public function register()
   {
     try {
-      $data = json_decode(file_get_contents('php://input'), true);
+      $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::validateRequiredFields($data, ['name', 'lastname', 'email', 'password']);
-      Validator::validateEmail($data['email']);
-      Validator::validatePassword($data['password']);
+      Validator::with($body, ['name', 'lastname', 'email', 'password'])
+        ->required()
+        ->isString();
 
-      $data = $this->authService->register($data);
+      Validator::with($body, 'email')->isEmail();
+      Validator::with($body, 'password')->minLength(8);
+
+      $data = $this->authService->register($body);
 
       Response::json($data);
     } catch (HttpError $e) {
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
-  }
-
-  public function test()
-  {
-    Response::json(['message' => $GLOBALS['payload']]);
   }
 }

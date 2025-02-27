@@ -21,13 +21,7 @@ class SpaceController
     try {
       global $queryparams;
 
-      if (empty($queryparams['limit']))
-        $queryparams['limit'] = '10';
-      if (empty($queryparams['offset']))
-        $queryparams['offset'] = '0';
-
-      Validator::isInt($queryparams, 'limit');
-      Validator::isInt($queryparams, 'offset');
+      Validator::with($queryparams)->limitOffset();
 
       $data = $this->spaceService->getAll($queryparams['limit'], $queryparams['offset']);
 
@@ -42,8 +36,7 @@ class SpaceController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->spaceService->getOne($pathparams['id']);
 
@@ -57,8 +50,9 @@ class SpaceController
   {
     try {
       $body = json_decode(file_get_contents('php://input'), true);
-      Validator::validateRequiredFields($body, ['state', 'type', 'id_zone']);
-      Validator::isInt($body, 'id_zone');
+
+      Validator::with($body, ['state', 'type', 'id_zone'])->required();
+      Validator::with($body, 'id_zone')->isInteger();
 
       $data = $this->spaceService->create($body);
 
@@ -74,10 +68,9 @@ class SpaceController
       global $pathparams;
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::validateRequiredFields($body, ['state', 'type', 'id_zone']);
-      Validator::isInt($body, 'id_zone');
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($body, ['state', 'type', 'id_zone'])->required();
+      Validator::with($body, 'id_zone')->isInteger();
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->spaceService->update($pathparams['id'], $body);
 
@@ -92,8 +85,7 @@ class SpaceController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->spaceService->delete($pathparams['id']);
 

@@ -21,13 +21,7 @@ class ZoneController
     try {
       global $queryparams;
 
-      if (empty($queryparams['limit']))
-        $queryparams['limit'] = '10';
-      if (empty($queryparams['offset']))
-        $queryparams['offset'] = '0';
-
-      Validator::isInt($queryparams, 'limit');
-      Validator::isInt($queryparams, 'offset');
+      Validator::with($queryparams)->limitOffset();
 
       $data = $this->zoneService->getAll($queryparams['limit'], $queryparams['offset']);
 
@@ -42,8 +36,7 @@ class ZoneController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->zoneService->getOne($pathparams['id']);
 
@@ -57,8 +50,9 @@ class ZoneController
   {
     try {
       $body = json_decode(file_get_contents('php://input'), true);
-      Validator::validateRequiredFields($body, ['name', 'fee']);
-      Validator::isNumber($body, 'fee');
+
+      Validator::with($body, ['name', 'fee'])->required();
+      Validator::with($body, 'fee')->isNumb();
 
       $data = $this->zoneService->create($body);
 
@@ -74,10 +68,9 @@ class ZoneController
       global $pathparams;
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::validateRequiredFields($body, ['name', 'fee']);
-      Validator::isNumber($body, 'fee');
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($body, ['name', 'fee'])->required();
+      Validator::with($body, 'fee')->isNumb();
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->zoneService->update($pathparams['id'], $body);
 
@@ -92,8 +85,7 @@ class ZoneController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->zoneService->delete($pathparams['id']);
 

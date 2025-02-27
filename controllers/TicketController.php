@@ -21,13 +21,7 @@ class TicketController
     try {
       global $queryparams;
 
-      if (empty($queryparams['limit']))
-        $queryparams['limit'] = '10';
-      if (empty($queryparams['offset']))
-        $queryparams['offset'] = '0';
-
-      Validator::isInt($queryparams, 'limit');
-      Validator::isInt($queryparams, 'offset');
+      Validator::with($queryparams)->limitOffset();
 
       $data = $this->ticketService->getAll($queryparams['limit'], $queryparams['offset']);
 
@@ -42,8 +36,7 @@ class TicketController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->ticketService->getOne($pathparams['id']);
 

@@ -1,5 +1,5 @@
 @host=http://localhost/uniandes-web/api/v1
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjIyMzczfQ.P1mlGNz_xkAmeFYkOAW831clXgLudGNOCbUzo27O5NI
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjcyNTMwfQ.IputuFX64U8T88_St1RzwS9gg8Ah1CdmmUx_OSGwYYk
 
 ### Get All
 GET {{host}}/role
@@ -30,5 +30,5 @@ Authorization: Bearer {{token}}
 }
 
 ### DELETE One
-DELETE {{host}}/role/3
+DELETE {{host}}/role/5
 Authorization: Bearer {{token}}

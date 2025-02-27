@@ -21,13 +21,7 @@ class RoleController
     try {
       global $queryparams;
 
-      if (empty($queryparams['limit']))
-        $queryparams['limit'] = '10';
-      if (empty($queryparams['offset']))
-        $queryparams['offset'] = '0';
-
-      Validator::isInt($queryparams, 'limit');
-      Validator::isInt($queryparams, 'offset');
+      Validator::with($queryparams)->limitOffset();
 
       $data = $this->roleService->getAll($queryparams['limit'], $queryparams['offset']);
 
@@ -42,8 +36,7 @@ class RoleController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->roleService->getOne($pathparams['id']);
 
@@ -57,7 +50,8 @@ class RoleController
   {
     try {
       $body = json_decode(file_get_contents('php://input'), true);
-      Validator::validateRequiredFields($body, ['name', 'description']);
+
+      Validator::with($body, ['name', 'description'])->required()->isString();
 
       $data = $this->roleService->create($body);
 
@@ -73,9 +67,8 @@ class RoleController
       global $pathparams;
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::validateRequiredFields($body, ['name', 'description']);
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($body, ['name', 'description'])->required()->isString();
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->roleService->update($pathparams['id'], $body);
 
@@ -90,8 +83,7 @@ class RoleController
     try {
       global $pathparams;
 
-      Validator::validateRequiredFields($pathparams, ['id']);
-      Validator::isInt($pathparams, 'id');
+      Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->roleService->delete($pathparams['id']);
 

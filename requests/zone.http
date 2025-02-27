@@ -1,8 +1,8 @@
 @host=http://localhost/uniandes-web/api/v1
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjI0MjQ4fQ.lsf79FBkHUmXyQL81beHQVc35nGmufNNV-ENnhdL1MY
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjM0MDc3fQ.CxBwkKrlaWSjMwHg3952rc7PzEtL_JrXVCTDqREbrvI
 
 ### Get All
-GET {{host}}/zone
+GET {{host}}/zone?offset=xd
 Authorization: Bearer {{token}}
 
 ### Get One
