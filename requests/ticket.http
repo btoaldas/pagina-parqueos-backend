@@ -1,10 +1,28 @@
 @host=http://localhost/uniandes-web/api/v1
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNjMxMDUzfQ.RHPHhZ2Q8K5cxjonE7JpvZ8yy3lHavv0cVdUlPJc6V4
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQxMzEzMjUzfQ.VCo1sxsY2WrlHu0feuA8JMX9n3FPeDcXGYRV-AGK740
 
 ### Get All
 GET {{host}}/ticket
 Authorization: Bearer {{token}}
 
 ### Get One
-GET {{host}}/ticket/1
+GET {{host}}/ticket/4
+Authorization: Bearer {{token}}
+
+### Create One
+POST {{host}}/ticket
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_space": 3,
+  "plate": "ASD2"
+}
+
+### Completed
+POST {{host}}/ticket/completed/4
+Authorization: Bearer {{token}}
+
+### Completed
+POST {{host}}/ticket/cancel/4
 Authorization: Bearer {{token}}

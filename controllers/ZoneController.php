@@ -53,8 +53,9 @@ class ZoneController
     try {
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::with($body, ['name', 'fee'])->required();
+      Validator::with($body, ['name', 'fee', 'max_time'])->required();
       Validator::with($body, 'fee')->isNumb();
+      Validator::with($body, 'max_time')->isInteger();
 
       $data = $this->zoneService->create($body);
 
@@ -70,8 +71,9 @@ class ZoneController
       $pathparams = Router::$pathparams;
       $body = json_decode(file_get_contents('php://input'), true);
 
-      Validator::with($body, ['name', 'fee'])->required();
+      Validator::with($body, ['name', 'fee', 'max_time'])->required();
       Validator::with($body, 'fee')->isNumb();
+      Validator::with($body, 'max_time')->isInteger();
       Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->zoneService->update($pathparams['id'], $body);

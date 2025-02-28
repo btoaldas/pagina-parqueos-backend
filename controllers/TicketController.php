@@ -47,4 +47,50 @@ class TicketController
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
   }
+
+  public function register()
+  {
+    try {
+      $body = json_decode(file_get_contents('php://input'), true);
+
+      Validator::with($body, ['id_space', 'plate'])->required();
+      Validator::with($body, ['id_space'])->isInteger();
+
+      $data = $this->ticketService->create($body['id_space'], $body['plate']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function validateOut()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->ticketService->complete($pathparams['id']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function cancel()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->ticketService->cancel($pathparams['id']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
 }

@@ -24,6 +24,10 @@ $adminMiddleware = [
   [AuthMiddleware::class, 'checkJwt', 'admin'],
 ];
 
+$empleadoMiddlware = [
+  [AuthMiddleware::class, 'checkJwt', 'admin', 'empleado'],
+];
+
 $registeredMiddleware = [
   [AuthMiddleware::class, 'checkJwt'],
 ];
@@ -40,8 +44,11 @@ $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
 $router->addCrudRoute('/space', SpaceController::class, $adminMiddleware);
 $router->addCrudRoute('/vehicle', VehicleController::class, $adminMiddleware);
 
-$router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $registeredMiddleware);
-$router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $registeredMiddleware);
+$router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $empleadoMiddlware);
+$router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'validateOut'], $empleadoMiddlware);
+$router->addRoute('POST', '/ticket/cancel/[id]', [TicketController::class, 'cancel'], $empleadoMiddlware);
+$router->addRoute('POST', '/ticket', [TicketController::class, 'register'], $empleadoMiddlware);
+$router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $empleadoMiddlware);
 
 try {
   $router->handlerRequest();
