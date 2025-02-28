@@ -7,11 +7,6 @@ use App\Models\UserModel;
 use App\Utils\HttpError;
 use App\Utils\JWT;
 
-require_once __DIR__ . '/../models/UserModel.php';
-require_once __DIR__ . '/../models/RoleModel.php';
-require_once __DIR__ . '/../utils/JWT.php';
-require_once __DIR__ . '/../utils/HttpError.php';
-
 class AuthService
 {
   private $userModel;

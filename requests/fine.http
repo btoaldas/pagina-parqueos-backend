@@ -8,7 +8,10 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 Content-Disposition: form-data; name="json"
 
 {
-  "name": "grober"
+  "id_ticket": 1,
+  "amount": 123,
+  "state": 123123,
+  "description": "Hello World"
 }
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="image"; filename="urabe.jpg"
@@ -16,3 +19,7 @@ Content-Type: image/jpeg
 
 < /home/poggers/img/urabe.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+### Get Image
+GET http://localhost/uniandes-web/storage/fine/1_2.jpg

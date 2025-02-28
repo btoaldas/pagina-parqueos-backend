@@ -42,7 +42,7 @@ class RoleModel
 
     $stmt->execute();
 
-    return $stmt->fetch(PDO::FETCH_ASSOC);;
+    return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
   public function getByName($name)

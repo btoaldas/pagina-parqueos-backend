@@ -9,6 +9,9 @@ class Validator
 
   public static function with(&$data, $ks = []): Validator
   {
+    if (!is_array($data))
+      throw HttpError::BadRequest("There is not object with keys '$ks'");
+
     $val = new Validator();
 
     if (!is_array($ks))
@@ -91,6 +94,22 @@ class Validator
     return $this;
   }
 
+  public function min($value)
+  {
+    foreach ($this->ks as $key)
+      if ($this->data[$key] < $value)
+        throw HttpError::BadRequest("'$key' is less than $value");
+    return $this;
+  }
+
+  public function max($value)
+  {
+    foreach ($this->ks as $key)
+      if ($this->data[$key] > $value)
+        throw HttpError::BadRequest("'$key' is greater than $value");
+    return $this;
+  }
+
   public function isEmail()
   {
     foreach ($this->ks as $key)
@@ -115,6 +134,23 @@ class Validator
       $value = $this->data[$key];
       if (!is_numeric($value))
         throw HttpError::BadRequest("$key is not a number");
+    }
+    return $this;
+  }
+
+  public function isIn(array $values)
+  {
+    foreach ($this->ks as $key) {
+      $value = $this->data[$key];
+      $fail = true;
+      foreach ($values as $v) {
+        if ($v === $value) {
+          $fail = false;
+          break;
+        }
+      }
+      if ($fail)
+        throw HttpError::BadRequest("$key is not in [ " . implode(', ', $values) . ' ]');
     }
     return $this;
   }
