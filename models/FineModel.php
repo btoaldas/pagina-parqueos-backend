@@ -106,4 +106,28 @@ class FineModel
       throw HttpError::BadRequest($e->getMessage());
     }
   }
+
+  public function pay($id)
+  {
+    $sql = "UPDATE multas
+    SET
+      estado = 'pagada'
+    WHERE id_multa = :id
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $id]);
+  }
+
+  public function cancel($id)
+  {
+    $sql = "UPDATE multas
+    SET
+      estado = 'cancelado'
+    WHERE id_multa = :id
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $id]);
+  }
 }

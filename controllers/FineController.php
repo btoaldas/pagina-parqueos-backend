@@ -82,4 +82,34 @@ class FineController
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
   }
+
+  public function pay()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->fineService->pay($pathparams['id']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function cancel()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->fineService->cancel($pathparams['id']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
 }

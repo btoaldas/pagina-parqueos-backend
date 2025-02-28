@@ -32,3 +32,11 @@ Content-Type: image/png
 
 ### Get Image
 GET http://localhost/uniandes-web/storage/fine/1_12.png
+
+### Pay one
+POST {{host}}/fine/pay/10
+Authorization: Bearer {{token}}
+
+### Cancel one
+POST {{host}}/fine/cancel/11
+Authorization: Bearer {{token}}

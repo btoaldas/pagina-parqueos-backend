@@ -57,4 +57,34 @@ class FineService
 
     return true;
   }
+
+  public function pay($id)
+  {
+    $ticket = $this->getOne($id);
+
+    if ($ticket['state'] !== 'pendiente')
+      throw HttpError::BadRequest("Can't pay this fine");
+
+    $result = $this->fineModel->pay($id);
+
+    if (!$result)
+      throw HttpError::InternalServer("Server Error On Update");
+
+    return $result;
+  }
+
+  public function cancel($id)
+  {
+    $fine = $this->getOne($id);
+
+    if ($fine['state'] !== 'pendiente')
+      throw HttpError::BadRequest("Can't cancel this fine");
+
+    $result = $this->fineModel->cancel($id);
+
+    if (!$result)
+      throw HttpError::InternalServer("Server Error On Update");
+
+    return $result;
+  }
 }

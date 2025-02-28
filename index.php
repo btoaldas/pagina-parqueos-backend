@@ -52,6 +52,8 @@ $router->addRoute('POST', '/ticket', [TicketController::class, 'register'], $emp
 $router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $empleadoMiddlware);
 
 $router->addRoute('GET', '/fine', [FineController::class, 'getAll'], $empleadoMiddlware);
+$router->addRoute('POST', '/fine/pay/[id]', [FineController::class, 'pay'], $empleadoMiddlware);
+$router->addRoute('POST', '/fine/cancel/[id]', [FineController::class, 'cancel'], $empleadoMiddlware);
 $router->addRoute('GET', '/fine/[id]', [FineController::class, 'getOne'], $empleadoMiddlware);
 $router->addRoute('POST', '/fine', [FineController::class, 'create'], $empleadoMiddlware);
 
