@@ -1,0 +1,18 @@
+@host=http://localhost/uniandes-web/api/v1
+
+### Create A Fine
+POST {{host}}/fine
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="json"
+
+{
+  "name": "grober"
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="urabe.jpg"
+Content-Type: image/jpeg
+
+< /home/poggers/img/urabe.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

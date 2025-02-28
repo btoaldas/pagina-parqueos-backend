@@ -7,6 +7,7 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use App\Controllers\AuthController;
+use App\Controllers\FineController;
 use App\Controllers\RoleController;
 use App\Controllers\SpaceController;
 use App\Controllers\TicketController;
@@ -49,6 +50,8 @@ $router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'v
 $router->addRoute('POST', '/ticket/cancel/[id]', [TicketController::class, 'cancel'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket', [TicketController::class, 'register'], $empleadoMiddlware);
 $router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $empleadoMiddlware);
+
+$router->addRoute('POST', '/fine', [FineController::class, 'create']);
 
 try {
   $router->handlerRequest();
