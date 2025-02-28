@@ -6,6 +6,7 @@ use App\Services\FineService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\Response;
+use App\Utils\Router;
 use App\Utils\Validator;
 
 class FineController
@@ -17,6 +18,37 @@ class FineController
     $this->fineService = new FineService();
   }
 
+  public function getAll()
+  {
+    try {
+      $queryparams = Router::$queryparams;
+
+      Validator::with($queryparams)->limitOffset();
+
+      $data = $this->fineService->getAll($queryparams['limit'], $queryparams['offset']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function getOne()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->fineService->getOne($pathparams['id']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+
   public function create()
   {
     try {
@@ -25,7 +57,7 @@ class FineController
 
       $body = json_decode($_POST['json'], true);
 
-      Validator::with($body, ['id_ticket', 'amount', 'state'])->required();
+      Validator::with($body, ['id_ticket', 'amount'])->required();
       Validator::with($body, 'description')->required(true)->isString();
       Validator::with($body, 'id_ticket')->isInteger();
       Validator::with($body, 'amount')->isNumb();

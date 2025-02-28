@@ -1,7 +1,17 @@
 @host=http://localhost/uniandes-web/api/v1
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQxMzYyMjU5fQ.o9tY1ahRQsqaWyDrM8mJl-jRRRUAz00Q1H6VZRscd3w
+
+### Get All Fines
+GET {{host}}/fine
+Authorization: Bearer {{token}}
+
+### Get All Fines
+GET {{host}}/fine/7
+Authorization: Bearer {{token}}
 
 ### Create A Fine
 POST {{host}}/fine
+Authorization: Bearer {{token}}
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -10,16 +20,15 @@ Content-Disposition: form-data; name="json"
 {
   "id_ticket": 1,
   "amount": 123,
-  "state": 123123,
-  "description": "Hello World"
+  "description": "FLCL"
 }
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="image"; filename="urabe.jpg"
-Content-Type: image/jpeg
+Content-Disposition: form-data; name="image"; filename="flcl.png"
+Content-Type: image/png
 
-< /home/poggers/img/urabe.jpg
+< /home/poggers/img/flcl.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 
 ### Get Image
-GET http://localhost/uniandes-web/storage/fine/1_2.jpg
+GET http://localhost/uniandes-web/storage/fine/1_12.png

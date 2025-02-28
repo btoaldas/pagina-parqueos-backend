@@ -2,7 +2,7 @@
 
 // ini_set('display_errors', 0);
 
-// cdeclare(strict_types=1);
+declare(strict_types=1);
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -51,7 +51,9 @@ $router->addRoute('POST', '/ticket/cancel/[id]', [TicketController::class, 'canc
 $router->addRoute('POST', '/ticket', [TicketController::class, 'register'], $empleadoMiddlware);
 $router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $empleadoMiddlware);
 
-$router->addRoute('POST', '/fine', [FineController::class, 'create']);
+$router->addRoute('GET', '/fine', [FineController::class, 'getAll'], $empleadoMiddlware);
+$router->addRoute('GET', '/fine/[id]', [FineController::class, 'getOne'], $empleadoMiddlware);
+$router->addRoute('POST', '/fine', [FineController::class, 'create'], $empleadoMiddlware);
 
 try {
   $router->handlerRequest();

@@ -20,6 +20,28 @@ class FineService
     $this->fineModel = new FineModel();
   }
 
+  public function getAll($limit, $offset)
+  {
+    $values = $this->fineModel->all($limit, $offset);
+    $values = array_map(function ($value) {
+      $value['ticket'] = json_decode($value['ticket'], true);
+      return $value;
+    }, $values);
+    return $values;
+  }
+
+  public function getOne($id, $throws = true)
+  {
+    $data = $this->fineModel->get($id);
+
+    if ($throws && !$data)
+      throw HttpError::NotFound("Fine $id does not exist!");
+
+    $data['ticket'] = json_decode($data['ticket'], true);
+
+    return $data;
+  }
+
   public function create($data, $image)
   {
     $ticket = $this->ticketModel->get($data['id_ticket']);
