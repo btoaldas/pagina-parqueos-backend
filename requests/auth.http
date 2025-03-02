@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "email": "grober@gmail.com",
-  "password": "123456789"
+  "password": "12345678"
 }
 
 ### Create Account

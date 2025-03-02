@@ -51,7 +51,7 @@ class UserController
   public function create()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])
         ->required()
@@ -71,13 +71,13 @@ class UserController
   {
     try {
       $pathparams = Router::$pathparams;
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
-      Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])
-        ->required()
-        ->isString();
+      Validator::with($body, ['name', 'lastname', 'email', 'password', 'role'])
+        ->required();
       Validator::with($body, 'email')->isEmail();
       Validator::with($body, 'password')->minLength(8);
+      Validator::with($body, 'state')->required()->isInteger();
 
       Validator::with($pathparams, 'id')->required()->isInteger();
 

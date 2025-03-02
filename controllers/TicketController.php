@@ -51,7 +51,7 @@ class TicketController
   public function register()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['id_space', 'plate'])->required();
       Validator::with($body, ['id_space'])->isInteger();

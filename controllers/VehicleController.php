@@ -54,7 +54,7 @@ class VehicleController
   public function create()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['id_user', 'plate', 'brand', 'model', 'year', 'taxable_base'])->required();
       Validator::with($body, ['year', 'id_user'])->isInteger();
@@ -74,7 +74,7 @@ class VehicleController
   {
     try {
       $pathparams = Router::$pathparams;
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($pathparams, 'id')->required()->isInteger();
       Validator::with($body, ['id_user', 'plate', 'brand', 'model', 'year', 'taxable_base'])->required();

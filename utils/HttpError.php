@@ -2,17 +2,16 @@
 
 namespace App\Utils;
 
-use Exception;
 use RuntimeException;
 
 class HttpError extends RuntimeException
 {
   private $statusCode;
 
-  public function __construct($message, $statusCode, $errorCode = 0, Exception $previus = null)
+  public function __construct($message, $statusCode, $errorCode = 0)
   {
     $this->statusCode = $statusCode;
-    parent::__construct($message, $errorCode, $previus);
+    parent::__construct($message, $errorCode, null);
   }
 
   public function getStatusCode()

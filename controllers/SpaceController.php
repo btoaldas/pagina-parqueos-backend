@@ -51,7 +51,7 @@ class SpaceController
   public function create()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['state', 'type', 'id_zone'])->required();
       Validator::with($body, 'id_zone')->isInteger();
@@ -68,7 +68,7 @@ class SpaceController
   {
     try {
       $pathparams = Router::$pathparams;
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['state', 'type', 'id_zone'])->required();
       Validator::with($body, 'id_zone')->isInteger();

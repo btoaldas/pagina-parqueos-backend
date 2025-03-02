@@ -51,7 +51,7 @@ class RoleController
   public function create()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['name', 'description'])->required()->isString();
 
@@ -67,7 +67,7 @@ class RoleController
   {
     try {
       $pathparams = Router::$pathparams;
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['name', 'description'])->required()->isString();
       Validator::with($pathparams, 'id')->required()->isInteger();

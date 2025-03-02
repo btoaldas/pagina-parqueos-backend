@@ -9,7 +9,7 @@ class Response
     http_response_code($statusCode);
     header('Content-type: application/json; Charset=utf-8');
     header_remove('X-Powered-By');
-    echo json_encode(["statusCode" => $statusCode, "message" => $message, 'data' => $data], JSON_UNESCAPED_UNICODE);
+    echo json_encode(["ok" => $statusCode < 400, "statusCode" => $statusCode, "message" => $message, 'data' => $data], JSON_UNESCAPED_UNICODE);
     exit;
   }
 }

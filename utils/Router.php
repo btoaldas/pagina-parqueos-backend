@@ -2,10 +2,13 @@
 
 namespace App\Utils;
 
+use App\Middlewares\JsonMiddleware;
+
 class Router
 {
   public static array $pathparams = [];
   public static array $queryparams = [];
+  public static array $body = [];
 
   private $routes = [];
   private $middlewares = [];
@@ -20,8 +23,8 @@ class Router
   {
     $this->addRoute('GET', $path, [$cClass, 'getAll'], $middlewares);
     $this->addRoute('GET', $path . '/[id]', [$cClass, 'getOne'], $middlewares);
-    $this->addRoute('POST', $path, [$cClass, 'create'], $middlewares);
-    $this->addRoute('PUT', $path . '/[id]', [$cClass, 'update'], $middlewares);
+    $this->addRoute('POST', $path, [$cClass, 'create'], [[JsonMiddleware::class, 'json'], ...$middlewares]);
+    $this->addRoute('PUT', $path . '/[id]', [$cClass, 'update'], [[JsonMiddleware::class, 'json'], ...$middlewares]);
     $this->addRoute('DELETE', $path . '/[id]', [$cClass, 'delete'], $middlewares);
   }
 

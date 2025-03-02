@@ -15,6 +15,8 @@ use App\Controllers\UserController;
 use App\Controllers\VehicleController;
 use App\Controllers\ZoneController;
 use App\Middlewares\AuthMiddleware;
+use App\Middlewares\CorsMiddleware;
+use App\Middlewares\JsonMiddleware;
 use App\Utils\EnvLoader;
 use App\Utils\ErrorHandler;
 use App\Utils\Router;
@@ -35,9 +37,12 @@ $registeredMiddleware = [
 
 $router = new Router('/api/v1');
 
-$router->addRoute('POST', '/auth/login', [AuthController::class, 'login']);
-$router->addRoute('POST', '/auth/register', [AuthController::class, 'register']);
-$router->addRoute('POST', '/test', [AuthController::class, 'test']);
+$router->addMiddleware(
+  [CorsMiddleware::class, 'cors']
+);
+
+$router->addRoute('POST', '/auth/login', [AuthController::class, 'login'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/register', [AuthController::class, 'register'], [[JsonMiddleware::class, 'json']]);
 
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
@@ -48,7 +53,7 @@ $router->addCrudRoute('/vehicle', VehicleController::class, $adminMiddleware);
 $router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'validateOut'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket/cancel/[id]', [TicketController::class, 'cancel'], $empleadoMiddlware);
-$router->addRoute('POST', '/ticket', [TicketController::class, 'register'], $empleadoMiddlware);
+$router->addRoute('POST', '/ticket', [TicketController::class, 'register'], [[JsonMiddleware::class, 'json'], ...$empleadoMiddlware]);
 $router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $empleadoMiddlware);
 
 $router->addRoute('GET', '/fine', [FineController::class, 'getAll'], $empleadoMiddlware);

@@ -6,6 +6,7 @@ use App\Services\AuthService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\Response;
+use App\Utils\Router;
 use App\Utils\Validator;
 
 class AuthController
@@ -20,7 +21,7 @@ class AuthController
   public function login()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['email', 'password'])
         ->required()
@@ -40,7 +41,7 @@ class AuthController
   public function register()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['name', 'lastname', 'email', 'password'])
         ->required()
@@ -56,6 +57,4 @@ class AuthController
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
   }
-
-  public function test() {}
 }

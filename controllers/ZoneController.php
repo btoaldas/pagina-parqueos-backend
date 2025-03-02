@@ -51,7 +51,7 @@ class ZoneController
   public function create()
   {
     try {
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['name', 'fee', 'max_time'])->required();
       Validator::with($body, 'fee')->isNumb();
@@ -69,7 +69,7 @@ class ZoneController
   {
     try {
       $pathparams = Router::$pathparams;
-      $body = json_decode(file_get_contents('php://input'), true);
+      $body = Router::$body;
 
       Validator::with($body, ['name', 'fee', 'max_time'])->required();
       Validator::with($body, 'fee')->isNumb();

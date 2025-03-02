@@ -1,5 +1,5 @@
 @host=http://localhost/uniandes-web/api/v1
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQwNzAxODAzfQ.PctRlHp0hyDqjQl6tzhZQzP7uctTJnWoiN2rYmRU1QY
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQxNTMzNDU3fQ.8680znqk_QuFPJpSDn9HL2Xvy_tGopB2tjvQhSw10cc
 
 ### Get all users
 GET {{host}}/user
@@ -24,17 +24,17 @@ Content-Type: application/json
 }
 
 ### Update USer
-PUT {{host}}/user/5
+PUT {{host}}/user/1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Created2",
-  "lastname": "ByAdmin",
-  "email": "created@gmail.com",
+  "name": "grober",
+  "lastname": "gonzales",
+  "email": "grober@gmail.com",
   "password": "123456789",
-  "state": 1,
-  "role": "admin"
+  "role": "admin",
+  "state": 1
 }
 
 ### Delete User

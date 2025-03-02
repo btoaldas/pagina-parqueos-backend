@@ -3,6 +3,7 @@
 namespace App\Middlewares;
 
 use App\Utils\ErrorHandler;
+use App\Utils\HttpError;
 use App\Utils\JWT;
 
 class AuthMiddleware
