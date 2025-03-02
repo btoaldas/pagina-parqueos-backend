@@ -10,6 +10,7 @@ use App\Controllers\AuthController;
 use App\Controllers\FineController;
 use App\Controllers\RoleController;
 use App\Controllers\SpaceController;
+use App\Controllers\StorageController;
 use App\Controllers\TicketController;
 use App\Controllers\UserController;
 use App\Controllers\VehicleController;
@@ -61,6 +62,8 @@ $router->addRoute('POST', '/fine/pay/[id]', [FineController::class, 'pay'], $emp
 $router->addRoute('POST', '/fine/cancel/[id]', [FineController::class, 'cancel'], $empleadoMiddlware);
 $router->addRoute('GET', '/fine/[id]', [FineController::class, 'getOne'], $empleadoMiddlware);
 $router->addRoute('POST', '/fine', [FineController::class, 'create'], $empleadoMiddlware);
+
+$router->addRoute('GET', '/storage/fine/[filename]', [StorageController::class, 'getFineFile']);
 
 try {
   $router->handlerRequest();

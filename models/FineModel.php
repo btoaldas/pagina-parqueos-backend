@@ -24,6 +24,7 @@ class FineModel
       m.descripcion AS description,
       m.evidencia AS mime,
       m.estado AS state,
+      m.fecha_pago AS pay_date,
       JSON_OBJECT(
         'id', t.id_ticket,
         'id_user', t.id_usuario,
@@ -58,6 +59,7 @@ class FineModel
       m.descripcion AS description,
       m.evidencia AS mime,
       m.estado AS state,
+      m.fecha_pago AS pay_date,
       JSON_OBJECT(
         'id', t.id_ticket,
         'id_user', t.id_usuario,
@@ -107,16 +109,17 @@ class FineModel
     }
   }
 
-  public function pay($id)
+  public function pay($id, $data)
   {
     $sql = "UPDATE multas
     SET
-      estado = 'pagada'
+      estado = 'pagada',
+      fecha_pago = :pay_date
     WHERE id_multa = :id
     ";
 
     $stmt = $this->conn->prepare($sql);
-    return $stmt->execute(['id' => $id]);
+    return $stmt->execute(['id' => $id, 'pay_date' => $data]);
   }
 
   public function cancel($id)

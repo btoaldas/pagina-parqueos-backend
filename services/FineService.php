@@ -8,6 +8,7 @@ use App\Models\TicketModel;
 use App\Models\UserModel;
 use App\Utils\HttpError;
 use App\Utils\JWT;
+use DateTime;
 
 class FineService
 {
@@ -52,8 +53,11 @@ class FineService
 
     $idFine = $this->fineModel->create($data);
 
+    $path = $_ENV['PATH_STORAGE'] !== '' ? $_ENV['PATH_STORAGE'] : __DIR__ . "/../storage";
+    $path = $path . '/fine';
+
     $filename = "{$data['id_ticket']}_$idFine" . ($data['mime'] === 'image/jpeg' ? '.jpg' : '.png');
-    move_uploaded_file($image['tmp_name'], __DIR__ . "/../storage/fine/$filename");
+    move_uploaded_file($image['tmp_name'], "$path/$filename");
 
     return true;
   }
@@ -65,7 +69,7 @@ class FineService
     if ($ticket['state'] !== 'pendiente')
       throw HttpError::BadRequest("Can't pay this fine");
 
-    $result = $this->fineModel->pay($id);
+    $result = $this->fineModel->pay($id, (new DateTime())->format('Y-m-d H:i:s'));
 
     if (!$result)
       throw HttpError::InternalServer("Server Error On Update");

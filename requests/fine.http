@@ -18,7 +18,7 @@ GET {{host}}/fine
 Authorization: Bearer {{token}}
 
 ### Get All Fines
-GET {{host}}/fine/7
+GET {{host}}/fine/1
 Authorization: Bearer {{token}}
 
 ### Create A Fine
@@ -38,15 +38,18 @@ Content-Disposition: form-data; name="json"
 Content-Disposition: form-data; name="image"; filename="flcl.png"
 Content-Type: image/png
 
-< /home/poggers/img/flcl.png
+< /home/poggers/img/anime.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 
 ### Get Image
 GET http://localhost/uniandes-web/storage/fine/1_12.png
 
+### Get Image
+GET http://localhost/uniandes-web/api/v1/storage/fine/1_12.png
+
 ### Pay one
-POST {{host}}/fine/pay/10
+POST {{host}}/fine/pay/1
 Authorization: Bearer {{token}}
 
 ### Cancel one

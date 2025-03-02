@@ -107,7 +107,7 @@ class Router
 
   private function convertPathToRegex(string $path): string
   {
-    $pattern = preg_replace('/\[(\w+)\]/', '(?P<$1>\w+)', $path);
+    $pattern = preg_replace('/\[(\w+)\]/', '(?P<$1>[^/]+)', $path);
     return "#^" . $pattern . '$#';
   }
 }

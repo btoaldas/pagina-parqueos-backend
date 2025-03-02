@@ -196,6 +196,7 @@ CREATE TABLE multas (
     descripcion VARCHAR(255),
     evidencia VARCHAR(255), -- Ruta o URL de la evidencia (foto, video, etc.)
     estado VARCHAR(50) NOT NULL, -- Ejemplo: "pendiente", "pagada", "cancelada"
+    fecha_pago DATETIME NULL,
     FOREIGN KEY (id_ticket) REFERENCES tickets(id_ticket)
 );
 

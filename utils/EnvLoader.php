@@ -37,6 +37,7 @@ class EnvLoader
       $_ENV,
       [
         'PATH_BASE',
+        'PATH_STORAGE',
         'DB_HOST',
         'DB_PORT',
         'DB_NAME',
