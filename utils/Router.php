@@ -69,7 +69,7 @@ class Router
 
       // Global middlewares
       foreach ($this->middlewares as $middleware) {
-        call_user_func($middleware);
+        $this->callMiddleware($middleware);
       }
 
       // Specific middleware

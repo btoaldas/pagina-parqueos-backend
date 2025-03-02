@@ -1,12 +1,16 @@
 @host=http://localhost/uniandes-web/api/v1
+@token={{login.response.body.data.token}}
 
 ### GET SOMETINH
+# @name login
+# @prompt email
+# @prompt password
 POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "grober@gmail.com",
-  "password": "12345678"
+  "email": "{{email}}",
+  "password": "{{password}}"
 }
 
 ### Create Account
@@ -19,6 +23,3 @@ Content-Type: application/json
   "email": "grober@gmail.com",
   "password": "123456789"
 }
-
-### Test
-POST {{host}}/test

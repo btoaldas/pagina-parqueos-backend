@@ -1,5 +1,17 @@
 @host=http://localhost/uniandes-web/api/v1
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzQxNTMyNzg0fQ.SgxlOTx2Wbj5I4_T274tegixlF8ZzQgOgrjX7rhFhko
+@token={{login.response.body.data.token}}
+
+### LOGIN
+# @name login
+# @prompt email
+# @prompt password
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
 
 ### Get All
 GET {{host}}/role
