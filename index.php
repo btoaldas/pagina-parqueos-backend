@@ -8,6 +8,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 use App\Controllers\AuthController;
 use App\Controllers\FineController;
+use App\Controllers\ReportController;
 use App\Controllers\RoleController;
 use App\Controllers\SpaceController;
 use App\Controllers\StorageController;
@@ -64,6 +65,9 @@ $router->addRoute('GET', '/fine/[id]', [FineController::class, 'getOne'], $emple
 $router->addRoute('POST', '/fine', [FineController::class, 'create'], $empleadoMiddlware);
 
 $router->addRoute('GET', '/storage/fine/[filename]', [StorageController::class, 'getFineFile']);
+
+$router->addRoute('GET', '/report/main', [ReportController::class, 'main']);
+$router->addRoute('GET', '/report/stats', [ReportController::class, 'report']);
 
 try {
   $router->handlerRequest();

@@ -1,0 +1,23 @@
+@host=http://localhost/uniandes-web/api/v1
+@token={{login.response.body.data.token}}
+
+### GET SOMETINH
+# @name login
+# @prompt email
+# @prompt password
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Get Report
+GET {{host}}/report/main
+Authorization: Bearer {{token}}
+
+
+### Get Report
+GET {{host}}/report/stats
+Authorization: Bearer {{token}}
