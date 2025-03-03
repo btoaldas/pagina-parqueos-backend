@@ -151,7 +151,7 @@ CREATE TABLE usuarios (
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
 );
 
-CREATE TABLE vehiculos {
+CREATE TABLE vehiculos (
     id_vehiculo INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     placa VARCHAR(20) NOT NULL UNIQUE,
@@ -160,12 +160,13 @@ CREATE TABLE vehiculos {
     año INT NOU NULL,
     base_imponible DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
-};
+);
 
 CREATE TABLE zonas (
     id_zona INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    tarifa DECIMAL(10, 2) NOT NULL
+    tarifa DECIMAL(10, 2) NOT NULL,
+    tiempo_maximo INT NOT NULL
 );
 
 CREATE TABLE espacios (
