@@ -1,0 +1,24 @@
+@host=http://localhost/uniandes-web/api/v1
+@token={{login.response.body.data.token}}
+
+### GET SOMETINH
+# @name login
+# @prompt email
+# @prompt password
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Profile
+POST {{host}}/profile/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "grober",
+  "lastname": "gonzales"
+}

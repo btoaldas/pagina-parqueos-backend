@@ -91,6 +91,18 @@ class UserModel
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 
+  public function profileUpdate(int $id, string $name, string $lastname)
+  {
+    $sql = "UPDATE usuarios
+    SET
+      nombre = :name,
+      apellido = :lastname
+    WHERE id_usuario = :id
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $id, 'name' => $name, 'lastname' => $lastname]);
+  }
+
   public function update($userId, $userData)
   {
     $sql = "UPDATE usuarios

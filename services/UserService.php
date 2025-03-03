@@ -8,7 +8,7 @@ use App\Utils\HttpError;
 
 class UserService
 {
-  private $userModel;
+  private UserModel $userModel;
   private $roleModel;
 
   public function __construct()
@@ -48,6 +48,18 @@ class UserService
     $userData['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
 
     return $this->userModel->create($data);
+  }
+
+  public function updateProfile(int $id, string $name, string $lastname)
+  {
+    $this->getOne($id);
+
+    $result = $this->userModel->profileUpdate($id, $name, $lastname);
+
+    if (!$result)
+      throw HttpError::InternalServer("Server Error On Update");
+
+    return true;
   }
 
   public function update($id, $data)

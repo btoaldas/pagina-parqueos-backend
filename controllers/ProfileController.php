@@ -18,4 +18,21 @@ class ProfileController
   {
     $this->userService = new UserService();
   }
+
+  public function update()
+  {
+    try {
+      $payload = $GLOBALS['payload'];
+      Validator::with($payload, ['id', 'role'])->required();
+      Validator::with($payload, 'id')->isInteger()->toInteger();
+      $body = Router::$body;
+      Validator::with($body, ['name', 'lastname'])->required()->isString()->minLength(2);
+
+      $value = $this->userService->updateProfile($payload['id'], $body['name'], $body['lastname']);
+
+      Response::json($value);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
 }
