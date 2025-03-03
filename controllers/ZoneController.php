@@ -36,7 +36,7 @@ class ZoneController
   public function getOne()
   {
     try {
-      $pathparams = Router::$queryparams;
+      $pathparams = Router::$pathparams;
 
       Validator::with($pathparams, 'id')->required()->isInteger();
 

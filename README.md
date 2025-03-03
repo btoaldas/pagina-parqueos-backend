@@ -157,7 +157,7 @@ CREATE TABLE vehiculos (
     placa VARCHAR(20) NOT NULL UNIQUE,
     marca VARCHAR(50) NOT NULL,
     modelo VARCHAR(50) NOT NULL,
-    año INT NOU NULL,
+    año INT NOT NULL,
     base_imponible DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
