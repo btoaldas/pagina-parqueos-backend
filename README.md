@@ -201,6 +201,47 @@ CREATE TABLE multas (
     FOREIGN KEY (id_ticket) REFERENCES tickets(id_ticket)
 );
 
+INSERT INTO roles (nombre_rol, descripcion)
+VALUES
+    ('cliente', 'cliente descripcion'),
+    ('admin', 'admin descripcion'),
+    ('empleado', 'empleado descripcion');
+
+INSERT INTO usuarios (nombre, apellido, correo, contraseña, id_rol)
+VALUES
+    ('admin', 'cuenta', 'admin@gmail.com', '$2y$10$94cGj/ITryiQFdF3/7MgO.RXtnKD38apmRphQwYO0D81zBhUuH14q', 2),
+    ('cliente', 'cuenta', 'cliente@gmail.com', '$2y$10$94cGj/ITryiQFdF3/7MgO.RXtnKD38apmRphQwYO0D81zBhUuH14q', 1),
+    ('empleado', 'cuenta', 'empleado@gmail.com', '$2y$10$94cGj/ITryiQFdF3/7MgO.RXtnKD38apmRphQwYO0D81zBhUuH14q', 3);
+
+    nombre VARCHAR(100) NOT NULL,
+    tarifa DECIMAL(10, 2) NOT NULL,
+    tiempo_maximo INT NOT NULL
+
+INSERT INTO zonas (nombre, tarifa, tiempo_maximo)
+VALUES
+    ('Zona Roja', '12.5', 12000),
+    ('Zona Azul', '10.5', 10000),
+    ('Zona Verde', '15.5', 8000),
+    ('Zona Morada', '8.0', 2400);
+
+    id_zona INT NOT NULL,
+    estado VARCHAR(50) NOT NULL, -- Ejemplo: "disponible", "ocupado", "mantenimiento"
+    tipo VARCHAR(50) NOT NULL,   -- Ejemplo: "automÃ³vil", "motocicleta", "discapacitado"
+
+INSERT INTO espacios (id_zona, estado, tipo)
+VALUES
+    (1, "disponible", "discapacitado"),
+    (1, "disponible", "automovil"),
+    (1, "disponible", "automovil"),
+    (1, "disponible", "motocicleta"),
+    (2, "disponible", "automovil"),
+    (2, "disponible", "automovil"),
+    (2, "disponible", "automovil"),
+    (3, "disponible", "automovil"),
+    (3, "disponible", "motocicleta"),
+    (3, "disponible", "automovil"),
+    (3, "disponible", "discapacitado");
+
 ALTER TABLE roles AUTO_INCREMENT = 1;
 ALTER TABLE usuarios AUTO_INCREMENT = 1;
 ALTER TABLE zonas AUTO_INCREMENT = 1;
