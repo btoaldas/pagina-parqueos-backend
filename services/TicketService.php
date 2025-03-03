@@ -67,6 +67,11 @@ class TicketService
     if (!$space)
       throw HttpError::BadRequest("There is not space $id_space");
 
+    if ($space['state'] !== 'disponible')
+      throw HttpError::BadRequest("This space is not free");
+
+    $this->spaceModel->setState($id_space, "ocupado");
+
     return $this->ticketModel->create([
       "id_user" => $id_user,
       "id_space" => $id_space,
@@ -93,6 +98,8 @@ class TicketService
 
     $amount = $hours * $ticket['zone']['fee'];
 
+    $this->spaceModel->setState($ticket['space']['id'], 'disponible');
+
     $result = $this->ticketModel->complete($id, [
       "exit_date" => $now->format('Y-m-d H:i:s'),
       "amount" => $amount,
@@ -112,10 +119,13 @@ class TicketService
     if ($ticket['state'] !== 'activo')
       throw HttpError::BadRequest("Can't cancel this ticket");
 
+
     $result = $this->ticketModel->cancel($id);
 
     if (!$result)
       throw HttpError::InternalServer("Server Error On Update");
+
+    $this->spaceModel->setState($ticket['space']['id'], 'disponible');
 
     return $result;
   }

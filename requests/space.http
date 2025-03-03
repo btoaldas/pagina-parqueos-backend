@@ -26,7 +26,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "state": "I don't know",
+  "state": "disponible",
   "type": "What the hell",
   "id_zone": 2
 }

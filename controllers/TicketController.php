@@ -54,7 +54,7 @@ class TicketController
       $body = Router::$body;
 
       Validator::with($body, ['id_space', 'plate'])->required();
-      Validator::with($body, ['id_space'])->isInteger();
+      Validator::with($body, ['id_space'])->isInteger()->toInteger();
 
       $data = $this->ticketService->create($body['id_space'], $body['plate']);
 

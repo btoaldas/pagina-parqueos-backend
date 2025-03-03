@@ -55,6 +55,7 @@ class SpaceController
 
       Validator::with($body, ['state', 'type', 'id_zone'])->required();
       Validator::with($body, 'id_zone')->isInteger();
+      Validator::with($body, 'state')->isIn(["disponible", "ocupado", "mantenimiento"]);
 
       $data = $this->spaceService->create($body);
 
@@ -72,6 +73,7 @@ class SpaceController
 
       Validator::with($body, ['state', 'type', 'id_zone'])->required();
       Validator::with($body, 'id_zone')->isInteger();
+      Validator::with($body, 'state')->isIn(["disponible", "ocupado", "mantenimiento"]);
       Validator::with($pathparams, 'id')->required()->isInteger();
 
       $data = $this->spaceService->update($pathparams['id'], $body);

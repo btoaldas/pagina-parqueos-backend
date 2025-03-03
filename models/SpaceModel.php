@@ -71,6 +71,18 @@ class SpaceModel
     return $value;
   }
 
+  public function setState($id, string $state)
+  {
+    $sql = "UPDATE espacios
+    SET
+      estado = :state
+    WHERE
+      id_espacio = :id
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $id, 'state' => $state]);
+  }
+
   public function update($id, $data)
   {
     $sql = "UPDATE espacios
