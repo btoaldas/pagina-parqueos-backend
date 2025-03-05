@@ -23,3 +23,9 @@ El Router captura la ruta `/auth/register` y la despacha con la clase `AuthContr
 Usamos el método `prepare` para evitar SQL Injection y enviamos los datos filtrados, validados y con la contraseña encriptada.
 
 ![](./explain_password_04.png)
+
+# Verificación
+
+Al hacer un consulta a la API se puede evidenciar la contraseña encriptada en MySql.
+
+![](./explain_password_05.png)
