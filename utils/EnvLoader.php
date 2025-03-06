@@ -43,6 +43,7 @@ class EnvLoader
         'DB_NAME',
         'DB_USER',
         'DB_PASS',
+        'AES_KEY',
         'JWT_SECRET',
         'JWT_EXPIRE',
       ]

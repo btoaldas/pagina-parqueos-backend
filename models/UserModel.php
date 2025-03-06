@@ -4,6 +4,7 @@ namespace App\Models;
 
 use PDO;
 use App\Config\Database;
+use App\Utils\AesEncryption;
 
 class UserModel
 {
@@ -48,7 +49,13 @@ class UserModel
 
     $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $values = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $values = array_map(function ($value) {
+      $value['name'] = AesEncryption::decrypt($value['name']);
+      $value['lastname'] = AesEncryption::decrypt($value['lastname']);
+      return $value;
+    }, $values);
+    return $values;
   }
 
   public function getOne($userId)
@@ -67,7 +74,12 @@ class UserModel
 
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['id' => $userId]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $value = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$value) return null;
+    $value['name'] = AesEncryption::decrypt($value['name']);
+    $value['lastname'] = AesEncryption::decrypt($value['lastname']);
+    return $value;
   }
 
   public function getUserbyEmail($email)
