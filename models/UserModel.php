@@ -120,6 +120,17 @@ class UserModel
     return $stmt->execute($userData);
   }
 
+  public function updatePassword($userId, $password)
+  {
+    $sql = "UPDATE usuarios
+    SET
+      contraseña = :password
+    WHERE id_usuario = :id
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $userId, 'password' => $password]);
+  }
+
   public function delete($userId)
   {
     $sql = "DELETE FROM usuarios WHERE id_usuario = :id";

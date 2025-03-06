@@ -47,6 +47,9 @@ $router->addMiddleware(
 
 $router->addRoute('POST', '/auth/login', [AuthController::class, 'login'], [[JsonMiddleware::class, 'json']]);
 $router->addRoute('POST', '/auth/register', [AuthController::class, 'register'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/request-password', [AuthController::class, 'requestPassword'], $registeredMiddleware);
+$router->addRoute('POST', '/auth/validate-request', [AuthController::class, 'validateToken'], $registeredMiddleware);
+$router->addRoute('POST', '/auth/update-password', [AuthController::class, 'updatePassword'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
 
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
@@ -77,6 +80,6 @@ try {
   $router->handlerRequest();
 } catch (HttpError $e) {
   ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
-} catch (RuntimeException $e) {
+} catch (Exception $e) {
   ErrorHandler::handlerError($e->getMessage(), 500);
 }

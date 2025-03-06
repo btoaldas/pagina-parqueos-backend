@@ -23,3 +23,22 @@ Content-Type: application/json
   "email": "grober@gmail.com",
   "password": "123456789"
 }
+
+### Request Change Password
+POST {{host}}/auth/request-password
+Authorization: Bearer {{token}}
+
+### Validate Token
+POST {{host}}/auth/validate-request
+Authorization: Bearer {{token}}
+Token-Password: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZvIjoicGFzc3dvcmQtdXBkYXRlIiwiaWQiOjIsImV4cCI6MTc0MTMwMjE1N30.WjORIsfidfoG6t9YVSrV5v2q6_BzLnDZiRRiUYKra00
+
+### Update Password
+POST {{host}}/auth/update-password
+Authorization: Bearer {{token}}
+Token-Password: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZvIjoicGFzc3dvcmQtdXBkYXRlIiwiaWQiOjIsImV4cCI6MTc0MTMwMjE1N30.WjORIsfidfoG6t9YVSrV5v2q6_BzLnDZiRRiUYKra00
+Content-Type: application/json
+
+{
+  "password": "newpassword"
+}

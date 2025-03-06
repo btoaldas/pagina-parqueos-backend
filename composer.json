@@ -10,5 +10,7 @@
       "App\\Middlewares\\": "middlewares/"
     }
   },
-  "require": {}
+  "require": {
+    "phpmailer/phpmailer": "^6.9"
+  }
 }

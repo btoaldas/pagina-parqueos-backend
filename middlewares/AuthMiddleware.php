@@ -21,15 +21,15 @@ class AuthMiddleware
     $authorization = $headers['authorization'] ?? null;
 
     if (!$authorization)
-      return ErrorHandler::handlerError("Needs Authorization", 401);
+      throw ErrorHandler::handlerError("Needs Authorization", 401);
 
     if (!preg_match('/Bearer\s(\S+)/', $authorization, $matches) || !$matches[1])
-      return ErrorHandler::handlerError("Wrong Authorization");
+      throw ErrorHandler::handlerError("Wrong Authorization");
 
     $jwt = JWT::validateToken($matches[1]);
 
     if (!$jwt)
-      return ErrorHandler::handlerError("Not Authorized", 401);
+      throw ErrorHandler::handlerError("Not Authorized", 401);
 
     $GLOBALS['payload'] = $jwt;
   }
@@ -39,7 +39,7 @@ class AuthMiddleware
     $payload = $GLOBALS['payload'];
 
     if (!$payload)
-      return ErrorHandler::handlerError("Not Authorized", 401);
+      throw ErrorHandler::handlerError("Not Authorized", 401);
 
     if (!is_array($roles))
       $roles = [$roles];
@@ -52,7 +52,7 @@ class AuthMiddleware
         return;
     }
 
-    ErrorHandler::handlerError("Has not Role", 401);
+    throw ErrorHandler::handlerError("Has not Role", 401);
   }
 
   public function validateExpiration()
@@ -60,15 +60,15 @@ class AuthMiddleware
     $payload = $GLOBALS['payload'];
 
     if (!$payload)
-      return ErrorHandler::handlerError("Not Authorized", 401);
+      throw ErrorHandler::handlerError("Not Authorized", 401);
 
     if (!isset($payload['exp']))
-      return ErrorHandler::handlerError("El Token no contiene una fecha de expiracion");
+      throw ErrorHandler::handlerError("El Token no contiene una fecha de expiracion");
 
     $currenTime = time();
 
     if ($payload['exp'] < $currenTime) {
-      return ErrorHandler::handlerError("Token expired");
+      throw ErrorHandler::handlerError("Token expired");
     }
   }
 }
