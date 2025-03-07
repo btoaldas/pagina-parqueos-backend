@@ -35,4 +35,22 @@ class ProfileController
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
   }
+
+  public function updatePassword()
+  {
+    try {
+      $payload = $GLOBALS['payload'];
+      Validator::with($payload, ['id', 'role'])->required();
+      Validator::with($payload, 'id')->isInteger()->toInteger();
+
+      $body = Router::$body;
+      Validator::with($body, ['password', 'new-password'])->required()->isString()->minLength(4);
+
+      $this->userService->updatePassword($payload['id'], $body['password'], $body['new-password']);
+
+      Response::json(true);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
 }

@@ -58,6 +58,7 @@ $router->addCrudRoute('/space', SpaceController::class, $adminMiddleware);
 $router->addCrudRoute('/vehicle', VehicleController::class, $adminMiddleware);
 
 $router->addRoute('POST', '/profile/update', [ProfileController::class, 'update'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
+$router->addRoute('POST', '/profile/password', [ProfileController::class, 'updatePassword'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
 
 $router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'validateOut'], $empleadoMiddlware);

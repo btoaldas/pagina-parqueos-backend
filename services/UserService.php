@@ -62,6 +62,18 @@ class UserService
     return true;
   }
 
+  public function updatePassword($id, $password, $newPassword)
+  {
+    $user = $this->userModel->getOne($id, true);
+
+    if (!$user || !password_verify($password, $user['password']))
+      throw HttpError::BadRequest("User or password incorrect");
+
+    $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+    $this->userModel->updatePassword($id, $newPassword);
+  }
+
   public function update($id, $data)
   {
     $already = $this->getOne($id);

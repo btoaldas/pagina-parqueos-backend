@@ -51,14 +51,15 @@ class UserModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function getOne($userId)
+  public function getOne($userId, $withPassword = false)
   {
     $sql = "SELECT
       u.nombre AS name,
       u.apellido AS lastname,
       u.correo as email,
-      r.nombre_rol AS role,
-      u.estado AS state
+      r.nombre_rol AS role," .
+      ($withPassword ? 'u.contraseña AS password,' : '') .
+      "u.estado AS state
     FROM usuarios u
     JOIN roles r
       ON u.id_rol = r.id_rol
