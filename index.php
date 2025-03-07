@@ -76,6 +76,8 @@ $router->addRoute('GET', '/storage/fine/[filename]', [StorageController::class, 
 
 $router->addRoute('GET', '/report/main', [ReportController::class, 'main'], $adminMiddleware);
 $router->addRoute('GET', '/report/stats', [ReportController::class, 'report'], $adminMiddleware);
+$router->addRoute('GET', '/report/pdf', [ReportController::class, 'downloadPdf']);
+$router->addRoute('GET', '/report/xlsx', [ReportController::class, 'downloadExcel']);
 
 try {
   $router->handlerRequest();
