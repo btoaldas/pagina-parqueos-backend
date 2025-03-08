@@ -121,4 +121,15 @@ class UserService
 
     return true;
   }
+
+  public function updateState(int $id, int $state)
+  {
+    $this->getOne($id);
+
+    $result = $this->userModel->updateState($id, $state);
+    if (!$result)
+      throw HttpError::InternalServer("Server Error On Delete");
+
+    return true;
+  }
 }

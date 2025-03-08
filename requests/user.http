@@ -52,3 +52,7 @@ Content-Type: application/json
 ### Delete User
 DELETE {{host}}/user/5
 Authorization: Bearer {{token}}
+
+### Enagle User
+POST {{host}}/user/1/enable
+Authorization: Bearer {{token}}

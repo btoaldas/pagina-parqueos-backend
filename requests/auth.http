@@ -18,10 +18,10 @@ POST {{host}}/auth/register
 Content-Type: application/json
 
 {
-  "name": "secret",
-  "lastname": "hidden",
-  "email": "hidden@gmail.com",
-  "password": "123456789"
+  "name": "admin",
+  "lastname": "super",
+  "email": "admin@gmail.com",
+  "password": "admin"
 }
 
 ### Request Change Password

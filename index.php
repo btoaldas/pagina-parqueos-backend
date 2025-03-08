@@ -56,6 +56,8 @@ $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
 $router->addCrudRoute('/space', SpaceController::class, $adminMiddleware);
 $router->addCrudRoute('/vehicle', VehicleController::class, $adminMiddleware);
+$router->addRoute('POST', '/user/[id]/enable', [UserController::class, 'enable'], $adminMiddleware);
+$router->addRoute('POST', '/user/[id]/disable', [UserController::class, 'disable'], $adminMiddleware);
 
 $router->addRoute('POST', '/profile/update', [ProfileController::class, 'update'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
 $router->addRoute('POST', '/profile/password', [ProfileController::class, 'updatePassword'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);

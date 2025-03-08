@@ -103,4 +103,32 @@ class UserController
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }
   }
+
+  public function enable()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->userService->updateState($pathparams['id'], 1);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function disable()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->userService->updateState($pathparams['id'], 0);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
 }

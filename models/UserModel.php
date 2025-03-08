@@ -144,6 +144,17 @@ class UserModel
     return $stmt->execute($userData);
   }
 
+  public function updateState(int $id, int $state)
+  {
+    $sql = "UPDATE usuarios
+    SET
+      estado = :state
+    WHERE id_usuario = :id
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $id, 'state' => $state]);
+  }
+
   public function updatePassword($userId, $password)
   {
     $sql = "UPDATE usuarios
