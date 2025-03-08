@@ -202,21 +202,18 @@ CREATE TABLE multas (
     FOREIGN KEY (id_ticket) REFERENCES tickets(id_ticket)
 );
 
+ALTER TABLE roles AUTO_INCREMENT = 1;
+ALTER TABLE usuarios AUTO_INCREMENT = 1;
+ALTER TABLE zonas AUTO_INCREMENT = 1;
+ALTER TABLE espacios AUTO_INCREMENT = 1;
+ALTER TABLE tickets AUTO_INCREMENT = 1;
+ALTER TABLE multas AUTO_INCREMENT = 1;
+
 INSERT INTO roles (nombre_rol, descripcion)
 VALUES
     ('cliente', 'cliente descripcion'),
     ('admin', 'admin descripcion'),
     ('empleado', 'empleado descripcion');
-
-INSERT INTO usuarios (nombre, apellido, correo, contraseña, id_rol)
-VALUES
-    ('admin', 'cuenta', 'admin@gmail.com', '$2y$10$94cGj/ITryiQFdF3/7MgO.RXtnKD38apmRphQwYO0D81zBhUuH14q', 2),
-    ('cliente', 'cuenta', 'cliente@gmail.com', '$2y$10$94cGj/ITryiQFdF3/7MgO.RXtnKD38apmRphQwYO0D81zBhUuH14q', 1),
-    ('empleado', 'cuenta', 'empleado@gmail.com', '$2y$10$94cGj/ITryiQFdF3/7MgO.RXtnKD38apmRphQwYO0D81zBhUuH14q', 3);
-
-    nombre VARCHAR(100) NOT NULL,
-    tarifa DECIMAL(10, 2) NOT NULL,
-    tiempo_maximo INT NOT NULL
 
 INSERT INTO zonas (nombre, tarifa, tiempo_maximo)
 VALUES
@@ -224,10 +221,6 @@ VALUES
     ('Zona Azul', '10.5', 10000),
     ('Zona Verde', '15.5', 8000),
     ('Zona Morada', '8.0', 2400);
-
-    id_zona INT NOT NULL,
-    estado VARCHAR(50) NOT NULL, -- Ejemplo: "disponible", "ocupado", "mantenimiento"
-    tipo VARCHAR(50) NOT NULL,   -- Ejemplo: "automÃ³vil", "motocicleta", "discapacitado"
 
 INSERT INTO espacios (id_zona, estado, tipo)
 VALUES
@@ -242,13 +235,6 @@ VALUES
     (3, "disponible", "motocicleta"),
     (3, "disponible", "automovil"),
     (3, "disponible", "discapacitado");
-
-ALTER TABLE roles AUTO_INCREMENT = 1;
-ALTER TABLE usuarios AUTO_INCREMENT = 1;
-ALTER TABLE zonas AUTO_INCREMENT = 1;
-ALTER TABLE espacios AUTO_INCREMENT = 1;
-ALTER TABLE tickets AUTO_INCREMENT = 1;
-ALTER TABLE multas AUTO_INCREMENT = 1;
 ```
 
 ### 2. Configurar el Acceso:

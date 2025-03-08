@@ -22,6 +22,8 @@ class UserModel
     VALUES
       (:name, :lastname, :email, :password, :id_role, :state)
     ";
+    $userData['name'] = AesEncryption::encypt($userData['name']);
+    $userData['lastname'] = AesEncryption::encypt($userData['lastname']);
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute($userData);
   }
@@ -103,7 +105,12 @@ class UserModel
 
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['email' => $email]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    $value = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$value) return null;
+    $value['name'] = AesEncryption::decrypt($value['name']);
+    $value['lastname'] = AesEncryption::decrypt($value['lastname']);
+    return $value;
   }
 
   public function profileUpdate(int $id, string $name, string $lastname)
@@ -115,7 +122,7 @@ class UserModel
     WHERE id_usuario = :id
     ";
     $stmt = $this->conn->prepare($sql);
-    return $stmt->execute(['id' => $id, 'name' => $name, 'lastname' => $lastname]);
+    return $stmt->execute(['id' => $id, 'name' => AesEncryption::encypt($name), 'lastname' => AesEncryption::encypt($lastname)]);
   }
 
   public function update($userId, $userData)
@@ -130,8 +137,10 @@ class UserModel
       id_rol = :id_role
     WHERE id_usuario = :id
     ";
-    $stmt = $this->conn->prepare($sql);
+    $userData['name'] = AesEncryption::encypt($userData['name']);
+    $userData['lastname'] = AesEncryption::encypt($userData['lastname']);
     $userData['id'] = $userId;
+    $stmt = $this->conn->prepare($sql);
     return $stmt->execute($userData);
   }
 
