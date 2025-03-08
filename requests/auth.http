@@ -23,3 +23,30 @@ Content-Type: application/json
   "email": "grober@gmail.com",
   "password": "123456789"
 }
+
+### Request Change Password
+POST {{host}}/auth/request-password
+Content-Type: application/json
+
+{
+  "email": "grober@gmail.com"
+}
+
+### Validate Token
+POST {{host}}/auth/validate-request
+Content-Type: application/json
+
+{
+  "email": "grober@gmail.com",
+  "code": "235216"
+}
+
+### Update Password
+POST {{host}}/auth/update-password
+Content-Type: application/json
+
+{
+  "email": "grober@gmail.com",
+  "code": "235216",
+  "password": "grober"
+}

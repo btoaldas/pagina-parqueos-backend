@@ -52,6 +52,7 @@ class SpaceModel
   public function get($id)
   {
     $sql = "SELECT
+      e.id_espacio AS id,
       e.estado AS state,
       e.tipo AS type,
       JSON_OBJECT(

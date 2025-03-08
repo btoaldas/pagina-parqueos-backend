@@ -133,4 +133,24 @@ class FineModel
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute(['id' => $id]);
   }
+
+  public function getFinesFromUser(int $id)
+  {
+    $sql = "SELECT
+      m.id_multa as id,
+      m.monto as amount,
+      m.evidencia as mime,
+      m.estado as state,
+      t.placa as plate
+    FROM multas m
+    JOIN tickets t
+      ON t.id_ticket = m.id_ticket
+    WHERE t.id_usuario = :id AND m.estado = 'pendiente'
+    ORDER BY m.monto DESC
+    ";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['id' => $id]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
 }

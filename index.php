@@ -47,6 +47,9 @@ $router->addMiddleware(
 
 $router->addRoute('POST', '/auth/login', [AuthController::class, 'login'], [[JsonMiddleware::class, 'json']]);
 $router->addRoute('POST', '/auth/register', [AuthController::class, 'register'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/request-password', [AuthController::class, 'requestPassword'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/validate-request', [AuthController::class, 'validateToken'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/update-password', [AuthController::class, 'updatePassword'], [[JsonMiddleware::class, 'json']]);
 
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
@@ -55,6 +58,9 @@ $router->addCrudRoute('/space', SpaceController::class, $adminMiddleware);
 $router->addCrudRoute('/vehicle', VehicleController::class, $adminMiddleware);
 
 $router->addRoute('POST', '/profile/update', [ProfileController::class, 'update'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
+$router->addRoute('POST', '/profile/password', [ProfileController::class, 'updatePassword'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
+$router->addRoute('GET', '/profile/tickets', [ProfileController::class, 'getTicketsFromUser'], $registeredMiddleware);
+$router->addRoute('GET', '/profile/fines', [ProfileController::class, 'getFinesFromUser'], $registeredMiddleware);
 
 $router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'validateOut'], $empleadoMiddlware);
@@ -72,11 +78,13 @@ $router->addRoute('GET', '/storage/fine/[filename]', [StorageController::class, 
 
 $router->addRoute('GET', '/report/main', [ReportController::class, 'main'], $adminMiddleware);
 $router->addRoute('GET', '/report/stats', [ReportController::class, 'report'], $adminMiddleware);
+$router->addRoute('GET', '/report/pdf', [ReportController::class, 'downloadPdf']);
+$router->addRoute('GET', '/report/xlsx', [ReportController::class, 'downloadExcel']);
 
 try {
   $router->handlerRequest();
 } catch (HttpError $e) {
   ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
-} catch (RuntimeException $e) {
+} catch (Exception $e) {
   ErrorHandler::handlerError($e->getMessage(), 500);
 }

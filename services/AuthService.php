@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\RoleModel;
 use App\Models\UserModel;
+use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\JWT;
 
@@ -27,7 +28,6 @@ class AuthService
     $token = JWT::generateToken($user['id'], $user['role']);
 
     unset($user['password']);
-    unset($user['id']);
 
     return ['token' => $token, 'user' => $user];
   }
@@ -47,5 +47,32 @@ class AuthService
     $userData['id_role'] = $role['id'];
     $userData['state'] = true;
     return $this->userModel->create($userData);
+  }
+
+  public function updatePassword($id, $password)
+  {
+    $exits = $this->userModel->getOne($id);
+    if (!$exits)
+      throw ErrorHandler::handlerError("User does not exists");
+
+    $password = password_hash($password, PASSWORD_BCRYPT);
+
+    $this->userModel->updatePassword($id, $password);
+  }
+
+  public function generateCode($id)
+  {
+    $code = (string)rand(1e+5, 1e+6 - 1);
+    $this->userModel->updateCode($id, $code);
+    return $code;
+  }
+
+  public function validateCode($user, $code)
+  {
+    if (is_null($user['code']))
+      throw HttpError::BadRequest("This User does not have a recover code");
+
+    if ($user['code'] != $code)
+      throw HttpError::BadRequest("this is not the code");
   }
 }

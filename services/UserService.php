@@ -32,6 +32,16 @@ class UserService
     return $data;
   }
 
+  public function getByEmail($email, $throws = true)
+  {
+    $data = $this->userModel->getUserbyEmail($email);
+
+    if ($throws && !$data)
+      throw HttpError::NotFound("User $email with email not exist!");
+
+    return $data;
+  }
+
   public function create($data)
   {
     $role = $this->roleModel->getByName($data['role']);
@@ -60,6 +70,18 @@ class UserService
       throw HttpError::InternalServer("Server Error On Update");
 
     return true;
+  }
+
+  public function updatePassword($id, $password, $newPassword)
+  {
+    $user = $this->userModel->getOne($id, true);
+
+    if (!$user || !password_verify($password, $user['password']))
+      throw HttpError::BadRequest("User or password incorrect");
+
+    $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+    $this->userModel->updatePassword($id, $newPassword);
   }
 
   public function update($id, $data)

@@ -22,3 +22,23 @@ Content-Type: application/json
   "name": "grober",
   "lastname": "gonzales"
 }
+
+### Update Password
+# @prompt password
+# @prompt new-password
+POST {{host}}/profile/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "{{password}}",
+  "new-password": "{{new-password}}"
+}
+
+### Get Tickets
+GET {{host}}/profile/tickets
+Authorization: Bearer {{token}}
+
+### Get Fines
+GET {{host}}/profile/fines
+Authorization: Bearer {{token}}

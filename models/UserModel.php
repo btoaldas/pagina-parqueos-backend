@@ -58,14 +58,16 @@ class UserModel
     return $values;
   }
 
-  public function getOne($userId)
+  public function getOne($userId, $withPassword = false)
   {
     $sql = "SELECT
+      u.id_usuario AS id,
       u.nombre AS name,
       u.apellido AS lastname,
       u.correo as email,
-      r.nombre_rol AS role,
-      u.estado AS state
+      r.nombre_rol AS role," .
+      ($withPassword ? 'u.contraseña AS password,' : '') .
+      "u.estado AS state
     FROM usuarios u
     JOIN roles r
       ON u.id_rol = r.id_rol
@@ -91,7 +93,8 @@ class UserModel
       u.correo as email,
       u.contraseña as password,
       r.nombre_rol AS role,
-      u.estado AS state
+      u.estado AS state,
+      u.cdigo_recuperacion AS code
     FROM usuarios u
     JOIN roles r
       ON u.id_rol = r.id_rol
@@ -132,10 +135,33 @@ class UserModel
     return $stmt->execute($userData);
   }
 
+  public function updatePassword($userId, $password)
+  {
+    $sql = "UPDATE usuarios
+    SET
+      contraseña = :password,
+      cdigo_recuperacion = NULL
+    WHERE id_usuario = :id
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $userId, 'password' => $password]);
+  }
+
   public function delete($userId)
   {
     $sql = "DELETE FROM usuarios WHERE id_usuario = :id";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute(['id' => $userId]);
+  }
+
+  public function updateCode(int $id, $code)
+  {
+    $sql = "UPDATE usuarios
+    SET
+      cdigo_recuperacion = :code
+    WHERE id_usuario = :id
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $id, 'code' => $code]);
   }
 }
