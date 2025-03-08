@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
   "id_user": 1,
-  "plate": "ASD2",
+  "plate": "SHH1",
   "brand": "xd",
   "model": "XDXD",
   "year": 23,

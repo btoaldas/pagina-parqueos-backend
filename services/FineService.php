@@ -91,4 +91,9 @@ class FineService
 
     return $result;
   }
+
+  public function getFinesFromUser(int $id)
+  {
+    return $this->fineModel->getFinesFromUser($id);
+  }
 }

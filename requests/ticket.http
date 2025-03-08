@@ -16,6 +16,10 @@ Content-Type: application/json
 GET {{host}}/ticket
 Authorization: Bearer {{token}}
 
+### GET al vehicles
+GET {{host}}/vehicle
+Authorization: Bearer {{token}}
+
 ### Get One
 GET {{host}}/ticket/4
 Authorization: Bearer {{token}}
@@ -26,8 +30,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "id_space": 8,
-  "plate": "ASD2"
+  "id_space": 5,
+  "plate": "DSA2"
 }
 
 ### Completed

@@ -65,6 +65,7 @@ class VehicleModel
   public function get($id)
   {
     $sql = "SELECT
+      v.id_vehiculo AS id,
       v.placa AS plate,
       v.marca AS brand,
       v.modelo AS model,

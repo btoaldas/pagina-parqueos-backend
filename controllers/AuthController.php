@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\AuthService;
 use App\Services\EmailService;
+use App\Services\UserService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\JWT;
@@ -15,11 +16,13 @@ class AuthController
 {
   private $authService;
   private $emailService;
+  private $userService;
 
   public function __construct()
   {
     $this->authService = new AuthService();
     $this->emailService = new EmailService();
+    $this->userService = new UserService();
   }
 
   public function login()
@@ -65,10 +68,13 @@ class AuthController
   public function requestPassword()
   {
     try {
-      $payload = $GLOBALS['payload'];
-      Validator::with($payload, 'id')->required()->isInteger()->toInteger();
+      $body = Router::$body;
+      Validator::with($body, 'email')->required()->isString()->isEmail();
 
-      $this->emailService->sendTokenToUpdate($payload['id']);
+      $user = $this->userService->getByEmail($body['email']);
+
+      $code = $this->authService->generateCode($user['id']);
+      $this->emailService->sendTokenToUpdate('gonzalesdlcgrober@gmail.com', $code);
 
       Response::json(true);
     } catch (HttpError $e) {
@@ -79,17 +85,12 @@ class AuthController
   public function validateToken()
   {
     try {
-      $payload = $GLOBALS['payload'];
-      Validator::with($payload, 'id')->required()->isInteger()->toInteger();
+      $body = Router::$body;
+      Validator::with($body, ['email', 'code'])->required()->isString();
+      Validator::with($body, 'email')->isEmail();
 
-      $headers = getallheaders();
-      Validator::with($headers, 'token-password')->required();
-
-      $tokenPayload = JWT::validateToken($headers['token-password']);
-      Validator::with($tokenPayload, ['id', 'info'])->required();
-      Validator::with($tokenPayload, ['id'])->required()->isInteger()->toInteger();
-
-      $this->authService->validatePasswordChange($payload, $tokenPayload);
+      $user = $this->userService->getByEmail($body['email']);
+      $this->authService->validateCode($user, $body['code']);
 
       Response::json(true);
     } catch (HttpError $e) {
@@ -100,25 +101,14 @@ class AuthController
   public function updatePassword()
   {
     try {
-      $payload = $GLOBALS['payload'];
-      Validator::with($payload, 'id')->required()->isInteger()->toInteger();
-
-      $headers = getallheaders();
-      Validator::with($headers, 'token-password')->required();
-
-      $tokenPayload = JWT::validateToken($headers['token-password']);
-      Validator::with($tokenPayload, ['id', 'info'])->required();
-      Validator::with($tokenPayload, ['id'])->required()->isInteger()->toInteger();
-
       $body = Router::$body;
+      Validator::with($body, ['password', 'email', 'code'])->required()->isString();
+      Validator::with($body, 'email')->isEmail();
+      Validator::with($body, 'password')->minLength(4);
 
-      Validator::with($body, 'password')
-        ->required()
-        ->isString()->minLength(4);
-
-      $this->authService->validatePasswordChange($payload, $tokenPayload);
-
-      $this->authService->updatePassword($payload['id'], $body['password']);
+      $user = $this->userService->getByEmail($body['email']);
+      $this->authService->validateCode($user, $body['code']);
+      $this->authService->updatePassword($user['id'], $body['password']);
 
       Response::json(true);
     } catch (HttpError $e) {

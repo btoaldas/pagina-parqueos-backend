@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Services\AuthService;
+use App\Services\FineService;
+use App\Services\TicketService;
 use App\Services\UserService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
@@ -13,10 +15,14 @@ use App\Utils\Validator;
 class ProfileController
 {
   private $userService;
+  private $ticketService;
+  private $fineService;
 
   public function __construct()
   {
     $this->userService = new UserService();
+    $this->ticketService = new TicketService();
+    $this->fineService = new FineService();
   }
 
   public function update()
@@ -49,6 +55,29 @@ class ProfileController
       $this->userService->updatePassword($payload['id'], $body['password'], $body['new-password']);
 
       Response::json(true);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function getTicketsFromUser()
+  {
+    try {
+      $payload = $GLOBALS['payload'];
+      $tickets = $this->ticketService->getTicketsFromUser($payload['id']);
+
+      Response::json($tickets);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function getFinesFromUser()
+  {
+    try {
+      $payload = $GLOBALS['payload'];
+      $tickets = $this->fineService->getFinesFromUser($payload['id']);
+      Response::json($tickets);
     } catch (HttpError $e) {
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }

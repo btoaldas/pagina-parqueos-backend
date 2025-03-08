@@ -51,6 +51,7 @@ class ZoneModel
   public function get($id)
   {
     $sql = "SELECT
+      id_zona AS id,
       nombre AS name,
       tarifa AS fee,
       tiempo_maximo AS max_time

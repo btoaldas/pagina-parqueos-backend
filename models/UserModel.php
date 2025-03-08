@@ -54,6 +54,7 @@ class UserModel
   public function getOne($userId, $withPassword = false)
   {
     $sql = "SELECT
+      u.id_usuario AS id,
       u.nombre AS name,
       u.apellido AS lastname,
       u.correo as email,
@@ -80,7 +81,8 @@ class UserModel
       u.correo as email,
       u.contraseña as password,
       r.nombre_rol AS role,
-      u.estado AS state
+      u.estado AS state,
+      u.cdigo_recuperacion AS code
     FROM usuarios u
     JOIN roles r
       ON u.id_rol = r.id_rol
@@ -125,7 +127,8 @@ class UserModel
   {
     $sql = "UPDATE usuarios
     SET
-      contraseña = :password
+      contraseña = :password,
+      cdigo_recuperacion = NULL
     WHERE id_usuario = :id
     ";
     $stmt = $this->conn->prepare($sql);
@@ -137,5 +140,16 @@ class UserModel
     $sql = "DELETE FROM usuarios WHERE id_usuario = :id";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute(['id' => $userId]);
+  }
+
+  public function updateCode(int $id, $code)
+  {
+    $sql = "UPDATE usuarios
+    SET
+      cdigo_recuperacion = :code
+    WHERE id_usuario = :id
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['id' => $id, 'code' => $code]);
   }
 }

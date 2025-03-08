@@ -32,6 +32,16 @@ class UserService
     return $data;
   }
 
+  public function getByEmail($email, $throws = true)
+  {
+    $data = $this->userModel->getUserbyEmail($email);
+
+    if ($throws && !$data)
+      throw HttpError::NotFound("User $email with email not exist!");
+
+    return $data;
+  }
+
   public function create($data)
   {
     $role = $this->roleModel->getByName($data['role']);

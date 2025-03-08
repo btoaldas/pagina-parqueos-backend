@@ -69,6 +69,7 @@ class TicketModel
   public function get($id)
   {
     $sql = "SELECT
+      t.id_ticket AS id,
       t.placa AS plate,
       t.fecha_entrada AS entry_date,
       t.fecha_salida AS exit_date,
@@ -158,5 +159,32 @@ class TicketModel
     $sql = "DELETE FROM tickets WHERE id_ticket = :id";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute(['id' => $id]);
+  }
+
+  public function getTicketsFromUser(int $id)
+  {
+    $sql = "SELECT
+      t.id_ticket AS id,
+      t.placa AS plate,
+      t.fecha_entrada AS entry_date,
+      TIMESTAMPADD(SECOND, tiempo_maximo, fecha_entrada) AS max_date,
+      t.fecha_salida AS exit_date,
+      z.tiempo_maximo as max_time,
+      t.monto AS amount,
+      t.estado AS state,
+      t.id_espacio AS space_id,
+      z.nombre as zone_name
+    FROM tickets t
+    JOIN espacios e
+      ON e.id_espacio = t.id_espacio
+    JOIN zonas z
+      ON z.id_zona = e.id_zona
+    WHERE t.id_usuario = :id AND t.monto IS NULL AND t.fecha_salida IS NULL
+    ORDER BY t.fecha_entrada ASC
+    ";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['id' => $id]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 }

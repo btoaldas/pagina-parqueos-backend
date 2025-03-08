@@ -47,9 +47,9 @@ $router->addMiddleware(
 
 $router->addRoute('POST', '/auth/login', [AuthController::class, 'login'], [[JsonMiddleware::class, 'json']]);
 $router->addRoute('POST', '/auth/register', [AuthController::class, 'register'], [[JsonMiddleware::class, 'json']]);
-$router->addRoute('POST', '/auth/request-password', [AuthController::class, 'requestPassword'], $registeredMiddleware);
-$router->addRoute('POST', '/auth/validate-request', [AuthController::class, 'validateToken'], $registeredMiddleware);
-$router->addRoute('POST', '/auth/update-password', [AuthController::class, 'updatePassword'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
+$router->addRoute('POST', '/auth/request-password', [AuthController::class, 'requestPassword'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/validate-request', [AuthController::class, 'validateToken'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/update-password', [AuthController::class, 'updatePassword'], [[JsonMiddleware::class, 'json']]);
 
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
@@ -59,6 +59,8 @@ $router->addCrudRoute('/vehicle', VehicleController::class, $adminMiddleware);
 
 $router->addRoute('POST', '/profile/update', [ProfileController::class, 'update'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
 $router->addRoute('POST', '/profile/password', [ProfileController::class, 'updatePassword'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
+$router->addRoute('GET', '/profile/tickets', [ProfileController::class, 'getTicketsFromUser'], $registeredMiddleware);
+$router->addRoute('GET', '/profile/fines', [ProfileController::class, 'getFinesFromUser'], $registeredMiddleware);
 
 $router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'validateOut'], $empleadoMiddlware);

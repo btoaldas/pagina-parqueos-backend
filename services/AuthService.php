@@ -28,7 +28,6 @@ class AuthService
     $token = JWT::generateToken($user['id'], $user['role']);
 
     unset($user['password']);
-    unset($user['id']);
 
     return ['token' => $token, 'user' => $user];
   }
@@ -50,18 +49,6 @@ class AuthService
     return $this->userModel->create($userData);
   }
 
-  public function validatePasswordChange($payloadJwt, $payloadToken)
-  {
-    $currenTime = time();
-    if ($payloadJwt['exp'] < $currenTime)
-      throw ErrorHandler::handlerError("Token expired");
-
-    if ($payloadJwt['id'] != $payloadToken['id'])
-      throw ErrorHandler::handlerError("Not Allowed for this user");
-
-    return true;
-  }
-
   public function updatePassword($id, $password)
   {
     $exits = $this->userModel->getOne($id);
@@ -71,5 +58,21 @@ class AuthService
     $password = password_hash($password, PASSWORD_BCRYPT);
 
     $this->userModel->updatePassword($id, $password);
+  }
+
+  public function generateCode($id)
+  {
+    $code = (string)rand(1e+5, 1e+6 - 1);
+    $this->userModel->updateCode($id, $code);
+    return $code;
+  }
+
+  public function validateCode($user, $code)
+  {
+    if (is_null($user['code']))
+      throw HttpError::BadRequest("This User does not have a recover code");
+
+    if ($user['code'] != $code)
+      throw HttpError::BadRequest("this is not the code");
   }
 }

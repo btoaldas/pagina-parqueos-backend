@@ -164,4 +164,9 @@ class TicketService
 
     return true;
   }
+
+  public function getTicketsFromUser(int $id)
+  {
+    return $this->ticketModel->getTicketsFromUser($id);
+  }
 }

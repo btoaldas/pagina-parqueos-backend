@@ -148,6 +148,7 @@ CREATE TABLE usuarios (
     contraseña VARCHAR(255) NOT NULL,
     id_rol INT NOT NULL,
     estado BOOLEAN DEFAULT TRUE,
+    código_recuperacion VARCHAR(64) NULL,
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
 );
 

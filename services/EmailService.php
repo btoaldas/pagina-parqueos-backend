@@ -15,16 +15,14 @@ class EmailService
     $this->client = EmailClient::getClient();
   }
 
-  public function sendTokenToUpdate(int $id)
+  public function sendTokenToUpdate(string $email, string $code)
   {
-    $token = JWT::generateJwt(['info' => 'password-update', 'id' => $id], 3600);
-
     $mail = $this->client;
 
     $mail->isHTML(true);
 
     $mail->setFrom('onboarding@resend.dev');
-    $mail->addAddress('gonzalesdlcgrober@gmail.com');
+    $mail->addAddress($email);
     $mail->Subject = 'Hello World';
     $mail->Body = <<<EOT
     <!DOCTYPE html>
@@ -61,14 +59,12 @@ class EmailService
     <body>
     <div class='container'>
       <p class='text'>Copy this Code</p>
-      <p class='token'>$token</p>
+      <p class='token'>$code</p>
     </div>
     <body>
     </html>
     EOT;
 
     $mail->send();
-
-    return $token;
   }
 }

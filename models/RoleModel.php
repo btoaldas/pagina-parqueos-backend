@@ -30,6 +30,7 @@ class RoleModel
   public function get($id)
   {
     $sql = "SELECT
+      id_rol AS id,
       nombre_rol AS name,
       descripcion AS description
     FROM roles
