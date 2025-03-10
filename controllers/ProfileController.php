@@ -25,6 +25,20 @@ class ProfileController
     $this->fineService = new FineService();
   }
 
+  public function getProfile()
+  {
+    try {
+      $payload = $GLOBALS['payload'];
+      Validator::with($payload, 'id')->required()->isInteger()->toInteger();
+
+      $user = $this->userService->getOne($payload['id']);
+
+      Response::json($user);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
   public function update()
   {
     try {

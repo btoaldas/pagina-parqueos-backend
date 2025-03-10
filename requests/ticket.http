@@ -30,12 +30,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "id_space": 5,
-  "plate": "DSA2"
+  "id_space": 1,
+  "plate": "SHH1"
 }
 
 ### Completed
-POST {{host}}/ticket/completed/5
+POST {{host}}/ticket/completed/2
 Authorization: Bearer {{token}}
 
 ### Completed

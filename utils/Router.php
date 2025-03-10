@@ -57,6 +57,11 @@ class Router
       self::$queryparams = $queryParams_;
     }
 
+    // Global middlewares
+    foreach ($this->middlewares as $middleware) {
+      $this->callMiddleware($middleware);
+    }
+
     foreach ($this->routes as $route) {
       $pattern = $this->convertPathToRegex($route['path']);
 
@@ -68,9 +73,9 @@ class Router
       self::$pathparams = $matches;
 
       // Global middlewares
-      foreach ($this->middlewares as $middleware) {
-        $this->callMiddleware($middleware);
-      }
+      // foreach ($this->middlewares as $middleware) {
+      // $this->callMiddleware($middleware);
+      //}
 
       // Specific middleware
       foreach ($route['middlewares'] as $middleware) {

@@ -18,7 +18,12 @@ class AuthMiddleware
   public function checkAuth()
   {
     $headers = getallheaders();
-    $authorization = $headers['authorization'] ?? null;
+
+    $authorization = null;
+    if (array_key_exists('authorization', $headers))
+      $authorization = $headers['authorization'];
+    if (array_key_exists('Authorization', $headers))
+      $authorization = $headers['Authorization'];
 
     if (!$authorization)
       throw ErrorHandler::handlerError("Needs Authorization", 401);

@@ -48,6 +48,7 @@ class EnvLoader
         'JWT_EXPIRE',
         'PATH_HOST',
         'RESEND_TOKEN',
+        'RESEND_EMAIL',
       ]
     )->required();
 

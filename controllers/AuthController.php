@@ -74,7 +74,7 @@ class AuthController
       $user = $this->userService->getByEmail($body['email']);
 
       $code = $this->authService->generateCode($user['id']);
-      $this->emailService->sendTokenToUpdate('gonzalesdlcgrober@gmail.com', $code);
+      $this->emailService->sendTokenToUpdate($_ENV['RESEND_EMAIL'], $code);
 
       Response::json(true);
     } catch (HttpError $e) {

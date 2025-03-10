@@ -23,6 +23,14 @@ class UserController
     try {
       $queryparams = Router::$queryparams;
 
+      if (array_key_exists('filter', $queryparams)) {
+        Validator::with($queryparams, 'filter')->isString();
+
+        $data = $this->userService->getAllFilter($queryparams['filter']);
+
+        return Response::json($data);
+      }
+
       Validator::with($queryparams)->limitOffset();
 
       $data = $this->userService->getAll($queryparams['limit'], $queryparams['offset']);
@@ -53,11 +61,11 @@ class UserController
     try {
       $body = Router::$body;
 
-      Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])
-        ->required()
-        ->isString();
+      Validator::with($body, ['name', 'lastname', 'email', 'password', 'state', 'role'])->required();
+      Validator::with($body, ['name', 'lastname', 'email', 'role'])->isString();
       Validator::with($body, 'email')->isEmail();
-      Validator::with($body, 'password')->minLength(8);
+      Validator::with($body, 'password')->minLength(4);
+      Validator::with($body, 'state')->isInteger();
 
       $data = $this->userService->create($body);
 
@@ -76,7 +84,7 @@ class UserController
       Validator::with($body, ['name', 'lastname', 'email', 'password', 'role'])
         ->required();
       Validator::with($body, 'email')->isEmail();
-      Validator::with($body, 'password')->minLength(8);
+      Validator::with($body, 'password')->minLength(4);
       Validator::with($body, 'state')->required()->isInteger();
 
       Validator::with($pathparams, 'id')->required()->isInteger();

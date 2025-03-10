@@ -13,6 +13,10 @@ Content-Type: application/json
   "password": "{{password}}"
 }
 
+### Info
+GET {{host}}/profile
+Authorization: Bearer {{token}}
+
 ### Profile
 POST {{host}}/profile/update
 Authorization: Bearer {{token}}

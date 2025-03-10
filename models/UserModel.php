@@ -60,6 +60,43 @@ class UserModel
     return $values;
   }
 
+  public function getAllByFilter(string $filter)
+  {
+    $sql = "SELECT
+      u.id,
+      u.name,
+      u.lastname,
+      u.email,
+      u.role,
+      u.state
+    FROM (
+      SELECT
+        _u.id_usuario AS id,
+        _u.nombre AS name,
+        _u.apellido AS lastname,
+        _u.correo AS email,
+        _r.nombre_rol AS role,
+        _u.estado AS state,
+        LOWER(_u.correo) LIKE CONCAT('%', LOWER(:filter), '%') AS _sort
+      FROM usuarios _u
+      JOIN roles _r
+        ON _u.id_rol = _r.id_rol
+      ) u
+    ;";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->execute(['filter' => $filter]);
+
+    $values = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $values = array_map(function ($value) {
+      $value['name'] = AesEncryption::decrypt($value['name']);
+      $value['lastname'] = AesEncryption::decrypt($value['lastname']);
+      return $value;
+    }, $values);
+    return $values;
+  }
+
   public function getOne($userId, $withPassword = false)
   {
     $sql = "SELECT

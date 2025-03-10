@@ -141,7 +141,8 @@ class FineModel
       m.monto as amount,
       m.evidencia as mime,
       m.estado as state,
-      t.placa as plate
+      t.placa as plate,
+      m.id_ticket as id_ticket
     FROM multas m
     JOIN tickets t
       ON t.id_ticket = m.id_ticket

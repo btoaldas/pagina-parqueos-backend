@@ -22,6 +22,11 @@ class UserService
     return $this->userModel->all($limit, $offset);
   }
 
+  public function getAllFilter(string $filter)
+  {
+    return $this->userModel->getAllByFilter($filter);
+  }
+
   public function getOne($id, $throws = true)
   {
     $data = $this->userModel->getOne($id);
