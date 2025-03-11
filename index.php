@@ -79,8 +79,8 @@ $router->addRoute('POST', '/fine', [FineController::class, 'create'], $empleadoM
 
 $router->addRoute('GET', '/storage/fine/[filename]', [StorageController::class, 'getFineFile']);
 
-$router->addRoute('GET', '/report/main', [ReportController::class, 'main'], $adminMiddleware);
-$router->addRoute('GET', '/report/stats', [ReportController::class, 'report'], $adminMiddleware);
+$router->addRoute('GET', '/report/main', [ReportController::class, 'main'], $empleadoMiddlware);
+$router->addRoute('GET', '/report/stats', [ReportController::class, 'report'], $empleadoMiddlware);
 $router->addRoute('GET', '/report/pdf', [ReportController::class, 'downloadPdf']);
 $router->addRoute('GET', '/report/xlsx', [ReportController::class, 'downloadExcel']);
 

@@ -167,7 +167,9 @@ CREATE TABLE zonas (
     id_zona INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     tarifa DECIMAL(10, 2) NOT NULL,
-    tiempo_maximo INT NOT NULL
+    tiempo_maximo INT NOT NULL,
+    address VARCHAR(255) NULL,
+    description VARCHAR(255) NULL
 );
 
 CREATE TABLE espacios (
@@ -187,19 +189,23 @@ CREATE TABLE tickets (
     monto DECIMAL(10, 2),
     estado VARCHAR(50) NOT NULL, -- Ejemplo: "activo", "finalizado", "cancelado"
     id_espacio INT NOT NULL,
+    id_empleado INT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (id_empleado) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_espacio) REFERENCES espacios(id_espacio)
 );
 
 CREATE TABLE multas (
     id_multa INT AUTO_INCREMENT PRIMARY KEY,
-    id_ticket INT NOT NULL,
+    id_vehiculo INT NOT NULl,
     monto DECIMAL(10, 2) NOT NULL,
     descripcion VARCHAR(255),
     evidencia VARCHAR(255), -- Ruta o URL de la evidencia (foto, video, etc.)
     estado VARCHAR(50) NOT NULL, -- Ejemplo: "pendiente", "pagada", "cancelada"
     fecha_pago DATETIME NULL,
-    FOREIGN KEY (id_ticket) REFERENCES tickets(id_ticket)
+    id_empleado INT NULL,
+    FOREIGN KEY (id_empleado) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (id_vehiculo) REFERENCES vehiculos(id_vehiculo)
 );
 
 ALTER TABLE roles AUTO_INCREMENT = 1;
@@ -211,9 +217,9 @@ ALTER TABLE multas AUTO_INCREMENT = 1;
 
 INSERT INTO roles (nombre_rol, descripcion)
 VALUES
-    ('cliente', 'cliente descripcion'),
     ('admin', 'admin descripcion'),
-    ('empleado', 'empleado descripcion');
+    ('empleado', 'empleado descripcion'),
+    ('cliente', 'cliente descripcion');
 
 INSERT INTO zonas (nombre, tarifa, tiempo_maximo)
 VALUES
