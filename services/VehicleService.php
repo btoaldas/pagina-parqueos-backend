@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\VehicleModel;
 use App\Models\UserModel;
+use App\Utils\AesEncryption;
 use App\Utils\HttpError;
 
 class VehicleService
@@ -23,8 +24,16 @@ class VehicleService
     $vehicles = $this->vehicleModel->all($limit, $offset);
     $vehicles = array_map(function ($vehicle) {
       $vehicle['user'] = json_decode($vehicle['user'], true);
+      $vehicle['user']['name'] = AesEncryption::decrypt($vehicle['user']['name']);
+      $vehicle['user']['lastname'] = AesEncryption::decrypt($vehicle['user']['lastname']);
       return $vehicle;
     }, $vehicles);
+    return $vehicles;
+  }
+
+  public function getAllFromUser(int $id)
+  {
+    $vehicles = $this->vehicleModel->allFromUser($id);
     return $vehicles;
   }
 
@@ -38,6 +47,8 @@ class VehicleService
     }
 
     $vehicle['user'] = json_decode($vehicle['user'], true);
+    $vehicle['user']['name'] = AesEncryption::decrypt($vehicle['user']['name']);
+    $vehicle['user']['lastname'] = AesEncryption::decrypt($vehicle['user']['lastname']);
 
     return $vehicle;
   }

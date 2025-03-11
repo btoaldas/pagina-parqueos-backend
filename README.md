@@ -149,6 +149,7 @@ CREATE TABLE usuarios (
     id_rol INT NOT NULL,
     estado BOOLEAN DEFAULT TRUE,
     cdigo_recuperacion VARCHAR(64) NULL,
+    cdigo_acceso VARCHAR(64) NULL,
     FOREIGN KEY (id_rol) REFERENCES roles(id_rol)
 );
 
@@ -182,15 +183,14 @@ CREATE TABLE espacios (
 
 CREATE TABLE tickets (
     id_ticket INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NOT NULL,
-    placa VARCHAR(20) NOT NULL,
+    id_vehiculo INT NOT NULL,
     fecha_entrada DATETIME NOT NULL,
     fecha_salida DATETIME,
     monto DECIMAL(10, 2),
     estado VARCHAR(50) NOT NULL, -- Ejemplo: "activo", "finalizado", "cancelado"
     id_espacio INT NOT NULL,
     id_empleado INT NULL,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    FOREIGN KEY (id_vehiculo) REFERENCES vehiculos(id_vehiculo),
     FOREIGN KEY (id_empleado) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (id_espacio) REFERENCES espacios(id_espacio)
 );

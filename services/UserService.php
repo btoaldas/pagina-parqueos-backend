@@ -60,7 +60,7 @@ class UserService
     if ($userWithSameEmail)
       throw HttpError::BadRequest("User With email {$data['email']} Already exists!");
 
-    $userData['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
+    $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
 
     return $this->userModel->create($data);
   }

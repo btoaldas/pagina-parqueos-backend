@@ -45,6 +45,49 @@ class AuthController
     }
   }
 
+  public function loginWithAccess()
+  {
+    try {
+      $body = Router::$body;
+
+      Validator::with($body, ['email', 'password'])
+        ->required()
+        ->isString();
+
+      Validator::with($body, 'email')->isEmail();
+      Validator::with($body, 'password')->minLength(4);
+
+      $code = $this->authService->generateAccess($body['email']);
+      $this->authService->loginWithAccess($body['email'], $body['password'], $code);
+      $this->emailService->sendTokenToUpdate($_ENV['RESEND_EMAIL'], $code);
+
+      Response::json(true);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function tokenWithAccess()
+  {
+    try {
+      $body = Router::$body;
+      Validator::with($body, ['email', 'access'])->required()->isString();
+
+      $user = $this->userService->getByEmail($body['email']);
+      $this->authService->validateAccess($user, $body['access']);
+
+      $token = JWT::generateToken($user['id'], $user['role']);
+
+      unset($user['password']);
+      unset($user['access']);
+      unset($user['code']);
+
+      Response::json(['token' => $token, 'user' => $user]);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
   public function register()
   {
     try {

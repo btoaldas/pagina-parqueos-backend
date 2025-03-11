@@ -22,21 +22,29 @@ class FineModel
       m.id_multa AS id,
       m.monto AS amount,
       m.descripcion AS description,
-      m.evidencia AS mime,
+      m.evidencia AS filename,
       m.estado AS state,
       m.fecha_pago AS pay_date,
       JSON_OBJECT(
-        'id', t.id_ticket,
-        'id_user', t.id_usuario,
-        'plate', t.placa,
-        'entry_date', t.fecha_entrada,
-        'exit_date', t.fecha_salida,
-        'amount', t.monto,
-        'state', t.estado
-      ) AS ticket
-    FROM multas as m
-    JOIN tickets t
-      ON t.id_ticket = m.id_ticket
+        'id', v.id_vehiculo,
+        'id_user', v.id_usuario,
+        'plate', v.placa,
+        'model', v.modelo,
+        'year', v.año
+      ) AS vehicle,
+      JSON_OBJECT(
+        'id', e.id_usuario,
+        'name', e.nombre,
+        'lastname', e.apellido,
+        'role', r.nombre_rol
+      ) AS employ
+    FROM multas m
+    JOIN vehiculos v
+      ON m.id_vehiculo = v.id_vehiculo
+    JOIN usuarios e
+      ON m.id_empleado = e.id_usuario
+    JOIN roles r
+      ON e.id_rol = r.id_rol
     LIMIT :limit
     OFFSET :offset
     ";
@@ -57,21 +65,29 @@ class FineModel
       m.id_multa AS id,
       m.monto AS amount,
       m.descripcion AS description,
-      m.evidencia AS mime,
+      m.evidencia AS filename,
       m.estado AS state,
       m.fecha_pago AS pay_date,
       JSON_OBJECT(
-        'id', t.id_ticket,
-        'id_user', t.id_usuario,
-        'plate', t.placa,
-        'entry_date', t.fecha_entrada,
-        'exit_date', t.fecha_salida,
-        'amount', t.monto,
-        'state', t.estado
-      ) AS ticket
-    FROM multas as m
-    JOIN tickets t
-      ON t.id_ticket = m.id_ticket
+        'id', v.id_vehiculo,
+        'id_user', v.id_usuario,
+        'plate', v.placa,
+        'model', v.modelo,
+        'year', v.año
+      ) AS vehicle,
+      JSON_OBJECT(
+        'id', e.id_usuario,
+        'name', e.nombre,
+        'lastname', e.apellido,
+        'role', r.nombre_rol
+      ) AS employ
+    FROM multas m
+    JOIN vehiculos v
+      ON m.id_vehiculo = v.id_vehiculo
+    JOIN usuarios e
+      ON m.id_empleado = e.id_usuario
+    JOIN roles r
+      ON e.id_rol = r.id_rol
     WHERE m.id_multa = :id
     ";
 
@@ -87,9 +103,9 @@ class FineModel
   public function create($data)
   {
     $sql = "INSERT INTO multas
-      (id_ticket, monto, descripcion, evidencia, estado)
+      (id_vehiculo, id_empleado, monto, descripcion, evidencia, estado)
     VALUES
-      (:id_ticket, :amount, :description, :mime, 'pendiente')
+      (:id_vehicle, :id_employ, :amount, :description, :filename, 'pendiente')
     ";
     $this->conn->beginTransaction();
     $stmt = $this->conn->prepare($sql);
@@ -134,23 +150,43 @@ class FineModel
     return $stmt->execute(['id' => $id]);
   }
 
-  public function getFinesFromUser(int $id)
+  public function getByUser(int $id)
   {
     $sql = "SELECT
-      m.id_multa as id,
-      m.monto as amount,
-      m.evidencia as mime,
-      m.estado as state,
-      t.placa as plate,
-      m.id_ticket as id_ticket
+      m.id_multa AS id,
+      m.monto AS amount,
+      m.descripcion AS description,
+      m.evidencia AS filename,
+      m.estado AS state,
+      m.fecha_pago AS pay_date,
+      JSON_OBJECT(
+        'id', v.id_vehiculo,
+        'id_user', v.id_usuario,
+        'plate', v.placa,
+        'model', v.modelo,
+        'year', v.año
+      ) AS vehicle,
+      JSON_OBJECT(
+        'id', e.id_usuario,
+        'name', e.nombre,
+        'lastname', e.apellido,
+        'role', r.nombre_rol
+      ) AS employ
     FROM multas m
-    JOIN tickets t
-      ON t.id_ticket = m.id_ticket
-    WHERE t.id_usuario = :id AND m.estado = 'pendiente'
-    ORDER BY m.monto DESC
+    JOIN vehiculos v
+      ON m.id_vehiculo = v.id_vehiculo
+    JOIN usuarios e
+      ON m.id_empleado = e.id_usuario
+    JOIN roles r
+      ON e.id_rol = r.id_rol
+    WHERE v.id_usuario = :id_usuario
     ";
+
     $stmt = $this->conn->prepare($sql);
-    $stmt->execute(['id' => $id]);
+
+    $stmt->bindParam(':id_usuario', $id, PDO::PARAM_INT);
+
+    $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }

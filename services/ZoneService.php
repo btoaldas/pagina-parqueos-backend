@@ -16,7 +16,12 @@ class ZoneService
 
   public function getAll($limit, $offset)
   {
-    return $this->zoneModel->all($limit, $offset);
+    $values = $this->zoneModel->all($limit, $offset);
+    $values = array_map(function ($value) {
+      $value['fee'] = (float)$value['fee'];
+      return $value;
+    }, $values);
+    return $values;
   }
 
   public function getOne($id, $throws = true)
@@ -25,6 +30,8 @@ class ZoneService
 
     if ($throws && !$data)
       throw HttpError::NotFound("Zone $id does not exist!");
+
+    $data['fee'] = (float)$data['fee'];
 
     return $data;
   }

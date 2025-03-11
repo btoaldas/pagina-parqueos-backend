@@ -28,6 +28,34 @@ class AuthService
     $token = JWT::generateToken($user['id'], $user['role']);
 
     unset($user['password']);
+    unset($user['access']);
+    unset($user['code']);
+
+    return ['token' => $token, 'user' => $user];
+  }
+
+  public function loginWithAccess($email, $password, $access)
+  {
+    $user = $this->userModel->getUserbyEmail($email);
+    if (!$user || !password_verify($password, $user['password']))
+      throw HttpError::BadRequest("User or password incorrect");
+
+    return $this->userModel->updateAccess($user['id'], $access);
+  }
+
+  public function loginWithAccessGetToken($user, $code)
+  {
+    if (is_null($user['access']))
+      throw HttpError::BadRequest("This User does not have a recover code");
+
+    if ($user['access'] != $code)
+      throw HttpError::BadRequest("this is not the code");
+
+    $token = JWT::generateToken($user['id'], $user['role']);
+
+    unset($user['password']);
+    unset($user['code']);
+    unset($user['access']);
 
     return ['token' => $token, 'user' => $user];
   }
@@ -66,6 +94,12 @@ class AuthService
     $this->userModel->updateCode($id, $code);
     return $code;
   }
+  public function generateAccess($email)
+  {
+    $code = (string)rand(1e+5, 1e+6 - 1);
+    $this->userModel->updateAccess($email, $code);
+    return $code;
+  }
 
   public function validateCode($user, $code)
   {
@@ -74,5 +108,14 @@ class AuthService
 
     if ($user['code'] != $code)
       throw HttpError::BadRequest("this is not the code");
+  }
+
+  public function validateAccess($user, $access)
+  {
+    if (is_null($user['access']))
+      throw HttpError::BadRequest("This User does not have a recover access");
+
+    if ($user['access'] != $access)
+      throw HttpError::BadRequest("this is not the access");
   }
 }

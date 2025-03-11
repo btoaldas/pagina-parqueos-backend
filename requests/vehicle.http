@@ -27,8 +27,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "id_user": 1,
-  "plate": "OWP5",
+  "id_user": 5,
+  "plate": "XAS2",
   "brand": "xd",
   "model": "XDXD",
   "year": 23,
@@ -50,5 +50,5 @@ Content-Type: application/json
 }
 
 ### Delete One
-DELETE {{host}}/vehicle/1
+DELETE {{host}}/vehicle/2
 Authorization: Bearer {{token}}

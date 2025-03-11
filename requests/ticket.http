@@ -16,12 +16,16 @@ Content-Type: application/json
 GET {{host}}/ticket
 Authorization: Bearer {{token}}
 
+### Get From user
+GET {{host}}/profile/tickets
+Authorization: Bearer {{token}}
+
 ### GET al vehicles
 GET {{host}}/vehicle
 Authorization: Bearer {{token}}
 
 ### Get One
-GET {{host}}/ticket/4
+GET {{host}}/ticket/1
 Authorization: Bearer {{token}}
 
 ### Create One
@@ -30,8 +34,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "id_space": 1,
-  "plate": "SHH1"
+  "id_space": 4,
+  "id_vehicle": 1
 }
 
 ### Completed
@@ -39,5 +43,5 @@ POST {{host}}/ticket/completed/2
 Authorization: Bearer {{token}}
 
 ### Completed
-POST {{host}}/ticket/cancel/4
+POST {{host}}/ticket/cancel/2
 Authorization: Bearer {{token}}

@@ -3,21 +3,23 @@
 namespace App\Services;
 
 use App\Models\FineModel;
-use App\Models\RoleModel;
-use App\Models\TicketModel;
 use App\Models\UserModel;
+use App\Models\VehicleModel;
+use App\Utils\AesEncryption;
 use App\Utils\HttpError;
-use App\Utils\JWT;
+use App\Utils\UUID;
 use DateTime;
 
 class FineService
 {
   private $fineModel;
-  private $ticketModel;
+  private $userModel;
+  private $vehicleModel;
 
   public function __construct()
   {
-    $this->ticketModel = new TicketModel();
+    $this->userModel = new UserModel();
+    $this->vehicleModel = new VehicleModel();
     $this->fineModel = new FineModel();
   }
 
@@ -25,7 +27,11 @@ class FineService
   {
     $values = $this->fineModel->all($limit, $offset);
     $values = array_map(function ($value) {
-      $value['ticket'] = json_decode($value['ticket'], true);
+      $value['amount'] = (float)$value['amount'];
+      $value['vehicle'] = json_decode($value['vehicle'], true);
+      $value['employ'] = json_decode($value['employ'], true);
+      $value['employ']['name'] = AesEncryption::decrypt($value['employ']['name']);
+      $value['employ']['lastname'] = AesEncryption::decrypt($value['employ']['lastname']);
       return $value;
     }, $values);
     return $values;
@@ -38,25 +44,36 @@ class FineService
     if ($throws && !$data)
       throw HttpError::NotFound("Fine $id does not exist!");
 
-    $data['ticket'] = json_decode($data['ticket'], true);
+    $data['amount'] = (float)$data['amount'];
+
+    $data['vehicle'] = json_decode($data['vehicle'], true);
+    $data['employ'] = json_decode($data['employ'], true);
+    $data['employ']['name'] = AesEncryption::decrypt($data['employ']['name']);
+    $data['employ']['lastname'] = AesEncryption::decrypt($data['employ']['lastname']);
 
     return $data;
   }
 
   public function create($data, $image)
   {
-    $ticket = $this->ticketModel->get($data['id_ticket']);
-    if (!$ticket)
-      HttpError::BadRequest("Ticket {$data['id_ticket']} does not exist");
+    $vehicle = $this->vehicleModel->get($data['id_vehicle']);
+    if (!$vehicle)
+      HttpError::BadRequest("Vehicle {$data['id_ticket']} does not exist");
 
-    $data['mime'] = $image['type'];
+    $employ = $this->userModel->getOne($data['id_employ']);
+    if (!$employ)
+      HttpError::BadRequest("Employ {$data['id_employ']} does not exist");
 
-    $idFine = $this->fineModel->create($data);
+    if (!($employ['role'] === 'empleado' || $employ['role'] === 'admin'))
+      HttpError::BadRequest("Solo empleados y admins pueden crear una multa");
 
     $path = $_ENV['PATH_STORAGE'] !== '' ? $_ENV['PATH_STORAGE'] : __DIR__ . "/../storage";
     $path = $path . '/fine';
+    $filename = UUID::v4() . ($image['type'] === 'image/jpeg' ? '.jpg' : '.png');
+    $data['filename'] = $filename;
 
-    $filename = "{$data['id_ticket']}_$idFine" . ($data['mime'] === 'image/jpeg' ? '.jpg' : '.png');
+    $this->fineModel->create($data);
+
     move_uploaded_file($image['tmp_name'], "$path/$filename");
 
     return true;
@@ -94,6 +111,6 @@ class FineService
 
   public function getFinesFromUser(int $id)
   {
-    return $this->fineModel->getFinesFromUser($id);
+    return $this->fineModel->getByUser($id);
   }
 }

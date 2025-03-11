@@ -17,9 +17,9 @@ class ZoneModel
   public function create($data)
   {
     $sql = "INSERT INTO zonas
-      (nombre, tarifa, tiempo_maximo)
+      (nombre, tarifa, tiempo_maximo, address, description)
     VALUES
-      (:name, :fee, :max_time)
+      (:name, :fee, :max_time, :address, :description)
     ";
 
     $stmt = $this->conn->prepare($sql);
@@ -32,7 +32,9 @@ class ZoneModel
       id_zona AS id,
       nombre AS name,
       tarifa AS fee,
-      tiempo_maximo AS max_time
+      tiempo_maximo AS max_time,
+      address,
+      description
     FROM zonas
     LIMIT :limit
     OFFSET :offset
@@ -54,7 +56,9 @@ class ZoneModel
       id_zona AS id,
       nombre AS name,
       tarifa AS fee,
-      tiempo_maximo AS max_time
+      tiempo_maximo AS max_time,
+      address,
+      description
     FROM zonas
     WHERE id_zona = :id
     ";
@@ -70,7 +74,9 @@ class ZoneModel
       id_zona AS id,
       nombre AS name,
       tarifa AS fee,
-      tiempo_maximo AS max_time
+      tiempo_maximo AS max_time,
+      address,
+      description
     FROM zonas
     WHERE nombre = :name
     ";
@@ -86,7 +92,9 @@ class ZoneModel
     SET
       nombre = :name,
       tarifa = :fee,
-      tiempo_maximo = :max_time
+      tiempo_maximo = :max_time,
+      address,
+      description
     WHERE id_zona = :id
     ";
 

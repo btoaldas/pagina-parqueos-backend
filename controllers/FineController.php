@@ -52,15 +52,21 @@ class FineController
   public function create()
   {
     try {
+      $payload = $GLOBALS['payload'];
+
+      Validator::with($payload, 'id')->required()->isInteger()->toInteger();
+
       Validator::with($_FILES, 'image')->required();
       Validator::with($_POST, 'json')->required();
 
       $body = json_decode($_POST['json'], true);
 
-      Validator::with($body, ['id_ticket', 'amount'])->required();
+      Validator::with($body, ['id_vehicle', 'amount'])->required();
       Validator::with($body, 'description')->required(true)->isString();
-      Validator::with($body, 'id_ticket')->isInteger();
+      Validator::with($body, ['id_vehicle'])->isInteger();
       Validator::with($body, 'amount')->isNumb();
+
+      $body['id_employ'] = $payload['id'];
 
       $image = $_FILES['image'];
 

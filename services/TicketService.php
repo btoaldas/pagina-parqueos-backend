@@ -6,6 +6,7 @@ use App\Models\SpaceModel;
 use App\Models\TicketModel;
 use App\Models\UserModel;
 use App\Models\VehicleModel;
+use App\Utils\AesEncryption;
 use App\Utils\HttpError;
 use DateTime;
 
@@ -29,7 +30,11 @@ class TicketService
     $values = $this->ticketModel->all($limit, $offset);
     $values = array_map(function ($value) {
       $value['space'] = json_decode($value['space'], true);
+      $value['zone'] = json_decode($value['zone'], true);
+      $value['vehicle'] = json_decode($value['vehicle'], true);
       $value['user'] = json_decode($value['user'], true);
+      $value['user']['name'] = AesEncryption::decrypt($value['user']['name']);
+      $value['user']['lastname'] = AesEncryption::decrypt($value['user']['lastname']);
       return $value;
     }, $values);
     return $values;
@@ -43,25 +48,26 @@ class TicketService
       throw HttpError::NotFound("Ticket $id does not exist!");
 
     $data['space'] = json_decode($data['space'], true);
-    $data['user'] = json_decode($data['user'], true);
     $data['zone'] = json_decode($data['zone'], true);
-
+    $data['vehicle'] = json_decode($data['vehicle'], true);
+    $data['user'] = json_decode($data['user'], true);
+    $data['user']['name'] = AesEncryption::decrypt($data['user']['name']);
+    $data['user']['lastname'] = AesEncryption::decrypt($data['user']['lastname']);
     return $data;
   }
 
-  public function create($id_space, $plate)
+  public function create($id_vehicle, $id_space, $id_employ)
   {
     $now = (new DateTime())->format('Y-m-d H:i:s');
 
-    $vehicle = $this->vehiculeModel->getByPlate($plate);
+    $vehicle = $this->vehiculeModel->get($id_vehicle);
     if (!$vehicle)
-      throw HttpError::BadRequest("There is not vehicle with plate $plate");
+      throw HttpError::BadRequest("There is not vehicle with id $id_vehicle");
     $vehicle['user'] = json_decode($vehicle['user'], true);
-    $id_user = $vehicle['user']['id'];
 
-    $user = $this->userModel->getOne($id_user);
-    if (!$user)
-      throw HttpError::BadRequest("There is not user $id_user");
+    $employ = $this->userModel->getOne($id_employ);
+    if (!$employ)
+      throw HttpError::BadRequest("There is not user $id_employ");
 
     $space = $this->spaceModel->get($id_space);
     if (!$space)
@@ -73,11 +79,11 @@ class TicketService
     $this->spaceModel->setState($id_space, "ocupado");
 
     return $this->ticketModel->create([
-      "id_user" => $id_user,
+      "id_vehicle" => $id_vehicle,
       "id_space" => $id_space,
-      "plate" => $vehicle['plate'],
       "entry_date" => $now,
       "state" => "activo",
+      "id_employ" => $id_employ,
     ]);
   }
 
@@ -167,6 +173,15 @@ class TicketService
 
   public function getTicketsFromUser(int $id)
   {
-    return $this->ticketModel->getTicketsFromUser($id);
+    $values = $this->ticketModel->getTicketsFromUser($id);
+
+    $values = array_map(function ($value) {
+      $value['space'] = json_decode($value['space'], true);
+      $value['zone'] = json_decode($value['zone'], true);
+      $value['vehicle'] = json_decode($value['vehicle'], true);
+      return $value;
+    }, $values);
+
+    return $values;
   }
 }

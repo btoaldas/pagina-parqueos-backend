@@ -51,12 +51,12 @@ class TicketController
   public function register()
   {
     try {
+      $payload = $GLOBALS['payload'];
+
       $body = Router::$body;
+      Validator::with($body, ['id_space', 'id_vehicle'])->required()->isInteger()->toInteger();
 
-      Validator::with($body, ['id_space', 'plate'])->required();
-      Validator::with($body, ['id_space'])->isInteger()->toInteger();
-
-      $data = $this->ticketService->create($body['id_space'], $body['plate']);
+      $data = $this->ticketService->create($body['id_vehicle'], $body['id_space'], $payload['id']);
 
       Response::json($data);
     } catch (HttpError $e) {

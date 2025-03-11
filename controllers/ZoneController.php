@@ -53,7 +53,7 @@ class ZoneController
     try {
       $body = Router::$body;
 
-      Validator::with($body, ['name', 'fee', 'max_time'])->required();
+      Validator::with($body, ['name', 'fee', 'max_time', 'address', 'description'])->required();
       Validator::with($body, 'fee')->isNumb();
       Validator::with($body, 'max_time')->isInteger();
 
@@ -71,7 +71,7 @@ class ZoneController
       $pathparams = Router::$pathparams;
       $body = Router::$body;
 
-      Validator::with($body, ['name', 'fee', 'max_time'])->required();
+      Validator::with($body, ['name', 'fee', 'max_time', 'address', 'description'])->required();
       Validator::with($body, 'fee')->isNumb();
       Validator::with($body, 'max_time')->isInteger();
       Validator::with($pathparams, 'id')->required()->isInteger();

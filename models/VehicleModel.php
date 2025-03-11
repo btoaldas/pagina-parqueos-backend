@@ -27,6 +27,28 @@ class VehicleModel
     return $stmt->execute($data);
   }
 
+  public function allFromUser(int $id)
+  {
+    $sql = "SELECT
+      v.id_vehiculo AS id,
+      v.placa AS plate,
+      v.marca AS brand,
+      v.modelo AS model,
+      v.año AS year,
+      v.base_imponible AS taxable_base
+    FROM vehiculos v
+    WHERE v.id_usuario = :id
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->execute(['id' => $id]);
+
+    $value = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $value;
+  }
+
   // Obtener todos los vehículos con paginación
   public function all($limit = 10, $offset = 0)
   {
@@ -58,7 +80,9 @@ class VehicleModel
 
     $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $value = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $value;
   }
 
   // Obtener un vehículo por su ID

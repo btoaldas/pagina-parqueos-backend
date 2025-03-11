@@ -51,6 +51,9 @@ $router->addRoute('POST', '/auth/request-password', [AuthController::class, 'req
 $router->addRoute('POST', '/auth/validate-request', [AuthController::class, 'validateToken'], [[JsonMiddleware::class, 'json']]);
 $router->addRoute('POST', '/auth/update-password', [AuthController::class, 'updatePassword'], [[JsonMiddleware::class, 'json']]);
 
+$router->addRoute('POST', '/auth/two-factor/login', [AuthController::class, 'loginWithAccess'], [[JsonMiddleware::class, 'json']]);
+$router->addRoute('POST', '/auth/two-factor/token', [AuthController::class, 'tokenWithAccess'], [[JsonMiddleware::class, 'json']]);
+
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
@@ -64,6 +67,7 @@ $router->addRoute('POST', '/profile/update', [ProfileController::class, 'update'
 $router->addRoute('POST', '/profile/password', [ProfileController::class, 'updatePassword'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
 $router->addRoute('GET', '/profile/tickets', [ProfileController::class, 'getTicketsFromUser'], $registeredMiddleware);
 $router->addRoute('GET', '/profile/fines', [ProfileController::class, 'getFinesFromUser'], $registeredMiddleware);
+$router->addRoute('GET', '/profile/vehicles', [ProfileController::class, 'getVehiclesFromUser'], $registeredMiddleware);
 
 $router->addRoute('GET', '/ticket', [TicketController::class, 'getAll'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'validateOut'], $empleadoMiddlware);

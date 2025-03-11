@@ -97,7 +97,7 @@ class UserModel
     return $values;
   }
 
-  public function getOne($userId, $withPassword = false)
+  public function getOne($userId, $withPassword = false, $withAccess = false)
   {
     $sql = "SELECT
       u.id_usuario AS id,
@@ -106,6 +106,7 @@ class UserModel
       u.correo as email,
       r.nombre_rol AS role," .
       ($withPassword ? 'u.contraseña AS password,' : '') .
+      ($withAccess ? 'u.codigo_acceso AS access,' : '') .
       "u.estado AS state
     FROM usuarios u
     JOIN roles r
@@ -133,7 +134,8 @@ class UserModel
       u.contraseña as password,
       r.nombre_rol AS role,
       u.estado AS state,
-      u.cdigo_recuperacion AS code
+      u.cdigo_recuperacion AS code,
+      u.codigo_acceso AS access
     FROM usuarios u
     JOIN roles r
       ON u.id_rol = r.id_rol
@@ -220,5 +222,16 @@ class UserModel
     ";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute(['id' => $id, 'code' => $code]);
+  }
+
+  public function updateAccess($email, $access)
+  {
+    $sql = "UPDATE usuarios
+    SET
+      codigo_acceso = :access
+    WHERE correo = :email
+    ";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['email' => $email, 'access' => $access]);
   }
 }

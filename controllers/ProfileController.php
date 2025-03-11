@@ -6,23 +6,27 @@ use App\Services\AuthService;
 use App\Services\FineService;
 use App\Services\TicketService;
 use App\Services\UserService;
+use App\Services\VehicleService;
 use App\Utils\ErrorHandler;
 use App\Utils\HttpError;
 use App\Utils\Response;
 use App\Utils\Router;
 use App\Utils\Validator;
+use Error;
 
 class ProfileController
 {
   private $userService;
   private $ticketService;
   private $fineService;
+  private $vehicleService;
 
   public function __construct()
   {
     $this->userService = new UserService();
     $this->ticketService = new TicketService();
     $this->fineService = new FineService();
+    $this->vehicleService = new VehicleService();
   }
 
   public function getProfile()
@@ -92,6 +96,17 @@ class ProfileController
       $payload = $GLOBALS['payload'];
       $tickets = $this->fineService->getFinesFromUser($payload['id']);
       Response::json($tickets);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function getVehiclesFromUser()
+  {
+    try {
+      $payload = $GLOBALS['payload'];
+      $vehicles = $this->vehicleService->getAllFromUser($payload['id']);
+      Response::json($vehicles);
     } catch (HttpError $e) {
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }

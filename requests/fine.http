@@ -30,9 +30,9 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 Content-Disposition: form-data; name="json"
 
 {
-  "id_ticket": 1,
+  "id_vehicle": 1,
   "amount": 11,
-  "description": "What the fuck!"
+  "description": "Description Test"
 }
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="image"; filename="flcl.png"
@@ -46,7 +46,7 @@ Content-Type: image/png
 GET http://localhost/uniandes-web/storage/fine/1_12.png
 
 ### Get Image
-GET http://localhost/uniandes-web/api/v1/storage/fine/1_12.png
+GET http://localhost/uniandes-web/api/v1/storage/fine/50058575-a9cd-4d92-858d-d9bdb28fe926.jpg
 
 ### Pay one
 POST {{host}}/fine/pay/1

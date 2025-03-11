@@ -46,3 +46,7 @@ Authorization: Bearer {{token}}
 ### Get Fines
 GET {{host}}/profile/fines
 Authorization: Bearer {{token}}
+
+### GET Vehicles
+GET {{host}}/profile/vehicles
+Authorization: Bearer {{token}}

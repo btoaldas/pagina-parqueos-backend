@@ -27,12 +27,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "Created",
-  "lastname": "ByAdmin",
-  "email": "created@gmail.com",
-  "password": "123456789",
+  "name": "cliente",
+  "lastname": "lastname",
+  "email": "cliente@gmail.com",
+  "password": "1234",
   "state": 1,
-  "role": "admin"
+  "role": "cliente"
 }
 
 ### Update USer
@@ -50,7 +50,7 @@ Content-Type: application/json
 }
 
 ### Delete User
-DELETE {{host}}/user/5
+DELETE {{host}}/user/1
 Authorization: Bearer {{token}}
 
 ### Enagle User

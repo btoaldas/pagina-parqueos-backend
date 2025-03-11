@@ -44,6 +44,7 @@ class EnvLoader
         'DB_USER',
         'DB_PASS',
         'AES_KEY',
+        'ALLOW_ORIGIN',
         'JWT_SECRET',
         'JWT_EXPIRE',
         'RESEND_TOKEN',

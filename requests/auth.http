@@ -1,5 +1,5 @@
 @host=http://localhost/uniandes-web/api/v1
-@token={{login.response.body.data.token}}
+@token={{logintwofactor.response.body.data.token}}
 
 ### GET SOMETINH
 # @name login
@@ -13,14 +13,38 @@ Content-Type: application/json
   "password": "{{password}}"
 }
 
+### GET Two factor
+# @name logintwofactor
+# @prompt email
+# @prompt password
+POST {{host}}/auth/two-factor/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Get Two factor
+# @name verifytwofactor
+# @prompt email
+# @prompt access
+POST {{host}}/auth/two-factor/token
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "access": "{{access}}"
+}
+
 ### Create Account
 POST {{host}}/auth/register
 Content-Type: application/json
 
 {
-  "name": "cliente",
-  "lastname": "mid",
-  "email": "cliente@gmail.com",
+  "name": "admin",
+  "lastname": "lastname",
+  "email": "admin@gmail.com",
   "password": "1234"
 }
 
@@ -29,7 +53,7 @@ POST {{host}}/auth/request-password
 Content-Type: application/json
 
 {
-  "email": "grober@gmail.com"
+  "email": "admin@gmail.com"
 }
 
 ### Validate Token
@@ -37,8 +61,8 @@ POST {{host}}/auth/validate-request
 Content-Type: application/json
 
 {
-  "email": "grober@gmail.com",
-  "code": "235216"
+  "email": "admin@gmail.com",
+  "code": "545970"
 }
 
 ### Update Password
@@ -46,7 +70,7 @@ POST {{host}}/auth/update-password
 Content-Type: application/json
 
 {
-  "email": "grober@gmail.com",
-  "code": "235216",
-  "password": "grober"
+  "email": "admin@gmail.com",
+  "code": "545970",
+  "password": "4321"
 }
