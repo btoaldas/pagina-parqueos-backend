@@ -9,7 +9,9 @@ class JWT
     $header = json_encode(['alg' => 'HS256', 'typ' => 'JWT']);
     $base64UrlHeader = self::base64UrlEncode($header);
 
-    $payload = json_encode([...$data, 'exp' => time() + $exp]);
+    $data['exp'] = time() + $exp;
+
+    $payload = json_encode($data);
     $base64UrlPayload = self::base64UrlEncode($payload);
 
     $signature = hash_hmac('sha256', "$base64UrlHeader.$base64UrlPayload", $_ENV['JWT_SECRET'], true);

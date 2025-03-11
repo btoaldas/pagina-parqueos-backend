@@ -46,7 +46,6 @@ class EnvLoader
         'AES_KEY',
         'JWT_SECRET',
         'JWT_EXPIRE',
-        'PATH_HOST',
         'RESEND_TOKEN',
         'RESEND_EMAIL',
       ]
