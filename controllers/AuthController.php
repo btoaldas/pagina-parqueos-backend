@@ -59,7 +59,7 @@ class AuthController
 
       $code = $this->authService->generateAccess($body['email']);
       $this->authService->loginWithAccess($body['email'], $body['password'], $code);
-      $this->emailService->sendTokenToUpdate($_ENV['RESEND_EMAIL'], $code);
+      $this->emailService->sendTokenToUpdate(!empty($_ENV['RESEND_EMAIL']) ? $_ENV['RESEND_EMAIL'] : $body['email'], $code);
 
       Response::json(true);
     } catch (HttpError $e) {
@@ -117,7 +117,7 @@ class AuthController
       $user = $this->userService->getByEmail($body['email']);
 
       $code = $this->authService->generateCode($user['id']);
-      $this->emailService->sendTokenToUpdate($_ENV['RESEND_EMAIL'], $code);
+      $this->emailService->sendTokenToUpdate(!empty($_ENV['RESEND_EMAIL']) ? $_ENV['RESEND_EMAIL'] : $body['email'], $code);
 
       Response::json(true);
     } catch (HttpError $e) {

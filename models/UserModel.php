@@ -106,7 +106,7 @@ class UserModel
       u.correo as email,
       r.nombre_rol AS role," .
       ($withPassword ? 'u.contraseña AS password,' : '') .
-      ($withAccess ? 'u.codigo_acceso AS access,' : '') .
+      ($withAccess ? 'u.cdigo_acceso AS access,' : '') .
       "u.estado AS state
     FROM usuarios u
     JOIN roles r
@@ -135,7 +135,7 @@ class UserModel
       r.nombre_rol AS role,
       u.estado AS state,
       u.cdigo_recuperacion AS code,
-      u.codigo_acceso AS access
+      u.cdigo_acceso AS access
     FROM usuarios u
     JOIN roles r
       ON u.id_rol = r.id_rol
@@ -228,7 +228,7 @@ class UserModel
   {
     $sql = "UPDATE usuarios
     SET
-      codigo_acceso = :access
+      cdigo_acceso = :access
     WHERE correo = :email
     ";
     $stmt = $this->conn->prepare($sql);

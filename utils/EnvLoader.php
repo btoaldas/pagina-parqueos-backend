@@ -47,7 +47,10 @@ class EnvLoader
         'ALLOW_ORIGIN',
         'JWT_SECRET',
         'JWT_EXPIRE',
-        'RESEND_TOKEN',
+        'STMP_HOST',
+        'STMP_PORT',
+        'STMP_USERNAME',
+        'STMP_PASSWORD',
         'RESEND_EMAIL',
       ]
     )->required();
@@ -55,6 +58,7 @@ class EnvLoader
     Validator::with($_ENV, [
       'JWT_EXPIRE',
       'DB_PORT',
+      'STMP_PORT',
     ])->toInteger();
 
     self::$loaded = true;
