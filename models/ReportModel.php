@@ -22,8 +22,8 @@ class ReportModel
     $sql = "SELECT
       COUNT(
         DISTINCT  CASE
-          WHEN (YEAR(fecha_entrada) = YEAR(CURDATE()) AND MONTH(fecha_entrada) = MONTH(CURDATE()))
-            OR (fecha_salida IS NOT NULL AND YEAR(fecha_salida) = YEAR(CURDATE()) AND MONTH(fecha_salida) = MONTH(CURDATE()))
+          WHEN (YEAR(t.fecha_entrada) = YEAR(CURDATE()) AND MONTH(t.fecha_entrada) = MONTH(CURDATE()))
+            OR (t.fecha_salida IS NOT NULL AND YEAR(t.fecha_salida) = YEAR(CURDATE()) AND MONTH(t.fecha_salida) = MONTH(CURDATE()))
           THEN
             id_usuario
           ELSE NULL
@@ -31,14 +31,16 @@ class ReportModel
       ) AS current_month,
       COUNT(
         DISTINCT  CASE
-          WHEN (YEAR(fecha_entrada) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) AND MONTH(fecha_entrada) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)))
-            OR (fecha_salida IS NOT NULL AND YEAR(fecha_salida) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) AND MONTH(fecha_salida) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)))
+          WHEN (YEAR(t.fecha_entrada) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) AND MONTH(t.fecha_entrada) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)))
+            OR (t.fecha_salida IS NOT NULL AND YEAR(t.fecha_salida) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) AND MONTH(t.fecha_salida) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)))
           THEN
-            id_usuario
+            v.id_usuario
           ELSE NULL
         END
       ) AS last_month
-    FROM tickets;
+    FROM tickets t
+    JOIN vehiculos v
+      ON t.id_vehiculo = v.id_vehiculo
     ";
 
     $stmt = $this->conn->prepare($sql);
