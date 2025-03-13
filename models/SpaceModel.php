@@ -67,8 +67,15 @@ class SpaceModel
     $sql = "SELECT
       e.id_espacio AS id,
       e.estado AS state,
-      e.tipo AS type
+      e.tipo AS type,
+      JSON_OBJECT(
+        'id', z.id_zona,
+        'name',z.nombre,
+        'fee', z.tarifa
+      ) as zone
     FROM espacios e
+    JOIN zonas z
+      ON e.id_zona = z.id_zona
     WHERE e.id_zona = :id
     ";
 

@@ -30,6 +30,10 @@ class SpaceService
   public function getAllByZone(int $id)
   {
     $values = $this->spaceModel->allByZone($id);
+    $values = array_map(function ($value) {
+      $value['zone'] = json_decode($value['zone'], true);
+      return $value;
+    }, $values);
     return $values;
   }
 
