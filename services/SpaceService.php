@@ -27,6 +27,17 @@ class SpaceService
     return $values;
   }
 
+  public function getAllByZone(int $id)
+  {
+    $values = $this->spaceModel->allByZone($id);
+    return $values;
+  }
+
+  public function available()
+  {
+    return $this->spaceModel->available();
+  }
+
   public function getOne($id, $throws = true)
   {
     $data = $this->spaceModel->get($id);

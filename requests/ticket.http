@@ -16,6 +16,10 @@ Content-Type: application/json
 GET {{host}}/ticket
 Authorization: Bearer {{token}}
 
+### Get All by plate
+GET {{host}}/ticket/plate/ow
+Authorization: Bearer {{token}}
+
 ### Get From user
 GET {{host}}/profile/tickets
 Authorization: Bearer {{token}}

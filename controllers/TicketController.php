@@ -33,6 +33,20 @@ class TicketController
     }
   }
 
+  public function getAllByPlate()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+      Validator::with($pathparams, 'plate')->required();
+
+      $data = $this->ticketService->getAllByPlate($pathparams['plate']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
   public function getOne()
   {
     try {

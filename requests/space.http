@@ -16,6 +16,14 @@ Content-Type: application/json
 GET {{host}}/space
 Authorization: Bearer {{token}}
 
+### Get All BY Zone
+GET {{host}}/space-available
+Authorization: Bearer {{token}}
+
+### Get All BY Zone
+GET {{host}}/space/zone/6
+Authorization: Bearer {{token}}
+
 ### Get One
 GET {{host}}/space/4
 Authorization: Bearer {{token}}

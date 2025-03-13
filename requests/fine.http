@@ -17,6 +17,10 @@ Content-Type: application/json
 GET {{host}}/fine
 Authorization: Bearer {{token}}
 
+### Get All by plate
+GET {{host}}/fine/plate/ow
+Authorization: Bearer {{token}}
+
 ### Get All Fines
 GET {{host}}/fine/1
 Authorization: Bearer {{token}}

@@ -61,6 +61,8 @@ $router->addCrudRoute('/space', SpaceController::class, $empleadoMiddlware);
 $router->addCrudRoute('/vehicle', VehicleController::class, $empleadoMiddlware);
 $router->addRoute('POST', '/user/[id]/enable', [UserController::class, 'enable'], $adminMiddleware);
 $router->addRoute('POST', '/user/[id]/disable', [UserController::class, 'disable'], $adminMiddleware);
+$router->addRoute('GET', '/space-available', [SpaceController::class, 'available', $registeredMiddleware]);
+$router->addRoute('GET', '/space/zone/[id]', [SpaceController::class, 'getAllByZone', $empleadoMiddlware]);
 
 $router->addRoute('GET', '/profile', [ProfileController::class, 'getProfile'], $registeredMiddleware);
 $router->addRoute('POST', '/profile/update', [ProfileController::class, 'update'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);
@@ -74,12 +76,14 @@ $router->addRoute('POST', '/ticket/completed/[id]', [TicketController::class, 'v
 $router->addRoute('POST', '/ticket/cancel/[id]', [TicketController::class, 'cancel'], $empleadoMiddlware);
 $router->addRoute('POST', '/ticket', [TicketController::class, 'register'], [[JsonMiddleware::class, 'json'], ...$empleadoMiddlware]);
 $router->addRoute('GET', '/ticket/[id]', [TicketController::class, 'getOne'], $empleadoMiddlware);
+$router->addRoute('GET', '/ticket/plate/[plate]', [TicketController::class, 'getAllByPlate'], $empleadoMiddlware);
 
 $router->addRoute('GET', '/fine', [FineController::class, 'getAll'], $empleadoMiddlware);
 $router->addRoute('POST', '/fine/pay/[id]', [FineController::class, 'pay'], $empleadoMiddlware);
 $router->addRoute('POST', '/fine/cancel/[id]', [FineController::class, 'cancel'], $empleadoMiddlware);
 $router->addRoute('GET', '/fine/[id]', [FineController::class, 'getOne'], $empleadoMiddlware);
 $router->addRoute('POST', '/fine', [FineController::class, 'create'], $empleadoMiddlware);
+$router->addRoute('GET', '/fine/plate/[plate]', [FineController::class, 'getAllByPlate'], $empleadoMiddlware);
 
 $router->addRoute('GET', '/storage/fine/[filename]', [StorageController::class, 'getFineFile']);
 

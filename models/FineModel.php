@@ -59,6 +59,45 @@ class FineModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  public function allByPlate(string $plate)
+  {
+    $sql = "SELECT
+      m.id_multa AS id,
+      m.monto AS amount,
+      m.descripcion AS description,
+      m.evidencia AS filename,
+      m.estado AS state,
+      m.fecha_pago AS pay_date,
+      JSON_OBJECT(
+        'id', v.id_vehiculo,
+        'id_user', v.id_usuario,
+        'plate', v.placa,
+        'model', v.modelo,
+        'year', v.año
+      ) AS vehicle,
+      JSON_OBJECT(
+        'id', e.id_usuario,
+        'name', e.nombre,
+        'lastname', e.apellido,
+        'role', r.nombre_rol
+      ) AS employ
+    FROM multas m
+    JOIN vehiculos v
+      ON m.id_vehiculo = v.id_vehiculo
+    JOIN usuarios e
+      ON m.id_empleado = e.id_usuario
+    JOIN roles r
+      ON e.id_rol = r.id_rol
+    WHERE LOWER(v.placa) LIKE LOWER(:plate)
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->execute(['plate' => '%' . $plate . '%']);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function get($id)
   {
     $sql = "SELECT

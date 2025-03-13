@@ -33,6 +33,30 @@ class SpaceController
     }
   }
 
+  public function getAllByZone()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->spaceService->getAllByZone($pathparams['id']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function available()
+  {
+    try {
+      $data = $this->spaceService->available();
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
   public function getOne()
   {
     try {

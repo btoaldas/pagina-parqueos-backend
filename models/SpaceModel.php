@@ -49,6 +49,36 @@ class SpaceModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  public function available()
+  {
+    $sql = "SELECT *
+      FROM espacios
+      WHERE estado LIKE 'disponible'";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function allByZone(int $id)
+  {
+    $sql = "SELECT
+      e.id_espacio AS id,
+      e.estado AS state,
+      e.tipo AS type
+    FROM espacios e
+    WHERE e.id_zona = :id
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->execute(['id' => $id]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function get($id)
   {
     $sql = "SELECT

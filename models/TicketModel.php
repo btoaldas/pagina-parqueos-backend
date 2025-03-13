@@ -26,6 +26,61 @@ class TicketModel
     return $stmt->execute($data);
   }
 
+  public function allByPlate(string $plate)
+  {
+    $sql = "SELECT
+      t.id_ticket AS id,
+      t.fecha_entrada AS entry_date,
+      t.fecha_salida AS exit_date,
+      t.monto AS amount,
+      t.estado AS state,
+      JSON_OBJECT(
+        'id', e.id_espacio,
+        'state', e.estado,
+        'type', e.tipo
+      ) AS space,
+      JSON_OBJECT(
+        'id', z.id_zona,
+        'name', z.nombre,
+        'fee', z.tarifa,
+        'max_time', z.tiempo_maximo,
+        'address', z.address,
+        'description', z.description
+      ) AS zone,
+      JSON_OBJECT(
+        'id', v.id_vehiculo,
+        'plate', v.placa,
+        'brand', v.marca,
+        'year', v.año,
+        'year', v.año,
+        'taxable_base', v.base_imponible
+      ) AS vehicle,
+      JSON_OBJECT(
+        'id', u.id_usuario,
+        'name', u.nombre,
+        'lastname', u.apellido,
+        'email', u.correo,
+        'state', u.estado
+      ) AS user
+    FROM tickets t
+    JOIN vehiculos v
+      ON t.id_vehiculo = v.id_vehiculo
+    JOIN espacios e
+      ON t.id_espacio = e.id_espacio
+    JOIN zonas z
+      ON e.id_zona = z.id_zona
+    JOIN usuarios u
+      ON u.id_usuario = v.id_usuario
+    WHERE LOWER(v.placa) LIKE LOWER(:plate)
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+
+    $stmt->execute(["plate" => '%' . $plate . '%']);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function all($limit = 10, $offset = 0)
   {
     $sql = "SELECT

@@ -40,6 +40,21 @@ class TicketService
     return $values;
   }
 
+  public function getAllByPlate(string $plate)
+  {
+    $values = $this->ticketModel->allByPlate($plate);
+    $values = array_map(function ($value) {
+      $value['space'] = json_decode($value['space'], true);
+      $value['zone'] = json_decode($value['zone'], true);
+      $value['vehicle'] = json_decode($value['vehicle'], true);
+      $value['user'] = json_decode($value['user'], true);
+      $value['user']['name'] = AesEncryption::decrypt($value['user']['name']);
+      $value['user']['lastname'] = AesEncryption::decrypt($value['user']['lastname']);
+      return $value;
+    }, $values);
+    return $values;
+  }
+
   public function getOne($id, $throws = true)
   {
     $data = $this->ticketModel->get($id);

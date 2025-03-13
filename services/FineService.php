@@ -37,6 +37,20 @@ class FineService
     return $values;
   }
 
+  public function getAllByPlate(string $plate)
+  {
+    $values = $this->fineModel->allByPlate($plate);
+    $values = array_map(function ($value) {
+      $value['amount'] = (float)$value['amount'];
+      $value['vehicle'] = json_decode($value['vehicle'], true);
+      $value['employ'] = json_decode($value['employ'], true);
+      $value['employ']['name'] = AesEncryption::decrypt($value['employ']['name']);
+      $value['employ']['lastname'] = AesEncryption::decrypt($value['employ']['lastname']);
+      return $value;
+    }, $values);
+    return $values;
+  }
+
   public function getOne($id, $throws = true)
   {
     $data = $this->fineModel->get($id);
