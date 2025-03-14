@@ -155,7 +155,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE vehiculos (
     id_vehiculo INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NOT NULL,
+    id_usuario INT NULL,
     placa VARCHAR(20) NOT NULL UNIQUE,
     marca VARCHAR(50) NOT NULL,
     modelo VARCHAR(50) NOT NULL,
@@ -177,7 +177,9 @@ CREATE TABLE espacios (
     id_espacio INT AUTO_INCREMENT PRIMARY KEY,
     id_zona INT NOT NULL,
     estado VARCHAR(50) NOT NULL, -- Ejemplo: "disponible", "ocupado", "mantenimiento"
-    tipo VARCHAR(50) NOT NULL,   -- Ejemplo: "automÃ³vil", "motocicleta", "discapacitado"
+    tipo VARCHAR(50) NOT NULL,   -- Ejemplo: "automóvil", "motocicleta", "discapacitado"
+    latitud DECIMAL(10, 7) NOT NULL DEFAULT 0,
+    longitud DECIMAL(10, 7) NOT NULL DEFAULT 0,
     FOREIGN KEY (id_zona) REFERENCES zonas(id_zona)
 );
 
@@ -202,6 +204,7 @@ CREATE TABLE multas (
     descripcion VARCHAR(255),
     evidencia VARCHAR(255), -- Ruta o URL de la evidencia (foto, video, etc.)
     estado VARCHAR(50) NOT NULL, -- Ejemplo: "pendiente", "pagada", "cancelada"
+    fecha_creacion DATETIME NOT NULL,
     fecha_pago DATETIME NULL,
     id_empleado INT NULL,
     FOREIGN KEY (id_empleado) REFERENCES usuarios(id_usuario),
@@ -228,19 +231,19 @@ VALUES
     ('Zona Verde', '15.5', 8000),
     ('Zona Morada', '8.0', 2400);
 
-INSERT INTO espacios (id_zona, estado, tipo)
+INSERT INTO espacios (id_zona, estado, tipo, latitud, longitud)
 VALUES
-    (1, "disponible", "discapacitado"),
-    (1, "disponible", "automovil"),
-    (1, "disponible", "automovil"),
-    (1, "disponible", "motocicleta"),
-    (2, "disponible", "automovil"),
-    (2, "disponible", "automovil"),
-    (2, "disponible", "automovil"),
-    (3, "disponible", "automovil"),
-    (3, "disponible", "motocicleta"),
-    (3, "disponible", "automovil"),
-    (3, "disponible", "discapacitado");
+    (1, "disponible", "discapacitado", '9.1900', '75.0152'),
+    (1, "disponible", "automovil", '9.1900', '75.0152'),
+    (1, "disponible", "automovil", '9.1900', '75.0152'),
+    (1, "disponible", "motocicleta", '9.1900', '75.0152'),
+    (2, "disponible", "automovil", '9.1900', '75.0152'),
+    (2, "disponible", "automovil", '9.1900', '75.0152'),
+    (2, "disponible", "automovil", '9.1900', '75.0152'),
+    (3, "disponible", "automovil", '9.1900', '75.0152'),
+    (3, "disponible", "motocicleta", '9.1900', '75.0152'),
+    (3, "disponible", "automovil", '9.1900', '75.0152'),
+    (3, "disponible", "discapacitado", '9.1900', '75.0152');
 ```
 
 ### 2. Configurar el Acceso:
