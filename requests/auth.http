@@ -38,14 +38,18 @@ Content-Type: application/json
 }
 
 ### Create Account
+# @prompt name
+# @prompt lastname
+# @prompt email
+# @prompt password
 POST {{host}}/auth/register
 Content-Type: application/json
 
 {
-  "name": "admin",
-  "lastname": "lastname",
-  "email": "admin@gmail.com",
-  "password": "1234"
+  "name": "{{name}}",
+  "lastname": "{{lastname}}",
+  "email": "{{email}}",
+  "password": "{{password}}"
 }
 
 ### Request Change Password
