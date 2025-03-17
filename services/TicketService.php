@@ -32,6 +32,8 @@ class TicketService
       $value['space'] = json_decode($value['space'], true);
       $value['zone'] = json_decode($value['zone'], true);
       $value['vehicle'] = json_decode($value['vehicle'], true);
+
+      if (is_null($value['user'])) return $value;
       $value['user'] = json_decode($value['user'], true);
       $value['user']['name'] = AesEncryption::decrypt($value['user']['name']);
       $value['user']['lastname'] = AesEncryption::decrypt($value['user']['lastname']);
@@ -47,6 +49,8 @@ class TicketService
       $value['space'] = json_decode($value['space'], true);
       $value['zone'] = json_decode($value['zone'], true);
       $value['vehicle'] = json_decode($value['vehicle'], true);
+
+      if (is_null($value['user'])) return $value;
       $value['user'] = json_decode($value['user'], true);
       $value['user']['name'] = AesEncryption::decrypt($value['user']['name']);
       $value['user']['lastname'] = AesEncryption::decrypt($value['user']['lastname']);
@@ -65,6 +69,8 @@ class TicketService
     $data['space'] = json_decode($data['space'], true);
     $data['zone'] = json_decode($data['zone'], true);
     $data['vehicle'] = json_decode($data['vehicle'], true);
+
+    if (is_null($data['user'])) return $data;
     $data['user'] = json_decode($data['user'], true);
     $data['user']['name'] = AesEncryption::decrypt($data['user']['name']);
     $data['user']['lastname'] = AesEncryption::decrypt($data['user']['lastname']);

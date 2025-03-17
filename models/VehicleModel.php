@@ -17,14 +17,26 @@ class VehicleModel
   // Crear un nuevo vehículo
   public function create($data)
   {
-    $sql = "INSERT INTO vehiculos
-      (id_usuario, placa, marca, modelo, año, base_imponible)
-    VALUES
-      (:id_user, :plate, :brand, :model, :year, :taxable_base)
-    ";
+    $this->conn->beginTransaction();
 
-    $stmt = $this->conn->prepare($sql);
-    return $stmt->execute($data);
+    try {
+      $sql = "INSERT INTO vehiculos
+        (id_usuario, placa, marca, modelo, año, base_imponible)
+      VALUES
+        (:id_user, :plate, :brand, :model, :year, :taxable_base)
+      ";
+
+      $stmt = $this->conn->prepare($sql);
+      $stmt->execute($data);
+
+      $id = $this->conn->lastInsertId();
+      $this->conn->commit();
+
+      return (int)$id;
+    } catch (\Exception $e) {
+      $this->conn->rollBack();
+      throw $e;
+    }
   }
 
   public function allFromUser(int $id)
@@ -59,15 +71,19 @@ class VehicleModel
       v.modelo AS model,
       v.año AS year,
       v.base_imponible AS taxable_base,
-      JSON_OBJECT(
-        'id', u.id_usuario,
-        'name', u.nombre,
-        'lastname', u.apellido,
-        'email', u.correo,
-        'state', u.estado
-      ) AS user
+      CASE
+        WHEN v.id_usuario IS NOT NULL THEN
+        JSON_OBJECT(
+          'id', u.id_usuario,
+          'name', u.nombre,
+          'lastname', u.apellido,
+          'email', u.correo,
+          'state', u.estado
+        )
+        ELSE NULL
+      END AS user
     FROM vehiculos v
-    JOIN usuarios u
+    LEFT JOIN usuarios u
       ON v.id_usuario = u.id_usuario
     LIMIT :limit
     OFFSET :offset
@@ -95,15 +111,19 @@ class VehicleModel
       v.modelo AS model,
       v.año AS year,
       v.base_imponible AS taxable_base,
-      JSON_OBJECT(
-        'id', u.id_usuario,
-        'name', u.nombre,
-        'lastname', u.apellido,
-        'email', u.correo,
-        'state', u.estado
-      ) AS user
+      CASE
+        WHEN v.id_usuario IS NOT NULL THEN
+        JSON_OBJECT(
+          'id', u.id_usuario,
+          'name', u.nombre,
+          'lastname', u.apellido,
+          'email', u.correo,
+          'state', u.estado
+        )
+        ELSE NULL
+      END AS user
     FROM vehiculos v
-    JOIN usuarios u
+    LEFT JOIN usuarios u
       ON v.id_usuario = u.id_usuario
     WHERE v.id_vehiculo = :id
     ";
@@ -122,21 +142,25 @@ class VehicleModel
       v.modelo AS model,
       v.año AS year,
       v.base_imponible AS taxable_base,
-      JSON_OBJECT(
-        'id', u.id_usuario,
-        'name', u.nombre,
-        'lastname', u.apellido,
-        'email', u.correo,
-        'state', u.estado
-      ) AS user
+      CASE
+        WHEN v.id_usuario IS NOT NULL THEN
+        JSON_OBJECT(
+          'id', u.id_usuario,
+          'name', u.nombre,
+          'lastname', u.apellido,
+          'email', u.correo,
+          'state', u.estado
+        )
+        ELSE NULL
+      END AS user
     FROM vehiculos v
-    JOIN usuarios u
+    LEFT JOIN usuarios u
       ON v.id_usuario = u.id_usuario
-    WHERE v.placa = :plate
-  ";
+    WHERE LOWER(v.placa) LIKE LOWER(:plate)
+    ";
 
     $stmt = $this->conn->prepare($sql);
-    $stmt->execute(['plate' => $plate]);
+    $stmt->execute(['plate' => '%' . $plate . '%']);
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 

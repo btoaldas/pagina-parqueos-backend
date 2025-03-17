@@ -86,11 +86,13 @@ class FineService
     $filename = UUID::v4() . ($image['type'] === 'image/jpeg' ? '.jpg' : '.png');
     $data['filename'] = $filename;
 
-    $this->fineModel->create($data);
+    $data['created_date'] = (new DateTime())->format('Y-m-d H:i:s');
+
+    $id = $this->fineModel->create($data);
 
     move_uploaded_file($image['tmp_name'], "$path/$filename");
 
-    return true;
+    return $id;
   }
 
   public function pay($id)

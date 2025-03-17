@@ -23,6 +23,7 @@ class VehicleService
   {
     $vehicles = $this->vehicleModel->all($limit, $offset);
     $vehicles = array_map(function ($vehicle) {
+      if (is_null($vehicle['user'])) return $vehicle;
       $vehicle['user'] = json_decode($vehicle['user'], true);
       $vehicle['user']['name'] = AesEncryption::decrypt($vehicle['user']['name']);
       $vehicle['user']['lastname'] = AesEncryption::decrypt($vehicle['user']['lastname']);
@@ -46,6 +47,8 @@ class VehicleService
       throw HttpError::NotFound("Vehicle $id does not exist!");
     }
 
+    if (is_null($vehicle['user'])) return $vehicle;
+
     $vehicle['user'] = json_decode($vehicle['user'], true);
     $vehicle['user']['name'] = AesEncryption::decrypt($vehicle['user']['name']);
     $vehicle['user']['lastname'] = AesEncryption::decrypt($vehicle['user']['lastname']);
@@ -56,9 +59,11 @@ class VehicleService
   // Crear un nuevo vehículo
   public function create($data)
   {
-    $user = $this->userModel->getOne($data['id_user']);
-    if (!$user) {
-      throw HttpError::BadRequest("There is no user with ID {$data['id_user']}");
+    if (!is_null($data['id_user'])) {
+      $user = $this->userModel->getOne($data['id_user']);
+      if (!$user) {
+        throw HttpError::BadRequest("There is no user with ID {$data['id_user']}");
+      }
     }
 
     // Validar si la placa ya existe
@@ -75,9 +80,12 @@ class VehicleService
   {
     $vehicle = $this->getOne($id);
 
-    $user = $this->userModel->getOne($data['id_user']);
-    if (!$user) {
-      throw HttpError::BadRequest("There is no user with ID {$data['id_user']}");
+
+    if (!is_null($data['id_user'])) {
+      $user = $this->userModel->getOne($data['id_user']);
+      if (!$user) {
+        throw HttpError::BadRequest("There is no user with ID {$data['id_user']}");
+      }
     }
 
     // Si la placa que se intenta actualizar es diferente a la actual, validar si ya existe

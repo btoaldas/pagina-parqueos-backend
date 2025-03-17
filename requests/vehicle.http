@@ -27,8 +27,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "id_user": 5,
-  "plate": "XAS2",
+  "id_user": null,
+  "plate": "FASX",
   "brand": "xd",
   "model": "XDXD",
   "year": 23,
@@ -41,7 +41,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "id_user": 1,
+  "id_user": null,
   "plate": "ASD3",
   "brand": "xdxd",
   "model": "XDXD2",

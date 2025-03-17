@@ -16,14 +16,26 @@ class TicketModel
 
   public function create($data)
   {
-    $sql = "INSERT INTO tickets
-      (id_vehiculo, id_espacio, fecha_entrada, estado, id_empleado)
-    VALUES
-      (:id_vehicle, :id_space, :entry_date, :state, :id_employ)
-    ";
+    $this->conn->beginTransaction();
 
-    $stmt = $this->conn->prepare($sql);
-    return $stmt->execute($data);
+    try {
+      $sql = "INSERT INTO tickets
+        (id_vehiculo, id_espacio, fecha_entrada, estado, id_empleado)
+      VALUES
+        (:id_vehicle, :id_space, :entry_date, :state, :id_employ)
+      ";
+
+      $stmt = $this->conn->prepare($sql);
+      $stmt->execute($data);
+
+      $id = $this->conn->lastInsertId();
+      $this->conn->commit();
+
+      return (int)$id;
+    } catch (\Exception $e) {
+      $this->conn->rollBack();
+      throw $e;
+    }
   }
 
   public function allByPlate(string $plate)
@@ -55,13 +67,17 @@ class TicketModel
         'year', v.año,
         'taxable_base', v.base_imponible
       ) AS vehicle,
-      JSON_OBJECT(
-        'id', u.id_usuario,
-        'name', u.nombre,
-        'lastname', u.apellido,
-        'email', u.correo,
-        'state', u.estado
-      ) AS user
+      CASE
+        WHEN v.id_usuario IS NOT NULL THEN
+          JSON_OBJECT(
+            'id', u.id_usuario,
+            'name', u.nombre,
+            'lastname', u.apellido,
+            'email', u.correo,
+            'state', u.estado
+          )
+        ELSE NULL
+      END AS user
     FROM tickets t
     JOIN vehiculos v
       ON t.id_vehiculo = v.id_vehiculo
@@ -69,7 +85,7 @@ class TicketModel
       ON t.id_espacio = e.id_espacio
     JOIN zonas z
       ON e.id_zona = z.id_zona
-    JOIN usuarios u
+    LEFT JOIN usuarios u
       ON u.id_usuario = v.id_usuario
     WHERE LOWER(v.placa) LIKE LOWER(:plate)
     ";
@@ -110,13 +126,17 @@ class TicketModel
         'year', v.año,
         'taxable_base', v.base_imponible
       ) AS vehicle,
-      JSON_OBJECT(
-        'id', u.id_usuario,
-        'name', u.nombre,
-        'lastname', u.apellido,
-        'email', u.correo,
-        'state', u.estado
-      ) AS user
+      CASE
+        WHEN v.id_usuario IS NOT NULL THEN
+          JSON_OBJECT(
+            'id', u.id_usuario,
+            'name', u.nombre,
+            'lastname', u.apellido,
+            'email', u.correo,
+            'state', u.estado
+          )
+        ELSE NULL
+      END AS user
     FROM tickets t
     JOIN vehiculos v
       ON t.id_vehiculo = v.id_vehiculo
@@ -124,7 +144,7 @@ class TicketModel
       ON t.id_espacio = e.id_espacio
     JOIN zonas z
       ON e.id_zona = z.id_zona
-    JOIN usuarios u
+    LEFT JOIN usuarios u
       ON u.id_usuario = v.id_usuario
     LIMIT :limit
     OFFSET :offset
@@ -168,18 +188,22 @@ class TicketModel
         'year', v.año,
         'taxable_base', v.base_imponible
       ) AS vehicle,
-      JSON_OBJECT(
-        'id', u.id_usuario,
-        'name', u.nombre,
-        'lastname', u.apellido,
-        'email', u.correo,
-        'state', u.estado
-      ) AS user
+      CASE
+        WHEN v.id_usuario IS NOT NULL THEN
+          JSON_OBJECT(
+            'id', u.id_usuario,
+            'name', u.nombre,
+            'lastname', u.apellido,
+            'email', u.correo,
+            'state', u.estado
+          )
+        ELSE NULL
+      END AS user
     FROM tickets t
     JOIN vehiculos v ON t.id_vehiculo = v.id_vehiculo
     JOIN espacios e ON t.id_espacio = e.id_espacio
     JOIN zonas z ON e.id_zona = z.id_zona
-    JOIN usuarios u ON u.id_usuario = v.id_usuario
+    LEFT JOIN usuarios u ON u.id_usuario = v.id_usuario
     WHERE t.id_ticket = :id";
 
     $stmt = $this->conn->prepare($sql);
@@ -311,18 +335,22 @@ class TicketModel
         'year', v.año,
         'taxable_base', v.base_imponible
       ) AS vehicle,
-      JSON_OBJECT(
-        'id', u.id_usuario,
-        'name', u.nombre,
-        'lastname', u.apellido,
-        'email', u.correo,
-        'state', u.estado
-      ) AS user
+      CASE
+        WHEN v.id_usuario IS NOT NULL THEN
+          JSON_OBJECT(
+            'id', u.id_usuario,
+            'name', u.nombre,
+            'lastname', u.apellido,
+            'email', u.correo,
+            'state', u.estado
+          )
+        ELSE NULL
+      END AS user
     FROM tickets t
     JOIN vehiculos v ON t.id_vehiculo = v.id_vehiculo
     JOIN espacios e ON t.id_espacio = e.id_espacio
     JOIN zonas z ON e.id_zona = z.id_zona
-    JOIN usuarios u ON u.id_usuario = v.id_usuario
+    LEFT JOIN usuarios u ON u.id_usuario = v.id_usuario
     JOIN empleados emp ON t.id_empleado = emp.id_empleado
     WHERE emp.id_empleado = :employeeId";
 

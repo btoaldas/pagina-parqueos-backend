@@ -24,6 +24,7 @@ class FineModel
       m.descripcion AS description,
       m.evidencia AS filename,
       m.estado AS state,
+      m.fecha_creacion AS created_date,
       m.fecha_pago AS pay_date,
       JSON_OBJECT(
         'id', v.id_vehiculo,
@@ -68,6 +69,7 @@ class FineModel
       m.evidencia AS filename,
       m.estado AS state,
       m.fecha_pago AS pay_date,
+      m.fecha_creacion AS created_date,
       JSON_OBJECT(
         'id', v.id_vehiculo,
         'id_user', v.id_usuario,
@@ -107,6 +109,7 @@ class FineModel
       m.evidencia AS filename,
       m.estado AS state,
       m.fecha_pago AS pay_date,
+      m.fecha_creacion AS created_date,
       JSON_OBJECT(
         'id', v.id_vehiculo,
         'id_user', v.id_usuario,
@@ -142,9 +145,9 @@ class FineModel
   public function create($data)
   {
     $sql = "INSERT INTO multas
-      (id_vehiculo, id_empleado, monto, descripcion, evidencia, estado)
+      (id_vehiculo, id_empleado, fecha_creacion, monto, descripcion, evidencia, estado)
     VALUES
-      (:id_vehicle, :id_employ, :amount, :description, :filename, 'pendiente')
+      (:id_vehicle, :id_employ, :created_date, :amount, :description, :filename, 'pendiente')
     ";
     $this->conn->beginTransaction();
     $stmt = $this->conn->prepare($sql);
@@ -198,6 +201,7 @@ class FineModel
       m.evidencia AS filename,
       m.estado AS state,
       m.fecha_pago AS pay_date,
+      m.fecha_creacion AS created_date,
       JSON_OBJECT(
         'id', v.id_vehiculo,
         'id_user', v.id_usuario,
