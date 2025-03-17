@@ -46,6 +46,7 @@ class TicketModel
       t.fecha_salida AS exit_date,
       t.monto AS amount,
       t.estado AS state,
+      DATE_ADD(t.fecha_entrada, INTERVAL z.tiempo_maximo MINUTE) AS max_date,
       JSON_OBJECT(
         'id', e.id_espacio,
         'state', e.estado,
@@ -274,6 +275,9 @@ class TicketModel
       t.fecha_salida AS exit_date,
       t.monto AS amount,
       t.estado AS state,
+      DATE_ADD(t.fecha_entrada, INTERVAL z.tiempo_maximo MINUTE) AS max_date,
+      v.placa AS plate,
+      z.nombre AS zone_name,
       JSON_OBJECT(
         'id', e.id_espacio,
         'state', e.estado,
