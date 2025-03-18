@@ -16,6 +16,99 @@ class ReportModel
     $this->conn = Database::getConnection();
   }
 
+  public function getReportTicktes()
+  {
+    $sql = "SELECT
+      t.id_ticket AS id,
+      t.fecha_entrada AS entry_date,
+      t.fecha_salida AS exit_date,
+      t.monto AS amount,
+      t.estado AS state,
+      u.nombre AS user_name,
+      u.apellido AS user_lastname,
+      u.correo AS user_email,
+      e.id_usuario AS employee_id,
+      e.nombre AS employee_name,
+      e.apellido AS employee_lastname,
+      s.id_espacio AS space_id,
+      s.estado AS space_state,
+      s.tipo AS space_type,
+      z.id_zona AS zone_id,
+      z.nombre AS zone_name,
+      z.tarifa AS zone_fee,
+      z.tiempo_maximo AS zone_max_time,
+      z.address AS zone_address,
+      z.description AS zone_description,
+      v.id_vehiculo AS vehicle_id,
+      v.placa AS vehicle_plate,
+      v.marca AS vehicle_brand,
+      v.año AS vehicle_year,
+      v.base_imponible AS vehicle_taxable_base
+    FROM tickets t
+    LEFT JOIN vehiculos v
+      ON t.id_vehiculo = v.id_vehiculo
+    LEFT JOIN usuarios u
+      ON v.id_usuario = u.id_usuario
+    JOIN usuarios e
+      ON t.id_empleado = e.id_usuario
+    JOIN espacios s
+      ON t.id_espacio = s.id_espacio
+    JOIN zonas z
+      ON s.id_zona = z.id_zona
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function getReportTicktesByUser($id)
+  {
+    $sql = "SELECT
+      t.id_ticket AS id,
+      t.fecha_entrada AS entry_date,
+      t.fecha_salida AS exit_date,
+      t.monto AS amount,
+      t.estado AS state,
+      s.id_espacio AS space_id,
+      s.estado AS space_state,
+      s.tipo AS space_type,
+      z.id_zona AS zone_id,
+      z.nombre AS zone_name,
+      z.tarifa AS zone_fee,
+      z.tiempo_maximo AS zone_max_time,
+      z.address AS zone_address,
+      z.description AS zone_description,
+      v.id_vehiculo AS vehicle_id,
+      v.placa AS vehicle_plate,
+      v.marca AS vehicle_brand,
+      v.año AS vehicle_year,
+      v.base_imponible AS vehicle_taxable_base,
+      u.nombre AS user_name,
+      u.apellido AS user_lastname,
+      u.correo AS user_email
+    FROM tickets t
+    LEFT JOIN vehiculos v
+      ON t.id_vehiculo = v.id_vehiculo
+    LEFT JOIN usuarios u
+      ON v.id_usuario = u.id_usuario
+    JOIN usuarios e
+      ON t.id_empleado = e.id_usuario
+    JOIN espacios s
+      ON t.id_espacio = s.id_espacio
+    JOIN zonas z
+      ON s.id_zona = z.id_zona
+    WHERE t.id_empleado = :id
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function activeUsers()
   {
     // Usuarios activos mes actual - anterior mes

@@ -16,7 +16,7 @@ class SpaceModel
 
   public function create($data)
   {
-    $sql = "INSERT INTO espacios (id_zona, estado, tipo) VALUES (:id_zone, :state, :type)";
+    $sql = "INSERT INTO espacios (id_zona, estado, tipo, latitud, longitud) VALUES (:id_zone, :state, :type, :latitude, :longitude)";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute($data);
   }
@@ -27,6 +27,8 @@ class SpaceModel
       e.id_espacio AS id,
       e.estado AS state,
       e.tipo AS type,
+      e.latitud AS latitude,
+      e.longitud AS longitude,
       JSON_OBJECT(
         'id', z.id_zona,
         'name',z.nombre,
@@ -68,6 +70,8 @@ class SpaceModel
       e.id_espacio AS id,
       e.estado AS state,
       e.tipo AS type,
+      e.latitud AS latitude,
+      e.longitud AS longitude,
       JSON_OBJECT(
         'id', z.id_zona,
         'name',z.nombre,

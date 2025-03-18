@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\AuthService;
 use App\Services\FineService;
+use App\Services\ReportService;
 use App\Services\TicketService;
 use App\Services\UserService;
 use App\Services\VehicleService;
@@ -20,6 +21,7 @@ class ProfileController
   private $ticketService;
   private $fineService;
   private $vehicleService;
+  private $reportService;
 
   public function __construct()
   {
@@ -27,6 +29,7 @@ class ProfileController
     $this->ticketService = new TicketService();
     $this->fineService = new FineService();
     $this->vehicleService = new VehicleService();
+    $this->reportService = new ReportService();
   }
 
   public function getProfile()
@@ -107,6 +110,39 @@ class ProfileController
       $payload = $GLOBALS['payload'];
       $vehicles = $this->vehicleService->getAllFromUser($payload['id']);
       Response::json($vehicles);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function downloadPdf()
+  {
+    try {
+      $dompdf = $this->reportService->generatePdf();
+
+      $dompdf->stream("document.pdf", array("Attachment" => false));
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  // extension=iconv
+  public function downloadExcel()
+  {
+    try {
+      $params = Router::$pathparams;
+      Validator::with($params, 'id')->required()->isInteger()->toInteger();
+
+      $writer = $this->reportService->generateExcelByEmployee($params['id']);
+
+      $path = $_ENV['PATH_STORAGE'] !== '' ? $_ENV['PATH_STORAGE'] : __DIR__ . "/../storage";
+      $writer->save($path . '/report.xlsx');
+
+      header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      header('Content-Disposition: attachment;filename="report.xlsx"');
+      header('Cache-Control: max-age=0');
+
+      $writer->save('php://output');
     } catch (HttpError $e) {
       ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
     }

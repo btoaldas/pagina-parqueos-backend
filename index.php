@@ -91,6 +91,7 @@ $router->addRoute('GET', '/report/main', [ReportController::class, 'main'], $emp
 $router->addRoute('GET', '/report/stats', [ReportController::class, 'report'], $empleadoMiddlware);
 $router->addRoute('GET', '/report/pdf', [ReportController::class, 'downloadPdf']);
 $router->addRoute('GET', '/report/xlsx', [ReportController::class, 'downloadExcel']);
+$router->addRoute('GET', '/profile/report/xlsx/[id]', [ProfileController::class, 'downloadExcel']);
 
 try {
   $router->handlerRequest();
