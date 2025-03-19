@@ -58,11 +58,16 @@ $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
 $router->addCrudRoute('/space', SpaceController::class, $registeredMiddleware);
-$router->addCrudRoute('/vehicle', VehicleController::class, $empleadoMiddlware);
-$router->addRoute('POST', '/user/[id]/enable', [UserController::class, 'enable'], $adminMiddleware);
-$router->addRoute('POST', '/user/[id]/disable', [UserController::class, 'disable'], $adminMiddleware);
 $router->addRoute('GET', '/space-available', [SpaceController::class, 'available', $registeredMiddleware]);
 $router->addRoute('GET', '/space/zone/[id]', [SpaceController::class, 'getAllByZone', $empleadoMiddlware]);
+
+$router->addRoute('GET', '/vehicle/without-user', [VehicleController::class, 'getWithNoUSer'], $empleadoMiddlware);
+$router->addRoute('GET', '/vehicle/user/[id]', [VehicleController::class, 'getByUser'], $empleadoMiddlware);
+$router->addRoute('PUT', '/vehicle/update', [VehicleController::class, 'updateUser'], [[JsonMiddleware::class, 'json'], ...$empleadoMiddlware]);
+$router->addCrudRoute('/vehicle', VehicleController::class, $empleadoMiddlware);
+
+$router->addRoute('POST', '/user/[id]/enable', [UserController::class, 'enable'], $adminMiddleware);
+$router->addRoute('POST', '/user/[id]/disable', [UserController::class, 'disable'], $adminMiddleware);
 
 $router->addRoute('GET', '/profile', [ProfileController::class, 'getProfile'], $registeredMiddleware);
 $router->addRoute('POST', '/profile/update', [ProfileController::class, 'update'], [[JsonMiddleware::class, 'json'], ...$registeredMiddleware]);

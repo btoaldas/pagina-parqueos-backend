@@ -18,6 +18,48 @@ class VehicleController
     $this->vehicleService = new VehicleService();
   }
 
+  public function getByUser()
+  {
+    try {
+      $pathparams = Router::$pathparams;
+
+      Validator::with($pathparams, 'id')->required()->isInteger();
+
+      $data = $this->vehicleService->getByUser($pathparams['id']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  public function getWithNoUSer()
+  {
+    try {
+      $data = $this->vehicleService->getWithNoUser();
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
+  // Read from json body
+  public function updateUser()
+  {
+    try {
+      $body = Router::$body;
+
+      Validator::with($body, ['id_vehicle', 'id_user'])->required()->isInteger()->toInteger();
+
+      $data = $this->vehicleService->updateUser($body['id_vehicle'], $body['id_user']);
+
+      Response::json($data);
+    } catch (HttpError $e) {
+      ErrorHandler::handlerError($e->getMessage(), $e->getStatusCode());
+    }
+  }
+
   // Obtener todos los vehículos con paginación
   public function getAll()
   {

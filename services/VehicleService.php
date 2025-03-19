@@ -18,6 +18,36 @@ class VehicleService
     $this->userModel = new UserModel();
   }
 
+  public function getWithNoUser()
+  {
+    $vehicles = $this->vehicleModel->getWithNoUser();
+    return $vehicles;
+  }
+
+  public function getByUser(int $id)
+  {
+    $vehicles = $this->vehicleModel->getByUser($id);
+    return $vehicles;
+  }
+
+  public function updateUser(int $idVehicle, int $idUser)
+  {
+    $vehicle = $this->getOne($idVehicle);
+    $user = $this->userModel->getOne($idUser);
+
+    if (!$user) {
+      throw HttpError::BadRequest("There is no user with ID $idUser");
+    }
+
+    $result = $this->vehicleModel->updateUser($idVehicle, $idUser);
+
+    if (!$result) {
+      throw HttpError::InternalServer("Server Error On Update");
+    }
+
+    return true;
+  }
+
   // Obtener todos los vehículos con paginación
   public function getAll($limit, $offset)
   {

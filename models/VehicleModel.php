@@ -14,6 +14,59 @@ class VehicleModel
     $this->conn = Database::getConnection();
   }
 
+  public function getWithNoUser()
+  {
+    $sql = "SELECT
+      v.id_vehiculo AS id,
+      v.placa AS plate,
+      v.marca AS brand,
+      v.modelo AS model,
+      v.año AS year,
+      v.base_imponible AS taxable_base
+    FROM vehiculos v
+    WHERE v.id_usuario IS NULL
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute();
+
+    $value = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $value;
+  }
+
+  public function getByUser(int $id)
+  {
+    $sql = "SELECT
+      v.id_vehiculo AS id,
+      v.placa AS plate,
+      v.marca AS brand,
+      v.modelo AS model,
+      v.año AS year,
+      v.base_imponible AS taxable_base
+    FROM vehiculos v
+    WHERE v.id_usuario = :id
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['id' => $id]);
+
+    $value = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $value;
+  }
+
+  public function updateUser($idVehicle, $idUser)
+  {
+    $sql = "UPDATE vehiculos
+    SET id_usuario = :idUser
+    WHERE id_vehiculo = :idVehicle
+    ";
+
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute(['idUser' => $idUser, 'idVehicle' => $idVehicle]);
+  }
+
   // Crear un nuevo vehículo
   public function create($data)
   {

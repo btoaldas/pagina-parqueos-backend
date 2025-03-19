@@ -52,3 +52,21 @@ Content-Type: application/json
 ### Delete One
 DELETE {{host}}/vehicle/2
 Authorization: Bearer {{token}}
+
+### GET Vehicules without user
+GET {{host}}/vehicle/without-user
+Authorization: Bearer {{token}}
+
+### GET Vehicules by user
+GET {{host}}/vehicle/user/1
+Authorization: Bearer {{token}}
+
+### Update vehicle user
+PUT {{host}}/vehicle/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_vehicle": 3,
+  "id_user": 2
+}
