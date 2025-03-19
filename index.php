@@ -57,7 +57,7 @@ $router->addRoute('POST', '/auth/two-factor/token', [AuthController::class, 'tok
 $router->addCrudRoute('/role', RoleController::class, $adminMiddleware);
 $router->addCrudRoute('/user', UserController::class, $adminMiddleware);
 $router->addCrudRoute('/zone', ZoneController::class, $adminMiddleware);
-$router->addCrudRoute('/space', SpaceController::class, $empleadoMiddlware);
+$router->addCrudRoute('/space', SpaceController::class, $registeredMiddleware);
 $router->addCrudRoute('/vehicle', VehicleController::class, $empleadoMiddlware);
 $router->addRoute('POST', '/user/[id]/enable', [UserController::class, 'enable'], $adminMiddleware);
 $router->addRoute('POST', '/user/[id]/disable', [UserController::class, 'disable'], $adminMiddleware);
