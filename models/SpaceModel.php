@@ -131,7 +131,9 @@ class SpaceModel
     SET
       estado = :state,
       tipo = :type,
-      id_zona = :id_zone
+      id_zona = :id_zone,
+      latitud = :latitude,
+      longitud = :longitude
     WHERE
       id_espacio = :id
     ";

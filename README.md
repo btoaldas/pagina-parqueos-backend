@@ -178,8 +178,8 @@ CREATE TABLE espacios (
     id_zona INT NOT NULL,
     estado VARCHAR(50) NOT NULL, -- Ejemplo: "disponible", "ocupado", "mantenimiento"
     tipo VARCHAR(50) NOT NULL,   -- Ejemplo: "automóvil", "motocicleta", "discapacitado"
-    latitud DECIMAL(10, 7) NOT NULL DEFAULT 0,
-    longitud DECIMAL(10, 7) NOT NULL DEFAULT 0,
+    latitud DECIMAL(19, 16) NOT NULL DEFAULT 0,
+    longitud DECIMAL(19, 16) NOT NULL DEFAULT 0,
     FOREIGN KEY (id_zona) REFERENCES zonas(id_zona)
 );
 

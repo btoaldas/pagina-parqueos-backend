@@ -96,8 +96,9 @@ class SpaceController
       $pathparams = Router::$pathparams;
       $body = Router::$body;
 
-      Validator::with($body, ['state', 'type', 'id_zone'])->required();
+      Validator::with($body, ['state', 'type', 'id_zone', 'latitude', 'longitude'])->required();
       Validator::with($body, 'id_zone')->isInteger();
+      Validator::with($body, ['latitude', 'longitude'])->isNumb();
       Validator::with($body, 'state')->isIn(["disponible", "ocupado", "mantenimiento"]);
       Validator::with($pathparams, 'id')->required()->isInteger();
 
