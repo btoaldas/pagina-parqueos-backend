@@ -98,7 +98,7 @@ class TicketModel
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function all($limit = 10, $offset = 0)
+  public function all()
   {
     $sql = "SELECT
       t.id_ticket AS id,
@@ -147,14 +147,9 @@ class TicketModel
       ON e.id_zona = z.id_zona
     LEFT JOIN usuarios u
       ON u.id_usuario = v.id_usuario
-    LIMIT :limit
-    OFFSET :offset
     ";
 
     $stmt = $this->conn->prepare($sql);
-
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
 

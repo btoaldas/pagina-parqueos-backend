@@ -26,7 +26,7 @@ class ZoneModel
     return $stmt->execute($data);
   }
 
-  public function all($limit = 10, $offset = 0)
+  public function all()
   {
     $sql = "SELECT
       id_zona AS id,
@@ -36,14 +36,9 @@ class ZoneModel
       address,
       description
     FROM zonas
-    LIMIT :limit
-    OFFSET :offset
     ";
 
     $stmt = $this->conn->prepare($sql);
-
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
 

@@ -17,9 +17,9 @@ class UserService
     $this->roleModel = new RoleModel();
   }
 
-  public function getAll($limit, $offset)
+  public function getAll()
   {
-    return $this->userModel->all($limit, $offset);
+    return $this->userModel->all();
   }
 
   public function getAllFilter(string $filter)

@@ -21,11 +21,7 @@ class SpaceController
   public function getAll()
   {
     try {
-      $queryparams = Router::$queryparams;
-
-      Validator::with($queryparams)->limitOffset();
-
-      $data = $this->spaceService->getAll($queryparams['limit'], $queryparams['offset']);
+      $data = $this->spaceService->getAll();
 
       Response::json($data);
     } catch (HttpError $e) {

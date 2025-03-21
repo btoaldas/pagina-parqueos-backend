@@ -17,9 +17,9 @@ class SpaceService
     $this->zoneModel = new ZoneModel();
   }
 
-  public function getAll($limit, $offset)
+  public function getAll()
   {
-    $values = $this->spaceModel->all($limit, $offset);
+    $values = $this->spaceModel->all();
     $values = array_map(function ($value) {
       $value['zone'] = json_decode($value['zone'], true);
       return $value;

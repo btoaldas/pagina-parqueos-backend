@@ -31,9 +31,7 @@ class UserController
         return Response::json($data);
       }
 
-      Validator::with($queryparams)->limitOffset();
-
-      $data = $this->userService->getAll($queryparams['limit'], $queryparams['offset']);
+      $data = $this->userService->getAll();
 
       Response::json($data);
     } catch (HttpError $e) {

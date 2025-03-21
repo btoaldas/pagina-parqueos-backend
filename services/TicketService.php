@@ -25,9 +25,9 @@ class TicketService
     $this->vehiculeModel = new VehicleModel();
   }
 
-  public function getAll($limit, $offset)
+  public function getAll()
   {
-    $values = $this->ticketModel->all($limit, $offset);
+    $values = $this->ticketModel->all();
     $values = array_map(function ($value) {
       $value['space'] = json_decode($value['space'], true);
       $value['zone'] = json_decode($value['zone'], true);

@@ -21,11 +21,7 @@ class FineController
   public function getAll()
   {
     try {
-      $queryparams = Router::$queryparams;
-
-      Validator::with($queryparams)->limitOffset();
-
-      $data = $this->fineService->getAll($queryparams['limit'], $queryparams['offset']);
+      $data = $this->fineService->getAll();
 
       Response::json($data);
     } catch (HttpError $e) {

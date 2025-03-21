@@ -21,11 +21,7 @@ class TicketController
   public function getAll()
   {
     try {
-      $queryparams = Router::$queryparams;
-
-      Validator::with($queryparams)->limitOffset();
-
-      $data = $this->ticketService->getAll($queryparams['limit'], $queryparams['offset']);
+      $data = $this->ticketService->getAll();
 
       Response::json($data);
     } catch (HttpError $e) {

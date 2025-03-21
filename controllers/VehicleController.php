@@ -64,11 +64,7 @@ class VehicleController
   public function getAll()
   {
     try {
-      $queryparams = Router::$queryparams;
-
-      Validator::with($queryparams)->limitOffset();
-
-      $data = $this->vehicleService->getAll($queryparams['limit'], $queryparams['offset']);
+      $data = $this->vehicleService->getAll();
 
       Response::json($data);
     } catch (HttpError $e) {

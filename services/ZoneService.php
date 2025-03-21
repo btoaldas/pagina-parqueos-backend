@@ -14,9 +14,9 @@ class ZoneService
     $this->zoneModel = new ZoneModel();
   }
 
-  public function getAll($limit, $offset)
+  public function getAll()
   {
-    $values = $this->zoneModel->all($limit, $offset);
+    $values = $this->zoneModel->all();
     $values = array_map(function ($value) {
       $value['fee'] = (float)$value['fee'];
       return $value;

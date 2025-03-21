@@ -115,7 +115,7 @@ class VehicleModel
   }
 
   // Obtener todos los vehículos con paginación
-  public function all($limit = 10, $offset = 0)
+  public function all()
   {
     $sql = "SELECT
       v.id_vehiculo AS id,
@@ -138,14 +138,9 @@ class VehicleModel
     FROM vehiculos v
     LEFT JOIN usuarios u
       ON v.id_usuario = u.id_usuario
-    LIMIT :limit
-    OFFSET :offset
     ";
 
     $stmt = $this->conn->prepare($sql);
-
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
 

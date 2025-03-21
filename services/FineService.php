@@ -23,9 +23,9 @@ class FineService
     $this->fineModel = new FineModel();
   }
 
-  public function getAll($limit, $offset)
+  public function getAll()
   {
-    $values = $this->fineModel->all($limit, $offset);
+    $values = $this->fineModel->all();
     $values = array_map(function ($value) {
       $value['amount'] = (float)$value['amount'];
       $value['vehicle'] = json_decode($value['vehicle'], true);

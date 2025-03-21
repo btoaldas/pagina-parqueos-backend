@@ -49,9 +49,9 @@ class VehicleService
   }
 
   // Obtener todos los vehículos con paginación
-  public function getAll($limit, $offset)
+  public function getAll()
   {
-    $vehicles = $this->vehicleModel->all($limit, $offset);
+    $vehicles = $this->vehicleModel->all();
     $vehicles = array_map(function ($vehicle) {
       if (is_null($vehicle['user'])) return $vehicle;
       $vehicle['user'] = json_decode($vehicle['user'], true);

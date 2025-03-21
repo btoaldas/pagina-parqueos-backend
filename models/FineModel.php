@@ -16,7 +16,7 @@ class FineModel
     $this->conn = Database::getConnection();
   }
 
-  public function all($limit = 10, $offset = 0)
+  public function all()
   {
     $sql = "SELECT
       m.id_multa AS id,
@@ -46,14 +46,9 @@ class FineModel
       ON m.id_empleado = e.id_usuario
     JOIN roles r
       ON e.id_rol = r.id_rol
-    LIMIT :limit
-    OFFSET :offset
     ";
 
     $stmt = $this->conn->prepare($sql);
-
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
 

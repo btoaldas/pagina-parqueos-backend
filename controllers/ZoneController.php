@@ -21,11 +21,7 @@ class ZoneController
   public function getAll()
   {
     try {
-      $queryparams = Router::$queryparams;
-
-      Validator::with($queryparams)->limitOffset();
-
-      $data = $this->zoneService->getAll($queryparams['limit'], $queryparams['offset']);
+      $data = $this->zoneService->getAll();
 
       Response::json($data);
     } catch (HttpError $e) {

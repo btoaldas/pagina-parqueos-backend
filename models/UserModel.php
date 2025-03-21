@@ -28,7 +28,7 @@ class UserModel
     return $stmt->execute($userData);
   }
 
-  public function all($limit = 10, $offset = 0)
+  public function all()
   {
     $sql = "SELECT
       u.id_usuario AS id,
@@ -40,14 +40,9 @@ class UserModel
     FROM usuarios u
     JOIN roles r
       ON u.id_rol = r.id_rol
-    LIMIT :limit
-    OFFSET :offset
     ";
 
     $stmt = $this->conn->prepare($sql);
-
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
 

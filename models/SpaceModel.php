@@ -21,7 +21,7 @@ class SpaceModel
     return $stmt->execute($data);
   }
 
-  public function all($limit = 10, $offset = 0)
+  public function all()
   {
     $sql = "SELECT
       e.id_espacio AS id,
@@ -37,14 +37,9 @@ class SpaceModel
     FROM espacios e
     JOIN zonas z
       ON e.id_zona = z.id_zona
-    LIMIT :limit
-    OFFSET :offset
     ";
 
     $stmt = $this->conn->prepare($sql);
-
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
     $stmt->execute();
 
