@@ -79,7 +79,7 @@ class TicketService
 
   public function create($id_vehicle, $id_space, $id_employ)
   {
-    $now = (new DateTime())->format('Y-m-d H:i:s');
+    $now = (new DateTime())->modify('-5 hours')->format('Y-m-d H:i:s');
 
     $vehicle = $this->vehiculeModel->get($id_vehicle);
     if (!$vehicle)
@@ -119,7 +119,7 @@ class TicketService
       throw HttpError::BadRequest("Can't complete this ticket");
 
     $entry_time = new DateTime($ticket['entry_date']);
-    $now = new DateTime();
+    $now = (new DateTime())->modify('-5 hours');
     $interval = $now->diff($entry_time);
     $hours = $interval->days * 24 + $interval->h + $interval->i / 60;
 

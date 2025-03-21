@@ -86,7 +86,7 @@ class FineService
     $filename = UUID::v4() . ($image['type'] === 'image/jpeg' ? '.jpg' : '.png');
     $data['filename'] = $filename;
 
-    $data['created_date'] = (new DateTime())->format('Y-m-d H:i:s');
+    $data['created_date'] = (new DateTime())->modify('-5 hours')->format('Y-m-d H:i:s');
 
     $id = $this->fineModel->create($data);
 
@@ -102,7 +102,7 @@ class FineService
     if ($ticket['state'] !== 'pendiente')
       throw HttpError::BadRequest("Can't pay this fine");
 
-    $result = $this->fineModel->pay($id, (new DateTime())->format('Y-m-d H:i:s'));
+    $result = $this->fineModel->pay($id, (new DateTime())->modify('-5 hours')->format('Y-m-d H:i:s'));
 
     if (!$result)
       throw HttpError::InternalServer("Server Error On Update");
