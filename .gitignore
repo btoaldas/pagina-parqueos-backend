@@ -3,3 +3,5 @@ docker-compose.yaml
 .env
 /vendor/
 storage/
+docker-compose.yml
+Dockerfile
