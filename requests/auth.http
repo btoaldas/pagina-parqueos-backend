@@ -1,4 +1,4 @@
-@host=http://localhost/uniandes-web/api/v1
+@host=http://localhost:8080/api/v1
 @token={{logintwofactor.response.body.data.token}}
 
 ### GET SOMETINH

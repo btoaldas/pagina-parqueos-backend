@@ -88,8 +88,8 @@ class ZoneModel
       nombre = :name,
       tarifa = :fee,
       tiempo_maximo = :max_time,
-      address,
-      description
+      address = :address,
+      description = :description
     WHERE id_zona = :id
     ";
 

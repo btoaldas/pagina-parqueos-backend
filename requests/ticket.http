@@ -29,7 +29,7 @@ GET {{host}}/vehicle
 Authorization: Bearer {{token}}
 
 ### Get One
-GET {{host}}/ticket/1
+GET {{host}}/ticket/5
 Authorization: Bearer {{token}}
 
 ### Create One
