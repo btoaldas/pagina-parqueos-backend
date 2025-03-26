@@ -5,3 +5,4 @@ docker-compose.yaml
 storage/
 docker-compose.yml
 Dockerfile
+/imagenes/fine/
